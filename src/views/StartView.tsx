@@ -91,7 +91,7 @@ export default function StartView({ lmStatus, onOpen, onStartDownload, downloadB
                   >
                     <Box textAlign="left" w="full">
                       <Text fontSize="sm" fontWeight="medium" lineClamp={1}>
-                        {firstLine || '(no text)'}
+                        {r.title || firstLine || '(no text)'}
                       </Text>
                       <Text fontSize="xs" color="gray.500">
                         {formatDate(r.createdAt)}

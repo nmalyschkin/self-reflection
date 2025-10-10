@@ -8,6 +8,7 @@ export interface Reflection {
   id: string;
   entries: Entry[];
   createdAt: string;
+  title?: string;
 }
 
 export type Reflections = Reflection[];

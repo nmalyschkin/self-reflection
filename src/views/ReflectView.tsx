@@ -60,7 +60,7 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
   return (
     <VStack gap={4} align="stretch">
       <Flex align="center" justify="space-between">
-        <Heading size="lg">Reflection</Heading>
+        <Heading size="lg">{reflection?.title || 'Reflection'}</Heading>
         <Button variant="plain" colorScheme="blue" onClick={onBack}>
           Back
         </Button>

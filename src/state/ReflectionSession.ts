@@ -6,7 +6,7 @@ import ReflectionIDB from './ReflectionIDB';
 class ReflectionSession {
   private session: LanguageModelSession | null = null;
   private responseSchema: any = {
-    // summary: 'string',
+    title: 'string',
     question: 'string',
   };
   reflection: Reflection | null = null;
@@ -34,7 +34,8 @@ class ReflectionSession {
           'Try to follow the CBT (Cognitive Behavioral Therapy) principles. Help the user unfold the situation, the thoughts, the emotions, the behaviors, the consequences, and the alternatives.' +
           "Once the user has reflected on the situation in it's entirety, ask them to think about imidiate actions they can take to improve a future situation. Try to focus on actions that are within their control." +
           'If the user is feeling stuck, ask them to change their perspective if this had happened to someone else and they were asking for advice.' +
-          'Focus on one step at a time. Do not overwhelm the user with too many thoughts and topics. Only ask one question at a time or a follow up question if needed.',
+          'Focus on one step at a time. Do not overwhelm the user with too many thoughts and topics. Only ask one question at a time or a follow up question if needed.' +
+          "Provide a concise title for the reflection based on the user's input once",
       },
       ...history,
     ];
@@ -91,7 +92,7 @@ class ReflectionSession {
         signal: controller.signal,
       })
       .then((response) => {
-        const { question } = JSON.parse(response);
+        const { question, title } = JSON.parse(response);
         this.addEntries(
           [
             {
@@ -101,6 +102,7 @@ class ReflectionSession {
             },
           ],
           'idle',
+          title,
         );
       })
       .finally(() => {
@@ -121,12 +123,19 @@ class ReflectionSession {
     return abort;
   }
 
-  private addEntries(entries: Entry[], promptState: 'idle' | 'processing' = this.promptState) {
+  private addEntries(
+    entries: Entry[],
+    promptState: 'idle' | 'processing' = this.promptState,
+    title?: string,
+  ) {
     if (!this.reflection) {
       throw new Error('Reflection not initialized');
     }
     if (entries.length !== 0) {
       this.reflection = { ...this.reflection, entries: [...this.reflection.entries, ...entries] };
+    }
+    if (title && !this.reflection.title) {
+      this.reflection = { ...this.reflection, title };
     }
     this.promptState = promptState;
     ReflectionIDB.setReflection(this.reflection.id, this.reflection);
