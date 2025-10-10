@@ -30,6 +30,10 @@ class ReflectionIDB {
   static async getReflections() {
     return await db.getAll('reflections');
   }
+
+  static async deleteReflection(reflectionId: string) {
+    return await db.delete('reflections', reflectionId);
+  }
 }
 
 export default ReflectionIDB;

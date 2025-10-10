@@ -1,6 +1,6 @@
 import type { LMStatus, Reflection } from '../types';
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Button, Flex, Heading, Text, Textarea, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Spinner, Text, Textarea, VStack } from '@chakra-ui/react';
 import ReflectionSession from '../state/ReflectionSession';
 
 type Props = {
@@ -52,6 +52,7 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
         <Text fontSize="sm" color="gray.500">
           Initializing AI session...
         </Text>
+        <Spinner />
       </Flex>
     );
   }
