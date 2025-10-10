@@ -1,9 +1,10 @@
+import { useEffect, useState } from 'react';
 import type { LMStatus, Reflection } from '../types';
+import { Box, Button, Heading, Text, VStack } from '@chakra-ui/react';
+import ReflectionIDB from '../state/ReflectionIDB';
 
 type Props = {
-  reflections: Reflection[];
   lmStatus: LMStatus;
-  onStart: () => void;
   onOpen: (id: string) => void;
   onStartDownload?: () => void;
   downloadButton?: boolean;
@@ -14,49 +15,61 @@ function formatDate(iso: string): string {
   return d.toLocaleString();
 }
 
-export default function StartView({
-  reflections,
-  lmStatus,
-  onStart,
-  onOpen,
-  onStartDownload,
-  downloadButton,
-}: Props) {
+export default function StartView({ lmStatus, onOpen, onStartDownload, downloadButton }: Props) {
+  const [reflections, setReflections] = useState<Reflection[]>([]);
+  useEffect(() => {
+    (async () => {
+      const reflections = await ReflectionIDB.getReflections();
+      setReflections(reflections);
+    })();
+  }, []);
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Self Reflection</h1>
-      <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={onStart}>
+    <VStack align="stretch" gap={4}>
+      <Heading size="lg">Self Reflection</Heading>
+      <Button colorScheme="blue" onClick={() => onOpen('')}>
         Start reflecting
-      </button>
+      </Button>
       {downloadButton && lmStatus === 'downloadable' && (
-        <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={onStartDownload}>
+        <Button colorScheme="blue" onClick={onStartDownload}>
           Download model
-        </button>
+        </Button>
       )}
 
-      <div className="mt-6">
-        <h2 className="text-lg font-medium mb-2">History</h2>
+      <Box mt={6}>
+        <Heading size="md" mb={2}>
+          History
+        </Heading>
         {reflections.length === 0 ? (
-          <p className="text-sm text-gray-500">No reflections yet.</p>
+          <Text fontSize="sm" color="gray.500">
+            No reflections yet.
+          </Text>
         ) : (
-          <ul className="divide-y divide-gray-200">
+          <VStack align="stretch" gap={0}>
             {reflections.map((r) => {
               const firstLine = r.entries[0]?.text?.split('\n')[0] ?? '';
               return (
-                <li key={r.id} className="py-2">
-                  <button
-                    className="text-left w-full hover:bg-gray-50 rounded p-2"
+                <Box key={r.id} py={2}>
+                  <Button
+                    variant="ghost"
+                    justifyContent="flex-start"
+                    w="full"
                     onClick={() => onOpen(r.id)}
                   >
-                    <div className="text-sm font-medium truncate">{firstLine || '(no text)'}</div>
-                    <div className="text-xs text-gray-500">{formatDate(r.createdAt)}</div>
-                  </button>
-                </li>
+                    <Box textAlign="left" w="full">
+                      <Text fontSize="sm" fontWeight="medium" lineClamp={1}>
+                        {firstLine || '(no text)'}
+                      </Text>
+                      <Text fontSize="xs" color="gray.500">
+                        {formatDate(r.createdAt)}
+                      </Text>
+                    </Box>
+                  </Button>
+                </Box>
               );
             })}
-          </ul>
+          </VStack>
         )}
-      </div>
-    </div>
+      </Box>
+    </VStack>
   );
 }

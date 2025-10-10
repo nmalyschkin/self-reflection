@@ -1,19 +1,20 @@
 import type { LanguageModelSession } from '../global';
 import type { Entry } from '../types';
-import { ReflectionLocalStorage } from './ReflectionLocalStorage';
 import type { Reflection } from '../types';
+import ReflectionIDB from './ReflectionIDB';
 
 class ReflectionSession {
   private session: LanguageModelSession | null = null;
   private responseSchema: any = {
-    summary: 'string',
+    // summary: 'string',
     question: 'string',
   };
-  private reflection: Reflection;
+  reflection: Reflection | null = null;
   private promptState: 'idle' | 'processing' = 'idle';
   private subscribers: ((reflection: Reflection, promptState: 'idle' | 'processing') => void)[] =
     [];
 
+  sessionInitialized: Promise<void>;
   static createInitialPrompts(
     reflection: Reflection,
   ): { role: 'system' | 'user' | 'assistant'; content: string }[] {
@@ -40,13 +41,23 @@ class ReflectionSession {
   }
 
   constructor(reflectionId: string | null) {
-    const reflection = ReflectionLocalStorage.getReflection(reflectionId);
-    this.reflection = reflection;
-    (async () => {
-      this.session = await window.LanguageModel.create({
-        initialPrompts: ReflectionSession.createInitialPrompts(reflection),
-      });
-    })();
+    this.sessionInitialized = new Promise((resolve) => {
+      (async () => {
+        const reflection = await ReflectionIDB.getReflection(reflectionId);
+        this.reflection = reflection;
+        const initialPrompts = ReflectionSession.createInitialPrompts(reflection);
+        this.session = await window.LanguageModel.create({
+          initialPrompts: initialPrompts,
+        });
+        resolve();
+      })();
+    });
+  }
+
+  destroy() {
+    if (this.session) {
+      this.session.destroy();
+    }
   }
 
   /**
@@ -80,14 +91,9 @@ class ReflectionSession {
         signal: controller.signal,
       })
       .then((response) => {
-        const { summary, question } = JSON.parse(response);
+        const { question } = JSON.parse(response);
         this.addEntries(
           [
-            {
-              text: summary,
-              createdAt: new Date().toISOString(),
-              type: 'ai-answer',
-            },
             {
               text: question,
               createdAt: new Date().toISOString(),
@@ -102,16 +108,28 @@ class ReflectionSession {
           this.addEntries([], 'idle');
         }
       });
-    const abort = () => controller.abort();
+    const abort = () => {
+      if (!this.reflection) {
+        throw new Error('Reflection not initialized');
+      }
+      controller.abort();
+      // remove last user entry
+      this.reflection.entries = this.reflection.entries.slice(0, -1);
+      ReflectionIDB.setReflection(this.reflection.id, this.reflection);
+      this.notifySubscribers();
+    };
     return abort;
   }
 
   private addEntries(entries: Entry[], promptState: 'idle' | 'processing' = this.promptState) {
+    if (!this.reflection) {
+      throw new Error('Reflection not initialized');
+    }
     if (entries.length !== 0) {
       this.reflection = { ...this.reflection, entries: [...this.reflection.entries, ...entries] };
     }
     this.promptState = promptState;
-    ReflectionLocalStorage.setReflection(this.reflection.id, this.reflection);
+    ReflectionIDB.setReflection(this.reflection.id, this.reflection);
     this.notifySubscribers();
   }
 
@@ -130,6 +148,9 @@ class ReflectionSession {
   }
 
   private notifySubscribers() {
+    if (!this.reflection) {
+      throw new Error('Reflection not initialized');
+    }
     for (const subscriber of this.subscribers) {
       subscriber(this.reflection, this.promptState);
     }

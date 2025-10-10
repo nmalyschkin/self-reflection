@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
+import { Box } from '@chakra-ui/react';
 import type { LMStatus } from './types';
-import './App.css';
 import StartView from './views/StartView';
 import ReflectView from './views/ReflectView';
 
@@ -44,47 +44,57 @@ function App() {
     }
   }, [modelOptions]);
 
-  const isExisting = useMemo(() => currentId !== null, [currentId]);
-
   function openReflection(id: string) {
     setCurrentId(id);
     setView('reflect');
   }
 
   return (
-    <div className="relative p-4 max-w-2xl mx-auto">
-      {/* TODO: add toast */}
-      {(lmStatus === 'downloadable' || lmStatus === 'downloading') && (
-        <div className="absolute top-2 right-2 text-xs bg-yellow-100 text-yellow-900 border border-yellow-200 rounded px-2 py-1 shadow">
-          {lmStatus === 'downloadable'
-            ? 'Model ready to download…'
-            : (() => {
-                const raw = downloadProgress;
-                const pct = typeof raw === 'number' ? Math.round(raw <= 1 ? raw * 100 : raw) : null;
-                return `Downloading on-device model…${pct !== null ? ` ${pct}%` : ''}`;
-              })()}
-        </div>
-      )}
+    <Box minH="100dvh" minW="100dvw" display="flex" alignItems="center" justifyContent="center">
+      <Box position="relative" p={4} w="100%" maxW="2xl" mx="auto">
+        {(lmStatus === 'downloadable' || lmStatus === 'downloading') && (
+          <Box
+            position="absolute"
+            top={2}
+            right={2}
+            fontSize="xs"
+            bg="yellow.100"
+            color="yellow.900"
+            borderWidth="1px"
+            borderColor="yellow.200"
+            rounded="md"
+            px={2}
+            py={1}
+            boxShadow="sm"
+          >
+            {lmStatus === 'downloadable'
+              ? 'Model ready to download…'
+              : (() => {
+                  const raw = downloadProgress;
+                  const pct =
+                    typeof raw === 'number' ? Math.round(raw <= 1 ? raw * 100 : raw) : null;
+                  return `Downloading on-device model…${pct !== null ? ` ${pct}%` : ''}`;
+                })()}
+          </Box>
+        )}
 
-      {view === 'start' ? (
-        <StartView
-          reflections={[]}
-          lmStatus={lmStatus}
-          onStart={() => setView('reflect')}
-          onOpen={openReflection}
-          onStartDownload={startModelDownload}
-          downloadButton
-        />
-      ) : (
-        <ReflectView
-          reflectionId={currentId}
-          lmStatus={lmStatus}
-          isExisting={isExisting}
-          onSave={() => setView('start')}
-          onBack={() => setView('start')}
-        />
-      )}
-    </div>
+        {view === 'start' ? (
+          <StartView
+            lmStatus={lmStatus}
+            onOpen={openReflection}
+            onStartDownload={startModelDownload}
+            downloadButton
+          />
+        ) : (
+          <ReflectView
+            reflectionId={currentId}
+            lmStatus={lmStatus}
+            onSave={() => setView('start')}
+            onBack={() => setView('start')}
+          />
+        )}
+      </Box>
+    </Box>
   );
 }
 

@@ -8,6 +8,7 @@ interface LMAvailability {
 }
 
 export interface LanguageModelSession {
+  destroy(): void;
   prompt(input: string, options?: unknown): Promise<string>;
   // Optionally add streaming/cancel later as needed
 }

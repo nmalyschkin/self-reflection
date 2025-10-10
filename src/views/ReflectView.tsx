@@ -1,20 +1,23 @@
 import type { LMStatus, Reflection } from '../types';
 import { useCallback, useEffect, useState } from 'react';
+import { Box, Button, Flex, Heading, Text, Textarea, VStack } from '@chakra-ui/react';
 import ReflectionSession from '../state/ReflectionSession';
 
 type Props = {
   reflectionId: string | null;
   lmStatus: LMStatus;
-  isExisting: boolean;
   onSave: () => void;
   onBack: () => void;
 };
 
-export default function ReflectView({ reflectionId, lmStatus, isExisting, onSave, onBack }: Props) {
+export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: Props) {
   const [reflection, setReflection] = useState<Reflection | null>(null);
   const [reflectionSession, setReflectionSession] = useState<ReflectionSession | null>(null);
   const [input, setInput] = useState('');
-  const [promptState, setPromptState] = useState<'idle' | 'processing'>('idle');
+  const [promptState, setPromptState] = useState<'idle' | 'processing' | 'initializing'>(
+    'initializing',
+  );
+  const [abort, setAbort] = useState<() => void>(() => {});
 
   useEffect(() => {
     const reflectionSession = new ReflectionSession(reflectionId);
@@ -22,69 +25,94 @@ export default function ReflectView({ reflectionId, lmStatus, isExisting, onSave
       setReflection(reflection);
       setPromptState(promptState);
     });
-    setReflectionSession(reflectionSession);
+    reflectionSession.sessionInitialized.then(() => {
+      setReflection(reflectionSession.reflection);
+      setReflectionSession(reflectionSession);
+      setPromptState('idle');
+    });
+    return () => {
+      reflectionSession.destroy();
+    };
   }, [reflectionId]);
 
   const submitReflectionStatement = useCallback(() => {
     if (!reflectionSession) return;
-    reflectionSession.userSubmit(input);
+    const abort = reflectionSession.userSubmit(input);
+    setInput('');
+    setAbort(() => () => {
+      abort();
+      setAbort(() => () => {});
+      setInput(input);
+    });
   }, [reflectionSession, input]);
 
+  if (promptState === 'initializing') {
+    return (
+      <Flex gap={2}>
+        <Text fontSize="sm" color="gray.500">
+          Initializing AI session...
+        </Text>
+      </Flex>
+    );
+  }
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Reflection</h1>
-        <button className="text-sm text-blue-600" onClick={onBack}>
+    <VStack gap={4} align="stretch">
+      <Flex align="center" justify="space-between">
+        <Heading size="lg">Reflection</Heading>
+        <Button variant="plain" colorScheme="blue" onClick={onBack}>
           Back
-        </button>
-      </div>
+        </Button>
+      </Flex>
 
-      <div className="space-y-3">
+      <VStack gap={3} align="stretch">
         {reflection?.entries.map((e, i) => (
-          <div key={e.createdAt + i} className="space-y-1">
-            <div
-              className={`rounded p-3 text-sm ${
-                e.type === 'user'
-                  ? 'bg-gray-100'
-                  : e.type === 'ai-answer'
-                    ? 'bg-blue-50'
-                    : 'bg-green-50'
-              }`}
-            >
-              {e.text}
-            </div>
-          </div>
+          <Box
+            key={e.createdAt + i}
+            rounded="md"
+            p={3}
+            fontSize="sm"
+            bg={e.type === 'user' ? 'blue.50' : 'green.50'}
+          >
+            {e.text}
+          </Box>
         ))}
-      </div>
+      </VStack>
 
-      <div>
-        <textarea
-          className="w-full border rounded p-2 min-h-[120px]"
-          placeholder="Write a reflection..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-      </div>
+      <Textarea
+        placeholder="Write a reflection..."
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && e.metaKey) {
+            e.preventDefault();
+            submitReflectionStatement();
+          }
+        }}
+        minH="120px"
+      />
 
       {promptState === 'processing' ? (
-        <div className="text-sm text-gray-500">Thinking...</div>
+        <Flex gap={2}>
+          <Text fontSize="sm" color="gray.500">
+            Thinking...
+          </Text>
+          <Button onClick={abort}>Abort</Button>
+        </Flex>
       ) : (
-        <div className="flex gap-2">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={onSave}>
-            Save
-          </button>
-          <button
-            className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
+        <Flex gap={2}>
+          <Button
+            colorScheme="blue"
             onClick={submitReflectionStatement}
             disabled={lmStatus !== 'available'}
           >
-            Deeper reflection
-          </button>
-        </div>
+            Deeper reflection (⌘+↵)
+          </Button>
+          <Button variant="outline" onClick={onSave}>
+            Save
+          </Button>
+        </Flex>
       )}
-      {isExisting && (
-        <p className="text-xs text-gray-500">Viewing past reflection (changes won’t be saved).</p>
-      )}
-    </div>
+    </VStack>
   );
 }
