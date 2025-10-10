@@ -1,6 +1,17 @@
 import type { LMStatus, Reflection } from '../types';
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Button, Flex, Heading, Spinner, Text, Textarea, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Menu,
+  Portal,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+  Textarea,
+  VStack,
+} from '@chakra-ui/react';
 import ReflectionSession from '../state/ReflectionSession';
 
 type Props = {
@@ -109,6 +120,22 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
           >
             Deeper reflection (⌘+↵)
           </Button>
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <Button variant="outline" size="sm">
+                Tools
+              </Button>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  <Menu.Item value="cross-entry-summarizer" onClick={() => {}}>
+                    Cross-entry summarizer
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
           <Button variant="outline" onClick={onSave}>
             Save
           </Button>
