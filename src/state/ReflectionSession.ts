@@ -164,6 +164,25 @@ class ReflectionSession {
       subscriber(this.reflection, this.promptState);
     }
   }
+
+  /**
+   * Update the reflection title and persist it
+   */
+  public setTitle(title: string) {
+    if (!this.reflection) {
+      throw new Error('Reflection not initialized');
+    }
+    const trimmed = title.trim();
+    if (trimmed.length === 0) {
+      // remove title if empty
+      const { title: _ignored, ...rest } = this.reflection as Required<Reflection>;
+      this.reflection = { ...rest } as Reflection;
+    } else {
+      this.reflection = { ...this.reflection, title: trimmed };
+    }
+    ReflectionIDB.setReflection(this.reflection.id, this.reflection);
+    this.notifySubscribers();
+  }
 }
 
 export default ReflectionSession;

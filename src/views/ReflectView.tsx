@@ -11,6 +11,9 @@ import {
   Text,
   Textarea,
   VStack,
+  EditableRoot,
+  EditablePreview,
+  EditableInput,
 } from '@chakra-ui/react';
 import ReflectionSession from '../state/ReflectionSession';
 
@@ -71,7 +74,24 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
   return (
     <VStack gap={4} align="stretch">
       <Flex align="center" justify="space-between">
-        <Heading size="lg">{reflection?.title || 'Reflection'}</Heading>
+        <Box flex="1" minW={0}>
+          <Heading>
+            <EditableRoot
+              key={(reflection?.id || 'new') + (reflection?.title || '')}
+              defaultValue={reflection?.title || ''}
+            >
+              <EditablePreview fontSize="xl" fontWeight="bold" />
+              <EditableInput
+                onBlur={(e) => reflectionSession?.setTitle(e.currentTarget.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.currentTarget.blur();
+                  }
+                }}
+              />
+            </EditableRoot>
+          </Heading>
+        </Box>
         <Button variant="plain" colorScheme="blue" onClick={onBack}>
           Back
         </Button>
