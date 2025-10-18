@@ -1,6 +1,8 @@
 import type { LanguageModelSession } from '../global';
 import type { Entry } from '../types';
 import type { Reflection } from '../types';
+import type { PersonaId } from '../types';
+import { DEFAULT_PERSONA_ID, getPersona } from '../personas';
 import ReflectionIDB from './ReflectionIDB';
 
 class ReflectionSession {
@@ -25,16 +27,12 @@ class ReflectionSession {
           content: entry.text,
         }) as { role: 'user' | 'assistant'; content: string },
     );
+    const persona = getPersona(reflection.personaId);
     return [
       {
         role: 'system',
         content:
-          'You are a helpful psycho therapist, helping the user to reflect on their life.' +
-          'Your responses should be compassionate and open-ended. Relate to the users input and follow up with a question that guides the user to deeper reflection.' +
-          'Try to follow the CBT (Cognitive Behavioral Therapy) principles. Help the user unfold the situation, the thoughts, the emotions, the behaviors, the consequences, and the alternatives.' +
-          "Once the user has reflected on the situation in it's entirety, ask them to think about imidiate actions they can take to improve a future situation. Try to focus on actions that are within their control." +
-          'If the user is feeling stuck, ask them to change their perspective if this had happened to someone else and they were asking for advice.' +
-          'Focus on one step at a time. Do not overwhelm the user with too many thoughts and topics. Only ask one question at a time or a follow up question if needed.' +
+          `[Persona: ${persona.name}] ${persona.systemPreamble} \n` +
           "Provide a concise title for the reflection based on the user's input once",
       },
       ...history,
@@ -45,6 +43,11 @@ class ReflectionSession {
     this.sessionInitialized = new Promise((resolve) => {
       (async () => {
         const reflection = await ReflectionIDB.getReflection(reflectionId);
+        // Ensure a persona is always set
+        if (!reflection.personaId) {
+          reflection.personaId = DEFAULT_PERSONA_ID;
+          await ReflectionIDB.setReflection(reflection.id, reflection);
+        }
         this.reflection = reflection;
         const initialPrompts = ReflectionSession.createInitialPrompts(reflection);
         this.session = await window.LanguageModel.create({
@@ -59,6 +62,27 @@ class ReflectionSession {
     if (this.session) {
       this.session.destroy();
     }
+  }
+
+  /**
+   * Update the persona and rebuild the underlying LM session
+   */
+  public async setPersona(personaId: PersonaId) {
+    if (!this.reflection) {
+      throw new Error('Reflection not initialized');
+    }
+    if (this.reflection.personaId === personaId) return;
+    this.reflection = { ...this.reflection, personaId };
+    await ReflectionIDB.setReflection(this.reflection.id, this.reflection);
+    // Recreate session with updated system prompt while preserving history
+    if (this.session) {
+      this.session.destroy();
+      this.session = null;
+    }
+    const initialPrompts = ReflectionSession.createInitialPrompts(this.reflection);
+    this.session = await window.LanguageModel.create({ initialPrompts });
+    this.promptState = 'idle';
+    this.notifySubscribers();
   }
 
   /**

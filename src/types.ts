@@ -9,6 +9,7 @@ export interface Reflection {
   entries: Entry[];
   createdAt: string;
   title?: string;
+  personaId?: PersonaId;
 }
 
 export type Reflections = Reflection[];
@@ -21,3 +22,10 @@ export type LMStatus =
   | 'downloadable'
   | 'downloading'
   | 'available';
+
+export type PersonaId =
+  | 'caring-therapist'
+  | 'socratic-coach'
+  | 'stoic-mentor'
+  | 'curious-friend'
+  | 'devils-advocate';

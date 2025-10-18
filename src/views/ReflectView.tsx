@@ -16,6 +16,7 @@ import {
   EditableInput,
 } from '@chakra-ui/react';
 import ReflectionSession from '../state/ReflectionSession';
+import { getPersona, listPersonas } from '../personas';
 
 type Props = {
   reflectionId: string | null;
@@ -92,9 +93,45 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
             </EditableRoot>
           </Heading>
         </Box>
-        <Button variant="plain" colorScheme="blue" onClick={onBack}>
-          Back
-        </Button>
+        <Flex align="center" gap={2}>
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <Button variant="outline" size="sm">
+                {getPersona(reflection?.personaId).avatar} {getPersona(reflection?.personaId).name}
+              </Button>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  {listPersonas().map((p) => (
+                    <Menu.Item
+                      key={p.id}
+                      value={p.id}
+                      onClick={() => reflectionSession?.setPersona(p.id)}
+                    >
+                      <Flex align="start" gap={2}>
+                        <Box fontSize="lg" lineHeight={1} mt={0.5}>
+                          {p.avatar}
+                        </Box>
+                        <Box>
+                          <Text fontSize="sm" fontWeight="medium">
+                            {p.name}
+                          </Text>
+                          <Text fontSize="xs" color="gray.500">
+                            {p.description}
+                          </Text>
+                        </Box>
+                      </Flex>
+                    </Menu.Item>
+                  ))}
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
+          <Button variant="plain" colorScheme="blue" onClick={onBack}>
+            Back
+          </Button>
+        </Flex>
       </Flex>
 
       <VStack gap={3} align="stretch">
