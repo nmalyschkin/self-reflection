@@ -106,6 +106,7 @@ class ReflectionSession {
       throw new Error('Cannot change persona after entries have been added');
     }
     this.reflection = { ...this.reflection, personaId };
+    this.notifySubscribers();
   }
 
   /**
