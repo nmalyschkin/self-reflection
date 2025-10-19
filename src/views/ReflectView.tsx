@@ -96,7 +96,16 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
         <Flex align="center" gap={2}>
           <Menu.Root>
             <Menu.Trigger asChild>
-              <Button variant="outline" size="sm">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={!reflectionSession?.canUpdatePersona}
+                title={
+                  !reflectionSession?.canUpdatePersona
+                    ? 'Persona is locked after reflection starts'
+                    : undefined
+                }
+              >
                 {getPersona(reflection?.personaId).avatar} {getPersona(reflection?.personaId).name}
               </Button>
             </Menu.Trigger>
@@ -107,7 +116,12 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
                     <Menu.Item
                       key={p.id}
                       value={p.id}
-                      onClick={() => reflectionSession?.setPersona(p.id)}
+                      disabled={!reflectionSession?.canUpdatePersona}
+                      onClick={() => {
+                        if (reflectionSession?.canUpdatePersona) {
+                          reflectionSession.setPersona(p.id);
+                        }
+                      }}
                     >
                       <Flex align="start" gap={2}>
                         <Box fontSize="lg" lineHeight={1} mt={0.5}>
@@ -186,8 +200,15 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
             <Portal>
               <Menu.Positioner>
                 <Menu.Content>
-                  <Menu.Item value="cross-entry-summarizer" onClick={() => {}}>
-                    Cross-entry summarizer
+                  <Menu.Item
+                    value="summary-of-all-entries"
+                    disabled={reflection?.entries.length === 0}
+                    onClick={() => {
+                      console.log('summarizing reflection', reflection);
+                      reflectionSession?.summarize();
+                    }}
+                  >
+                    Summary of all entries
                   </Menu.Item>
                 </Menu.Content>
               </Menu.Positioner>

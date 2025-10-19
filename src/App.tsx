@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Link, Text } from '@chakra-ui/react';
 import type { LMStatus } from './types';
 import StartView from './views/StartView';
 import ReflectView from './views/ReflectView';
@@ -31,7 +31,7 @@ function App() {
 
   const startModelDownload = useCallback(async () => {
     if (lmStatus === 'downloadable') {
-      await window.LanguageModel.create({
+      window.LanguageModel.create({
         ...modelOptions,
         monitor(m: EventTarget) {
           m.addEventListener('downloadprogress', (e: any & ProgressEvent) => {
@@ -39,14 +39,37 @@ function App() {
             setDownloadProgress(Math.round((e.loaded / e.total) * 100));
           });
         },
+      }).then(() => {
+        getLmStatus(modelOptions).then(setLmStatus);
       });
       getLmStatus(modelOptions).then(setLmStatus);
     }
-  }, [modelOptions]);
+  }, [modelOptions, lmStatus]);
 
   function openReflection(id: string) {
     setCurrentId(id);
     setView('reflect');
+  }
+
+  if (lmStatus === 'no-api') {
+    return (
+      <Box minH="100dvh" minW="100dvw" display="flex" alignItems="center" justifyContent="center">
+        <Box position="relative" p={4} w="100%" maxW="2xl" mx="auto">
+          <Text>This app is built with the experimental Chrome Prompt API</Text>
+          <Text>Please activate the Prompt API in Chrome Flag:</Text>
+          <Text fontSize="sm" color="gray.500">
+            chrome://flags/#prompt-api-for-gemini-nano-multimodal-input
+          </Text>
+          <Link
+            href="https://developer.chrome.com/docs/ai/built-in"
+            target="_blank"
+            color="blue.500"
+          >
+            Learn more
+          </Link>
+        </Box>
+      </Box>
+    );
   }
 
   return (

@@ -46,7 +46,7 @@ class ReflectionSession {
         // Ensure a persona is always set
         if (!reflection.personaId) {
           reflection.personaId = DEFAULT_PERSONA_ID;
-          await ReflectionIDB.setReflection(reflection.id, reflection);
+          // await ReflectionIDB.setReflection(reflection.id, reflection);
         }
         this.reflection = reflection;
         const initialPrompts = ReflectionSession.createInitialPrompts(reflection);
@@ -64,6 +64,36 @@ class ReflectionSession {
     }
   }
 
+  async summarize() {
+    if (!this.session) {
+      throw new Error('Session not initialized');
+    }
+    if (this.promptState === 'processing') {
+      throw new Error('Prompt is already processing');
+    }
+
+    const controller = new AbortController();
+    const summary = await this.session.prompt(
+      [
+        {
+          role: 'system',
+          content: `Summarize the self reflection based on the user's input and output the summary in markdown format.
+          Try to keep the user's voice and perspective in the summary.
+          Use the I perspective to write the summary.`,
+        },
+      ],
+      {
+        signal: controller.signal,
+      },
+    );
+
+    console.log('summary', summary);
+  }
+
+  get canUpdatePersona() {
+    return this.reflection?.entries.length === 0;
+  }
+
   /**
    * Update the persona and rebuild the underlying LM session
    */
@@ -71,18 +101,11 @@ class ReflectionSession {
     if (!this.reflection) {
       throw new Error('Reflection not initialized');
     }
-    if (this.reflection.personaId === personaId) return;
-    this.reflection = { ...this.reflection, personaId };
-    await ReflectionIDB.setReflection(this.reflection.id, this.reflection);
-    // Recreate session with updated system prompt while preserving history
-    if (this.session) {
-      this.session.destroy();
-      this.session = null;
+
+    if (!this.canUpdatePersona) {
+      throw new Error('Cannot change persona after entries have been added');
     }
-    const initialPrompts = ReflectionSession.createInitialPrompts(this.reflection);
-    this.session = await window.LanguageModel.create({ initialPrompts });
-    this.promptState = 'idle';
-    this.notifySubscribers();
+    this.reflection = { ...this.reflection, personaId };
   }
 
   /**

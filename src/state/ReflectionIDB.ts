@@ -36,4 +36,13 @@ class ReflectionIDB {
   }
 }
 
+window.ReflectionIDB = ReflectionIDB;
+
+declare global {
+  interface Window {
+    ReflectionIDB: typeof ReflectionIDB;
+  }
+}
+
+console.log('ReflectionIDB', ReflectionIDB);
 export default ReflectionIDB;
