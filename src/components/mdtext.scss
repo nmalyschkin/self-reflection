@@ -1,0 +1,256 @@
+/* Container and input panel styling adapted to our MD editor */
+/* Let Chakra control the container chrome; we focus on content */
+
+/* TipTap editor content area */
+.mdtext .tiptap {
+  outline: none;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, 'Apple Color Emoji',
+    'Segoe UI Emoji';
+  color: #0f172a; /* slate-900 */
+  line-height: 1.65;
+  font-size: 16px;
+}
+
+/* Headings */
+.mdtext .tiptap h1 { font-size: 1.875rem; line-height: 2.25rem; font-weight: 700; margin: 1.25rem 0 0.75rem; }
+.mdtext .tiptap h2 { font-size: 1.5rem; line-height: 2rem; font-weight: 700; margin: 1rem 0 0.5rem; }
+.mdtext .tiptap h3 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; margin: 0.875rem 0 0.5rem; }
+.mdtext .tiptap h4 { font-size: 1.125rem; line-height: 1.5rem; font-weight: 600; margin: 0.75rem 0 0.5rem; }
+.mdtext .tiptap h5 { font-size: 1rem; line-height: 1.5rem; font-weight: 600; margin: 0.75rem 0 0.5rem; }
+.mdtext .tiptap h6 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: #475569; margin: 0.5rem 0; }
+
+/* Paragraphs */
+.mdtext .tiptap p { margin: 0.5rem 0; }
+
+/* Lists */
+.mdtext .tiptap ul { padding-left: 1.4rem; margin: 0.5rem 0; list-style: disc; }
+.mdtext .tiptap ol { padding-left: 1.4rem; margin: 0.5rem 0; list-style: decimal; }
+.mdtext .tiptap li { margin: 0.25rem 0; }
+.mdtext .tiptap li p { margin: 0; }
+
+/* Blockquote */
+.mdtext .tiptap blockquote {
+  margin: 0.75rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid #e5e7eb;
+  color: #475569; /* slate-600 */
+  font-style: italic;
+}
+
+/* Code */
+.mdtext .tiptap code { background: #f1f5f9; border-radius: 4px; padding: 0.1rem 0.3rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.95em; }
+.mdtext .tiptap pre { background: #0b1020; color: #e2e8f0; border-radius: 8px; padding: 0.75rem 1rem; overflow: auto; }
+.mdtext .tiptap pre code { background: transparent; padding: 0; color: inherit; }
+
+/* Links */
+.mdtext .tiptap a { color: #2563eb; text-decoration: underline; text-underline-offset: 2px; }
+.mdtext .tiptap a:hover { color: #1d4ed8; }
+
+/* Horizontal rule */
+.mdtext .tiptap hr { border: none; border-top: 1px solid #e5e7eb; margin: 1rem 0; }
+
+/* Images */
+.mdtext .tiptap img { max-width: 100%; border-radius: 6px; display: block; margin: 0.5rem 0; }
+
+/* Task list (TipTap uses data-checked) */
+.mdtext .tiptap ul[data-type='taskList'] { list-style: none; padding-left: 0; }
+.mdtext .tiptap ul[data-type='taskList'] li { display: flex; align-items: flex-start; gap: 0.5rem; }
+.mdtext .tiptap ul[data-type='taskList'] li > label { margin-top: 0.15rem; }
+.mdtext .tiptap ul[data-type='taskList'] li > div { flex: 1 1 auto; }
+
+/* Placeholder */
+.mdtext .tiptap.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Keep demo selectors for reference or future split panes */
+.markdown-parser-demo {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .markdown-parser-demo .split {
+    display: flex;
+    flex: 1 1 auto;
+    gap: 1rem;
+    overflow: auto;
+    padding: 0 1.5rem 1rem;
+  }
+  
+  .markdown-parser-demo .input-panel,
+  .markdown-parser-demo .editor-panel {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .markdown-parser-demo .panel-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+  }
+  
+  .markdown-parser-demo .markdown-input {
+    flex: 1 1 auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 1rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+  }
+  
+  .markdown-parser-demo .markdown-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  .markdown-parser-demo .editor-container {
+    flex: 1 1 auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 1rem;
+    overflow: auto;
+  }
+  
+  .markdown-parser-demo .editor-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+  }
+  
+  .markdown-parser-demo .editor-toolbar + .editor-container {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+  }
+  
+  .markdown-parser-demo .error {
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+  }
+  
+  .markdown-parser-demo .json-preview {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+    max-height: 200px;
+    overflow: auto;
+  }
+  
+  .markdown-parser-demo .json-preview pre {
+    margin: 0;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 12px;
+    color: #374151;
+  }
+  
+  /* Basic table styles for the editor */
+  .tiptap table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+  }
+  
+  .tiptap table td,
+  .tiptap table th {
+    border: 1px solid #d1d5db;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  .tiptap table th {
+    background: #f9fafb;
+    font-weight: 600;
+  }
+  
+  /* Custom React Component styling */
+  .custom-react-node {
+    margin: 1rem 0;
+  
+    .custom-react-component {
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      padding: 16px;
+      background-color: #eff6ff;
+  
+      h4 {
+        margin: 0 0 8px 0;
+        color: #1e40af;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+  
+      p {
+        margin: 0;
+        color: #374151;
+      }
+    }
+  }
+  
+  /* YouTube video styling */
+  .tiptap iframe {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+  
+  /* Image styling */
+  .tiptap img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+  }
+  
+  /* Mention styling */
+  .tiptap .mention {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    text-decoration: none;
+  
+    &:hover {
+      background: #c7d2fe;
+    }
+  }
+  
+  /* Mathematics styling */
+  .tiptap [data-type='block-math'] {
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background: #f8fafc;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .tiptap [data-type='inline-math'] {
+    background: #f1f5f9;
+    padding: 0.125rem 0.25rem;
+    border-radius: 3px;
+    font-family: 'Times New Roman', serif;
+  }

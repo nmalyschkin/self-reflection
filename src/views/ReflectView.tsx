@@ -9,12 +9,12 @@ import {
   Heading,
   Spinner,
   Text,
-  Textarea,
   VStack,
   EditableRoot,
   EditablePreview,
   EditableInput,
 } from '@chakra-ui/react';
+import MDText from '../components/MDText';
 import ReflectionSession from '../state/ReflectionSession';
 import { getPersona, listPersonas } from '../personas';
 
@@ -174,16 +174,11 @@ export default function ReflectView({ reflectionId, lmStatus, onBack }: Props) {
         ))}
       </VStack>
 
-      <Textarea
+      <MDText
         placeholder="Write a reflection..."
         value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && e.metaKey) {
-            e.preventDefault();
-            submitReflectionStatement();
-          }
-        }}
+        onChange={(md) => setInput(md)}
+        onSubmit={submitReflectionStatement}
         minH="120px"
       />
 
