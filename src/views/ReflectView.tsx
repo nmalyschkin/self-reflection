@@ -44,11 +44,19 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
       setReflection(reflectionSession.reflection);
       setReflectionSession(reflectionSession);
       setPromptState('idle');
+      setInput(reflectionSession.reflection?.unsubmittedText || '');
     });
     return () => {
       reflectionSession.destroy();
     };
   }, [reflectionId]);
+
+  const saveUnsubmittedText = useCallback(() => {
+    if (reflectionSession && input) {
+      reflectionSession.saveUnsubmittedText(input);
+    }
+    onBack();
+  }, [reflectionSession, input]);
 
   const submitReflectionStatement = useCallback(() => {
     if (!reflectionSession) return;
@@ -142,7 +150,7 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
               </Menu.Positioner>
             </Portal>
           </Menu.Root>
-          <Button variant="plain" colorScheme="blue" onClick={onBack}>
+          <Button variant="plain" colorScheme="blue" onClick={saveUnsubmittedText}>
             Back
           </Button>
         </Flex>
@@ -214,7 +222,7 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
               </Menu.Positioner>
             </Portal>
           </Menu.Root>
-          <Button variant="outline" onClick={onSave}>
+          <Button variant="outline" onClick={saveUnsubmittedText}>
             Save
           </Button>
         </Flex>

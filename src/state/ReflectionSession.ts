@@ -61,6 +61,7 @@ class ReflectionSession {
   destroy() {
     if (this.session) {
       this.session.destroy();
+      this.subscribers = [];
     }
   }
 
@@ -88,6 +89,13 @@ class ReflectionSession {
     );
 
     console.log('summary', summary);
+  }
+
+  saveUnsubmittedText(input: string) {
+    if (this.reflection) {
+      this.reflection.unsubmittedText = input;
+      ReflectionIDB.setReflection(this.reflection.id, this.reflection);
+    }
   }
 
   get canUpdatePersona() {

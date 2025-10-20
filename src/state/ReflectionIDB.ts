@@ -1,5 +1,6 @@
 import { openDB } from 'idb';
 import type { Reflection } from '../types';
+import { DEFAULT_PERSONA_ID } from '../personas';
 
 const db = await openDB('reflections', 1, {
   upgrade(db) {
@@ -12,10 +13,11 @@ class ReflectionIDB {
     const reflection = reflectionId ? await db.get('reflections', reflectionId) : null;
     if (!reflection) {
       // create a new reflection
-      const newReflection = {
+      const newReflection: Reflection = {
         id: reflectionId || `reflection-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         entries: [],
         createdAt: new Date().toISOString(),
+        personaId: DEFAULT_PERSONA_ID,
       };
       //   this.setReflection(newReflection.id, newReflection);
       return newReflection;

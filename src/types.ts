@@ -10,6 +10,7 @@ export interface Reflection {
   createdAt: string;
   title?: string;
   personaId?: PersonaId;
+  unsubmittedText?: string;
 }
 
 export type Reflections = Reflection[];
