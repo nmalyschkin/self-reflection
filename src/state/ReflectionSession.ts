@@ -123,7 +123,7 @@ class ReflectionSession {
    * @returns A function to abort the prompt
    */
   userSubmit(input: string): () => void {
-    if (!this.session) {
+    if (!this.session || !this.reflection) {
       throw new Error('Session not initialized');
     }
     if (this.promptState === 'processing') {
@@ -140,6 +140,7 @@ class ReflectionSession {
       ],
       'processing',
     );
+    this.reflection.unsubmittedText = '';
 
     const controller = new AbortController();
     this.session
@@ -170,9 +171,10 @@ class ReflectionSession {
       if (!this.reflection) {
         throw new Error('Reflection not initialized');
       }
-      controller.abort();
+      controller.abort('User aborted');
       // remove last user entry
       this.reflection.entries = this.reflection.entries.slice(0, -1);
+      this.reflection.unsubmittedText = input;
       ReflectionIDB.setReflection(this.reflection.id, this.reflection);
       this.notifySubscribers();
     };

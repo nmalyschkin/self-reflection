@@ -46,5 +46,4 @@ declare global {
   }
 }
 
-console.log('ReflectionIDB', ReflectionIDB);
 export default ReflectionIDB;

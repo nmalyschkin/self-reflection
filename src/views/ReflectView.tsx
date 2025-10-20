@@ -25,7 +25,7 @@ type Props = {
   onBack: () => void;
 };
 
-export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: Props) {
+export default function ReflectView({ reflectionId, lmStatus, onBack }: Props) {
   const [reflection, setReflection] = useState<Reflection | null>(null);
   const [reflectionSession, setReflectionSession] = useState<ReflectionSession | null>(null);
   const [input, setInput] = useState('');
@@ -52,7 +52,7 @@ export default function ReflectView({ reflectionId, lmStatus, onSave, onBack }: 
   }, [reflectionId]);
 
   const saveUnsubmittedText = useCallback(() => {
-    if (reflectionSession && input) {
+    if (reflectionSession) {
       reflectionSession.saveUnsubmittedText(input);
     }
     onBack();
