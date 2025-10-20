@@ -3,6 +3,7 @@ import { Box, Link, Text } from '@chakra-ui/react';
 import type { LMStatus } from './types';
 import StartView from './views/StartView';
 import ReflectView from './views/ReflectView';
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 
 function hasLanguageModel(): boolean {
   return typeof window !== 'undefined' && 'LanguageModel' in (window as any);
@@ -17,8 +18,7 @@ async function getLmStatus(modelOptions: any): Promise<LMStatus> {
 }
 
 function App() {
-  const [view, setView] = useState<'start' | 'reflect'>('start');
-  const [currentId, setCurrentId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const [lmStatus, setLmStatus] = useState<LMStatus>('unknown');
   const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
@@ -47,8 +47,8 @@ function App() {
   }, [modelOptions, lmStatus]);
 
   function openReflection(id: string) {
-    setCurrentId(id);
-    setView('reflect');
+    const targetId = id && id.length > 0 ? id : crypto.randomUUID().slice(0, 8);
+    navigate(`/reflect/${encodeURIComponent(targetId)}`);
   }
 
   if (lmStatus === 'no-api') {
@@ -101,24 +101,37 @@ function App() {
           </Box>
         )}
 
-        {view === 'start' ? (
-          <StartView
-            lmStatus={lmStatus}
-            onOpen={openReflection}
-            onStartDownload={startModelDownload}
-            downloadButton
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <StartView
+                lmStatus={lmStatus}
+                onOpen={openReflection}
+                onStartDownload={startModelDownload}
+                downloadButton
+              />
+            }
           />
-        ) : (
-          <ReflectView
-            reflectionId={currentId}
-            lmStatus={lmStatus}
-            onSave={() => setView('start')}
-            onBack={() => setView('start')}
-          />
-        )}
+          <Route path="/reflect/:id" element={<ReflectRoute lmStatus={lmStatus} />} />
+        </Routes>
       </Box>
     </Box>
   );
 }
 
 export default App;
+
+function ReflectRoute({ lmStatus }: { lmStatus: LMStatus }) {
+  const navigate = useNavigate();
+  const params = useParams();
+  const reflectionId = params.id ? decodeURIComponent(params.id) : null;
+  return (
+    <ReflectView
+      reflectionId={reflectionId}
+      lmStatus={lmStatus}
+      onSave={() => navigate('/')}
+      onBack={() => navigate('/')}
+    />
+  );
+}

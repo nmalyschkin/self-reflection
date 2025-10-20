@@ -44,6 +44,7 @@ export default function ReflectView({ reflectionId, lmStatus, onBack }: Props) {
     });
     reflectionSession.sessionInitialized.then(() => {
       setReflection(reflectionSession.reflection);
+      // window.debug = reflectionSession;
       setReflectionSession(reflectionSession);
       setPromptState('idle');
       setInput(reflectionSession.reflection?.unsubmittedText || '');

@@ -14,7 +14,7 @@ class ReflectionIDB {
     if (!reflection) {
       // create a new reflection
       const newReflection: Reflection = {
-        id: reflectionId || `reflection-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        id: reflectionId || crypto.randomUUID().slice(0, 8),
         entries: [],
         createdAt: new Date().toISOString(),
         personaId: DEFAULT_PERSONA_ID,
