@@ -69,6 +69,16 @@ export default function MDText({ value, onChange, onSubmit, placeholder, minH }:
         boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)',
         borderColor: 'blue.500',
       }}
+      onMouseDown={(e) => {
+        // Clicks on the padded container should focus the editor as well
+        if (!editor) return;
+        const target = e.target as HTMLElement;
+        const isInsidePM = !!target.closest('.ProseMirror');
+        if (!isInsidePM) {
+          e.preventDefault();
+          editor.commands.focus();
+        }
+      }}
       onKeyDown={(e) => {
         if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
           e.preventDefault();
@@ -83,6 +93,7 @@ export default function MDText({ value, onChange, onSubmit, placeholder, minH }:
           outline: 'none',
           minHeight: typeof minH === 'number' ? `${minH}px` : (minH as any),
           fontSize: '16px',
+          width: '100%',
         }}
       />
     </Box>

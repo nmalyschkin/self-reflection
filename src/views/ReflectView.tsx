@@ -15,6 +15,7 @@ import {
   EditableInput,
 } from '@chakra-ui/react';
 import MDText from '../components/MDText';
+import MDRender from '../components/MDRender';
 import ReflectionSession from '../state/ReflectionSession';
 import { getPersona, listPersonas } from '../personas';
 
@@ -166,10 +167,9 @@ export default function ReflectView({ reflectionId, lmStatus, onBack }: Props) {
             key={e.createdAt + i}
             rounded="md"
             p={3}
-            fontSize="sm"
             bg={e.type === 'user' ? 'blue.50' : 'green.50'}
           >
-            {e.text}
+            <MDRender markdown={e.text} />
           </Box>
         ))}
       </VStack>

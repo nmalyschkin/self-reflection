@@ -2,7 +2,8 @@
 /* Let Chakra control the container chrome; we focus on content */
 
 /* TipTap editor content area */
-.mdtext .tiptap {
+.mdtext .tiptap,
+.mdview .tiptap {
   outline: none;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
     Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, 'Apple Color Emoji',
@@ -13,24 +14,29 @@
 }
 
 /* Headings */
-.mdtext .tiptap h1 { font-size: 1.875rem; line-height: 2.25rem; font-weight: 700; margin: 1.25rem 0 0.75rem; }
-.mdtext .tiptap h2 { font-size: 1.5rem; line-height: 2rem; font-weight: 700; margin: 1rem 0 0.5rem; }
-.mdtext .tiptap h3 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; margin: 0.875rem 0 0.5rem; }
-.mdtext .tiptap h4 { font-size: 1.125rem; line-height: 1.5rem; font-weight: 600; margin: 0.75rem 0 0.5rem; }
-.mdtext .tiptap h5 { font-size: 1rem; line-height: 1.5rem; font-weight: 600; margin: 0.75rem 0 0.5rem; }
-.mdtext .tiptap h6 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: #475569; margin: 0.5rem 0; }
+.mdtext .tiptap h1, .mdview .tiptap h1 { font-size: 1.875rem; line-height: 2.25rem; font-weight: 700; margin: 1.25rem 0 0.75rem; }
+.mdtext .tiptap h2, .mdview .tiptap h2 { font-size: 1.5rem; line-height: 2rem; font-weight: 700; margin: 1rem 0 0.5rem; }
+.mdtext .tiptap h3, .mdview .tiptap h3 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; margin: 0.875rem 0 0.5rem; }
+.mdtext .tiptap h4, .mdview .tiptap h4 { font-size: 1.125rem; line-height: 1.5rem; font-weight: 600; margin: 0.75rem 0 0.5rem; }
+.mdtext .tiptap h5, .mdview .tiptap h5 { font-size: 1rem; line-height: 1.5rem; font-weight: 600; margin: 0.75rem 0 0.5rem; }
+.mdtext .tiptap h6, .mdview .tiptap h6 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: #475569; margin: 0.5rem 0; }
 
 /* Paragraphs */
-.mdtext .tiptap p { margin: 0.5rem 0; }
+.mdtext .tiptap p, .mdview .tiptap p { margin: 0.5rem 0; }
+
+/* Emphasis */
+.mdtext .tiptap em, .mdview .tiptap em,
+.mdtext .tiptap i, .mdview .tiptap i { font-style: italic; }
 
 /* Lists */
-.mdtext .tiptap ul { padding-left: 1.4rem; margin: 0.5rem 0; list-style: disc; }
-.mdtext .tiptap ol { padding-left: 1.4rem; margin: 0.5rem 0; list-style: decimal; }
-.mdtext .tiptap li { margin: 0.25rem 0; }
-.mdtext .tiptap li p { margin: 0; }
+.mdtext .tiptap ul, .mdview .tiptap ul { padding-left: 1.4rem; margin: 0.5rem 0; list-style: disc; }
+.mdtext .tiptap ol, .mdview .tiptap ol { padding-left: 1.4rem; margin: 0.5rem 0; list-style: decimal; }
+.mdtext .tiptap li, .mdview .tiptap li { margin: 0.25rem 0; }
+.mdtext .tiptap li p, .mdview .tiptap li p { margin: 0; }
 
 /* Blockquote */
-.mdtext .tiptap blockquote {
+.mdtext .tiptap blockquote,
+.mdview .tiptap blockquote {
   margin: 0.75rem 0;
   padding-left: 1rem;
   border-left: 3px solid #e5e7eb;
@@ -39,25 +45,25 @@
 }
 
 /* Code */
-.mdtext .tiptap code { background: #f1f5f9; border-radius: 4px; padding: 0.1rem 0.3rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.95em; }
-.mdtext .tiptap pre { background: #0b1020; color: #e2e8f0; border-radius: 8px; padding: 0.75rem 1rem; overflow: auto; }
-.mdtext .tiptap pre code { background: transparent; padding: 0; color: inherit; }
+.mdtext .tiptap code, .mdview .tiptap code { background: #f1f5f9; border-radius: 4px; padding: 0.1rem 0.3rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.95em; }
+.mdtext .tiptap pre, .mdview .tiptap pre { background: #0b1020; color: #e2e8f0; border-radius: 8px; padding: 0.75rem 1rem; overflow: auto; }
+.mdtext .tiptap pre code, .mdview .tiptap pre code { background: transparent; padding: 0; color: inherit; }
 
 /* Links */
-.mdtext .tiptap a { color: #2563eb; text-decoration: underline; text-underline-offset: 2px; }
-.mdtext .tiptap a:hover { color: #1d4ed8; }
+.mdtext .tiptap a, .mdview .tiptap a { color: #2563eb; text-decoration: underline; text-underline-offset: 2px; }
+.mdtext .tiptap a:hover, .mdview .tiptap a:hover { color: #1d4ed8; }
 
 /* Horizontal rule */
-.mdtext .tiptap hr { border: none; border-top: 1px solid #e5e7eb; margin: 1rem 0; }
+.mdtext .tiptap hr, .mdview .tiptap hr { border: none; border-top: 1px solid #e5e7eb; margin: 1rem 0; }
 
 /* Images */
-.mdtext .tiptap img { max-width: 100%; border-radius: 6px; display: block; margin: 0.5rem 0; }
+.mdtext .tiptap img, .mdview .tiptap img { max-width: 100%; border-radius: 6px; display: block; margin: 0.5rem 0; }
 
 /* Task list (TipTap uses data-checked) */
-.mdtext .tiptap ul[data-type='taskList'] { list-style: none; padding-left: 0; }
-.mdtext .tiptap ul[data-type='taskList'] li { display: flex; align-items: flex-start; gap: 0.5rem; }
-.mdtext .tiptap ul[data-type='taskList'] li > label { margin-top: 0.15rem; }
-.mdtext .tiptap ul[data-type='taskList'] li > div { flex: 1 1 auto; }
+.mdtext .tiptap ul[data-type='taskList'], .mdview .tiptap ul[data-type='taskList'] { list-style: none; padding-left: 0; }
+.mdtext .tiptap ul[data-type='taskList'] li, .mdview .tiptap ul[data-type='taskList'] li { display: flex; align-items: flex-start; gap: 0.5rem; }
+.mdtext .tiptap ul[data-type='taskList'] li > label, .mdview .tiptap ul[data-type='taskList'] li > label { margin-top: 0.15rem; }
+.mdtext .tiptap ul[data-type='taskList'] li > div, .mdview .tiptap ul[data-type='taskList'] li > div { flex: 1 1 auto; }
 
 /* Placeholder */
 .mdtext .tiptap.is-editor-empty:first-child::before {

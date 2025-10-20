@@ -9,6 +9,7 @@ class ReflectionSession {
   private session: LanguageModelSession | null = null;
   private responseSchema: any = {
     title: 'string',
+    acknowledgement: 'string',
     question: 'string',
   };
   reflection: Reflection | null = null;
@@ -33,7 +34,7 @@ class ReflectionSession {
         role: 'system',
         content:
           `[Persona: ${persona.name}] ${persona.systemPreamble} \n` +
-          "Provide a concise title for the reflection based on the user's input once",
+          "Provide a concise title for the reflection based on the user's input once. ",
       },
       ...history,
     ];
@@ -149,11 +150,15 @@ class ReflectionSession {
         signal: controller.signal,
       })
       .then((response) => {
-        const { question, title } = JSON.parse(response);
+        const { question, title, acknowledgement } = JSON.parse(response);
+
+        const text = `${acknowledgement}
+
+*${question}*`;
         this.addEntries(
           [
             {
-              text: question,
+              text,
               createdAt: new Date().toISOString(),
               type: 'ai-question',
             },
