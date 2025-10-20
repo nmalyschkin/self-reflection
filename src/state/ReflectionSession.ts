@@ -150,11 +150,19 @@ class ReflectionSession {
         signal: controller.signal,
       })
       .then((response) => {
-        const { question, title, acknowledgement } = JSON.parse(response);
+        let parsed = JSON.parse(response);
+        if (Array.isArray(parsed)) {
+          parsed = parsed[0];
+        }
+        const { question, title, acknowledgement } = parsed;
+
+        if (!question || !acknowledgement) {
+          throw new Error('Invalid response');
+        }
 
         const text = `${acknowledgement}
 
-*${question}*`;
+*${question.trim()}*`;
         this.addEntries(
           [
             {

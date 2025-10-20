@@ -54,6 +54,7 @@ export const PERSONAS: Record<PersonaId, Persona> = {
     systemPreamble:
       "Play the role of a devil's advocate. Be skeptical and ask difficult questions to the user, challenge their beliefs and assumptions.",
   },
+  // TODO: empathy guide -> you tell them a situation and they help you understand and empathize with the other person
 };
 
 export const DEFAULT_PERSONA_ID: PersonaId = 'caring-therapist';

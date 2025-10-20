@@ -85,13 +85,18 @@ export default function ReflectView({ reflectionId, lmStatus, onBack }: Props) {
 
   const submitReflectionStatement = useCallback(() => {
     if (!reflectionSession) return;
-    const abort = reflectionSession.userSubmit(input);
-    setInput('');
-    setAbort(() => () => {
-      abort();
-      setAbort(() => () => {});
-      setInput(input);
-    });
+    try {
+      const abort = reflectionSession.userSubmit(input);
+      setInput('');
+      setAbort(() => () => {
+        abort();
+        setAbort(() => () => {});
+        setInput(input);
+      });
+    } catch (error) {
+      // console.error('Error submitting reflection statement', error);
+      // TODO: show error to the user
+    }
   }, [reflectionSession, input]);
 
   if (promptState === 'initializing') {
