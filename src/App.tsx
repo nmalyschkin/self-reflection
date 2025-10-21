@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { Box, Link, Text } from '@chakra-ui/react';
+import { Box, Link, Text, IconButton, useDisclosure } from '@chakra-ui/react';
 import type { LMStatus } from './types';
 import StartView from './views/StartView';
+import About from './views/About';
 import ReflectView from './views/ReflectView';
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import Sidebar from './components/sidebar';
 
 function hasLanguageModel(): boolean {
   return typeof window !== 'undefined' && 'LanguageModel' in (window as any);
@@ -23,6 +25,7 @@ function App() {
   const [lmStatus, setLmStatus] = useState<LMStatus>('unknown');
   const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
   const modelOptions = useMemo(() => ({}), []); // Keep options consistent between availability and prompt
+  const { open: isSidebarOpen, onOpen: openSidebar, onClose: closeSidebar } = useDisclosure();
 
   useEffect(() => {
     getLmStatus(modelOptions).then(setLmStatus);
@@ -74,6 +77,19 @@ function App() {
 
   return (
     <Box minH="100dvh" minW="100dvw" display="flex" alignItems="center" justifyContent="center">
+      {/* Sidebar toggle button */}
+      <IconButton
+        aria-label="Open menu"
+        position="fixed"
+        top={2}
+        left={2}
+        zIndex={1000}
+        variant="ghost"
+        onClick={openSidebar}
+      >
+        ☰
+      </IconButton>
+
       <Box position="relative" p={4} w="100%" maxW="2xl" mx="auto">
         {(lmStatus === 'downloadable' || lmStatus === 'downloading') && (
           <Box
@@ -114,8 +130,17 @@ function App() {
             }
           />
           <Route path="/reflect/:id" element={<ReflectRoute lmStatus={lmStatus} />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </Box>
+
+      <Sidebar
+        open={isSidebarOpen}
+        onClose={closeSidebar}
+        onHome={() => navigate('/')}
+        onNewReflection={() => openReflection('')}
+        onAbout={() => navigate('/about')}
+      />
     </Box>
   );
 }
