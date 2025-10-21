@@ -69,7 +69,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               Feedback
             </Link>
             <Link
-              color="gray.600"
+              color="gray.500"
               onClick={() => {
                 onClose();
                 navigate('/about');

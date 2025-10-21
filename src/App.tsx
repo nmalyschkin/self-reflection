@@ -101,8 +101,8 @@ function App() {
               <StartView lmStatus={lmStatus} onStartDownload={startModelDownload} downloadButton />
             }
           />
-          <Route path="/reflect" element={<ReflectRoute lmStatus={lmStatus} />} />
-          <Route path="/reflect/:id" element={<ReflectRoute lmStatus={lmStatus} />} />
+          <Route path="/reflect" element={<ReflectRoute />} />
+          <Route path="/reflect/:id" element={<ReflectRoute />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </Box>
@@ -114,7 +114,7 @@ function App() {
 
 export default App;
 
-function ReflectRoute({ lmStatus }: { lmStatus: LMStatus }) {
+function ReflectRoute() {
   const navigate = useNavigate();
   const params = useParams();
   const reflectionId = params.id ? decodeURIComponent(params.id) : null;
@@ -126,12 +126,5 @@ function ReflectRoute({ lmStatus }: { lmStatus: LMStatus }) {
     }
   }, [params.id, navigate]);
   if (!reflectionId) return null;
-  return (
-    <ReflectView
-      reflectionId={reflectionId}
-      lmStatus={lmStatus}
-      onSave={() => navigate('/')}
-      onBack={() => navigate('/')}
-    />
-  );
+  return <ReflectView reflectionId={reflectionId} />;
 }
