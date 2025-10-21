@@ -5,12 +5,9 @@ import { useNavigate } from 'react-router-dom';
 type SidebarProps = {
   open: boolean;
   onClose: () => void;
-  onNewReflection: () => void;
-  onHome: () => void;
-  onAbout: () => void;
 };
 
-export default function Sidebar({ open, onClose, onNewReflection, onHome, onAbout }: SidebarProps) {
+export default function Sidebar({ open, onClose }: SidebarProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,13 +43,13 @@ export default function Sidebar({ open, onClose, onNewReflection, onHome, onAbou
         p={4}
       >
         <VStack align="stretch" gap={3} h="full">
-          <Heading size="md">self reflection</Heading>
+          <Heading size="md">Self Reflection</Heading>
           <Box role="separator" h="1px" bg="gray.200" />
           <Button
             variant="ghost"
             onClick={() => {
               onClose();
-              onHome();
+              navigate('/');
             }}
           >
             Home
@@ -71,9 +68,7 @@ export default function Sidebar({ open, onClose, onNewReflection, onHome, onAbou
             <Link href="https://forms.gle/b5BS5VPmf35L71Wx7" target="_blank" color="gray.500">
               Feedback
             </Link>
-            <Button
-              variant="ghost"
-              justifyContent="flex-start"
+            <Link
               color="gray.600"
               onClick={() => {
                 onClose();
@@ -81,7 +76,7 @@ export default function Sidebar({ open, onClose, onNewReflection, onHome, onAbou
               }}
             >
               About this app
-            </Button>
+            </Link>
           </VStack>
         </VStack>
       </Box>

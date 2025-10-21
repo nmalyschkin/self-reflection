@@ -72,6 +72,18 @@ export default function ReflectView({ reflectionId, lmStatus, onBack }: Props) {
     setShowMdHint(false);
   }, []);
 
+  // useEffect(() => {
+  //   return () => {
+  //     if (
+  //       reflectionSession &&
+  //       reflectionSession.reflection &&
+  //       (input || reflectionSession.reflection.entries.length > 0)
+  //     ) {
+  //       reflectionSession.saveUnsubmittedText(input);
+  //     }
+  //   };
+  // }, []);
+
   const saveUnsubmittedText = useCallback(() => {
     if (
       reflectionSession &&

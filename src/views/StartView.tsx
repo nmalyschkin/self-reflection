@@ -11,10 +11,10 @@ import {
   Dialog,
 } from '@chakra-ui/react';
 import ReflectionIDB from '../state/ReflectionIDB';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   lmStatus: LMStatus;
-  onOpen: (id: string) => void;
   onStartDownload?: () => void;
   downloadButton?: boolean;
 };
@@ -24,7 +24,7 @@ function formatDate(iso: string): string {
   return d.toLocaleString();
 }
 
-export default function StartView({ lmStatus, onOpen, onStartDownload, downloadButton }: Props) {
+export default function StartView({ lmStatus, onStartDownload, downloadButton }: Props) {
   const [reflections, setReflections] = useState<Reflection[]>([]);
   const [toDeleteId, setToDeleteId] = useState<string | null>(null);
   const {
@@ -41,6 +41,12 @@ export default function StartView({ lmStatus, onOpen, onStartDownload, downloadB
     })();
   }, []);
 
+  const navigate = useNavigate();
+  function openReflection(id: string) {
+    const targetId = id && id.length > 0 ? id : crypto.randomUUID().slice(0, 8);
+    navigate(`/reflect/${encodeURIComponent(targetId)}`);
+  }
+
   async function confirmDelete() {
     if (!toDeleteId) return;
     await ReflectionIDB.deleteReflection(toDeleteId);
@@ -51,7 +57,7 @@ export default function StartView({ lmStatus, onOpen, onStartDownload, downloadB
   return (
     <VStack align="stretch" gap={4}>
       <Heading size="lg">Self Reflection</Heading>
-      <Button colorScheme="blue" onClick={() => onOpen('')}>
+      <Button colorScheme="blue" onClick={() => openReflection('')}>
         Start reflecting
       </Button>
       {downloadButton && lmStatus === 'downloadable' && (
@@ -85,7 +91,7 @@ export default function StartView({ lmStatus, onOpen, onStartDownload, downloadB
                   <Button
                     variant="ghost"
                     justifyContent="flex-start"
-                    onClick={() => onOpen(r.id)}
+                    onClick={() => openReflection(r.id)}
                     flex="1"
                     minW={0}
                   >
