@@ -10,6 +10,13 @@ export default function About() {
           or store any data and all your AI interactions are run locally in your browser.
         </Text>
       </VStack>
+      <VStack align="start" gap={3}>
+        <Heading size="lg">Mobile compatibility</Heading>
+        <Text>
+          Since there is no mobile support for browser AI APIs, this app is not yet fully compatible
+          with mobile devices.
+        </Text>
+      </VStack>
     </Box>
   );
 }

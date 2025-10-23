@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  IconButton,
   Flex,
   Heading,
   EditableRoot,
@@ -22,6 +22,17 @@ export default function ReflectionHeaderBar({
 }) {
   return (
     <Flex align="center" justify="space-between">
+      <IconButton
+        variant="plain"
+        colorScheme="blue"
+        onClick={goBack}
+        aria-label="Back"
+        borderRadius="full"
+      >
+        <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">
+          <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        </svg>
+      </IconButton>
       <Box flex="1" minW={0}>
         <Heading>
           <EditableRoot
@@ -46,9 +57,6 @@ export default function ReflectionHeaderBar({
           personaId={reflection?.personaId}
           setPersonaId={(personaId) => reflectionSession?.setPersona(personaId)}
         />
-        <Button variant="plain" colorScheme="blue" onClick={goBack}>
-          Back
-        </Button>
       </Flex>
     </Flex>
   );

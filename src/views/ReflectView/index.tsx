@@ -1,12 +1,13 @@
 import type { Reflection } from '../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Button, Menu, Portal, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
 import MDText from '../../components/MDText';
 import MDRender from '../../components/MDRender';
 import ReflectionSession from '../../state/ReflectionSession';
 import useHint from './useHint';
 import ReflectionHeaderBar from './reflectionHeaderBar';
 import useNavigateTo from '../../hooks/useNavigateTo';
+import ReflectionActionBar from './ReflectionActionBar';
 
 type Props = {
   reflectionId: string | null;
@@ -68,6 +69,7 @@ function ReflectView({
   const [abort, setAbort] = useState<() => void>(() => {});
   const { showMdHint, dismissMdHint } = useHint();
   const inputRef = useRef<string>(reflectionSession.reflection?.unsubmittedText || '');
+  const skippedSaveOnUnmountRef = useRef<boolean>(false);
   const [isInputEmpty, setIsInputEmpty] = useState<boolean>(
     !(inputRef.current && inputRef.current.trim().length > 0),
   );
@@ -77,6 +79,9 @@ function ReflectView({
   // Save unsubmitted text when the component unmounts
   useEffect(() => {
     return () => {
+      if (skippedSaveOnUnmountRef.current) {
+        return;
+      }
       const input = inputRef.current;
       if (
         reflectionSession &&
@@ -166,38 +171,17 @@ function ReflectView({
           <Button onClick={abort}>Abort</Button>
         </Flex>
       ) : (
-        <Flex gap={2}>
+        <Flex align="center" justify="space-between">
           <Button colorScheme="blue" onClick={submitReflectionStatement} disabled={isInputEmpty}>
             Deeper reflection (⌘+↵)
           </Button>
-          <Menu.Root>
-            <Menu.Trigger asChild>
-              <Button variant="outline" size="sm">
-                Tools
-              </Button>
-            </Menu.Trigger>
-            <Portal>
-              <Menu.Positioner>
-                <Menu.Content>
-                  <Menu.Item
-                    value="summary-of-all-entries"
-                    disabled={reflection?.entries.length === 0}
-                    onClick={() => {
-                      console.log('summarizing reflection', reflection);
-                      reflectionSession?.summarize();
-                    }}
-                  >
-                    Summary of all entries
-                  </Menu.Item>
-                </Menu.Content>
-              </Menu.Positioner>
-            </Portal>
-          </Menu.Root>
-          <Button variant="outline" onClick={goBack}>
-            Save
-          </Button>
         </Flex>
       )}
+      <ReflectionActionBar
+        onSave={goBack}
+        reflection={reflection}
+        reflectionSession={reflectionSession}
+      />
     </VStack>
   );
 }
