@@ -1,13 +1,13 @@
 import type { Reflection } from '../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Button, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Button, Flex, Spinner, Text, VStack, Tabs } from '@chakra-ui/react';
 import MDText from '../../components/MDText';
-import MDRender from '../../components/MDRender';
 import ReflectionSession from '../../state/ReflectionSession';
-import useHint from './useHint';
 import ReflectionHeaderBar from './reflectionHeaderBar';
 import useNavigateTo from '../../hooks/useNavigateTo';
 import ReflectionActionBar from './ReflectionActionBar';
+import MDHint from './MDHint';
+import ReflectionChatEntries from './ReflectionChatEntries';
 
 type Props = {
   reflectionId: string | null;
@@ -67,12 +67,14 @@ function ReflectView({
   promptState: 'idle' | 'processing';
 }) {
   const [abort, setAbort] = useState<() => void>(() => {});
-  const { showMdHint, dismissMdHint } = useHint();
   const inputRef = useRef<string>(reflectionSession.reflection?.unsubmittedText || '');
   const skippedSaveOnUnmountRef = useRef<boolean>(false);
   const [isInputEmpty, setIsInputEmpty] = useState<boolean>(
     !(inputRef.current && inputRef.current.trim().length > 0),
   );
+
+  const displayTabs = reflection.summary || reflectionSession.summarizing;
+  const [activeTab, setActiveTab] = useState<'chat' | 'summary'>('summary');
 
   const goBack = useNavigateTo('/');
 
@@ -91,67 +93,34 @@ function ReflectView({
         reflectionSession.saveUnsubmittedText(input);
       }
     };
-  }, [inputRef]);
+  }, []);
 
-  const submitReflectionStatement = useCallback(() => {
-    const input = inputRef.current;
-    try {
-      const abort = reflectionSession.userSubmit(input);
-      inputRef.current = '';
-      setIsInputEmpty(true);
-      setAbort(() => () => {
-        abort();
-        setAbort(() => () => {});
-        inputRef.current = input;
-        setIsInputEmpty(input.trim().length === 0);
-      });
-    } catch (error) {
-      // console.error('Error submitting reflection statement', error);
-      // TODO: show error to the user
-    }
-  }, [inputRef]);
+  const submitReflectionStatement = useCallback(
+    () => () => {
+      const input = inputRef.current;
+      try {
+        const abort = reflectionSession.userSubmit(input);
+        inputRef.current = '';
+        setIsInputEmpty(true);
+        setAbort(() => () => {
+          abort();
+          setAbort(() => () => {});
+          inputRef.current = input;
+          setIsInputEmpty(input.trim().length === 0);
+        });
+      } catch (error) {
+        // console.error('Error submitting reflection statement', error);
+        // TODO: show error to the user
+      }
+    },
+    [inputRef],
+  );
 
-  return (
+  const chat = (
     <VStack gap={4} align="stretch">
-      <ReflectionHeaderBar
-        reflectionSession={reflectionSession}
-        reflection={reflection}
-        goBack={goBack}
-      />
-
-      <VStack gap={3} align="stretch">
-        {reflection.entries.map((e, i) => (
-          <Box
-            key={e.createdAt + i}
-            rounded="md"
-            p={3}
-            bg={e.type === 'user' ? 'blue.50' : 'green.50'}
-          >
-            <MDRender markdown={e.text} />
-          </Box>
-        ))}
-      </VStack>
-
-      {showMdHint && (
-        <Flex
-          align="center"
-          justify="space-between"
-          gap={2}
-          p={2}
-          borderWidth="1px"
-          borderColor="yellow.200"
-          bg="yellow.50"
-          rounded="md"
-        >
-          <Text fontSize="xs" color="yellow.900">
-            We support Markdown
-          </Text>
-          <Button size="xs" variant="ghost" onClick={dismissMdHint}>
-            Dismiss
-          </Button>
-        </Flex>
-      )}
-
+      {/* this will go into the chat tab */}
+      <ReflectionChatEntries entries={reflection.entries} />
+      <MDHint />
       <MDText
         placeholder="Write a reflection..."
         value={inputRef.current}
@@ -162,7 +131,6 @@ function ReflectView({
         onSubmit={submitReflectionStatement}
         minH="120px"
       />
-
       {promptState === 'processing' ? (
         <Flex gap={2}>
           <Text fontSize="sm" color="gray.500">
@@ -176,6 +144,38 @@ function ReflectView({
             Deeper reflection (⌘+↵)
           </Button>
         </Flex>
+      )}
+    </VStack>
+  );
+
+  return (
+    <VStack gap={4} align="stretch">
+      <ReflectionHeaderBar
+        reflectionSession={reflectionSession}
+        reflection={reflection}
+        goBack={goBack}
+      />
+      {displayTabs ? (
+        <Tabs.Root
+          value={activeTab}
+          onValueChange={(details) => setActiveTab(details.value as 'chat' | 'summary')}
+        >
+          <Tabs.List>
+            <Tabs.Trigger value="chat">Chat</Tabs.Trigger>
+            <Tabs.Trigger value="summary">Summary</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="chat">{chat}</Tabs.Content>
+          <Tabs.Content value="summary">
+            <MDText
+              value={reflection.summary || ''}
+              onBlur={(summary) => {
+                reflectionSession.saveSummary(summary);
+              }}
+            />
+          </Tabs.Content>
+        </Tabs.Root>
+      ) : (
+        chat
       )}
       <ReflectionActionBar
         onSave={goBack}

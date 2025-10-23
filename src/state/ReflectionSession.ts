@@ -16,6 +16,8 @@ class ReflectionSession {
   private promptState: 'idle' | 'processing' = 'idle';
   private subscribers: ((reflection: Reflection, promptState: 'idle' | 'processing') => void)[] =
     [];
+  summarizing: boolean = false;
+  sessionId: string = crypto.randomUUID().slice(0, 8);
 
   sessionInitialized: Promise<void>;
   static createInitialPrompts(
@@ -74,27 +76,48 @@ class ReflectionSession {
       throw new Error('Prompt is already processing');
     }
 
-    const controller = new AbortController();
-    const summary = await this.session.prompt(
-      [
-        {
-          role: 'system',
-          content: `Summarize the self reflection based on the user's input and output the summary in markdown format.
+    this.summarizing = true;
+
+    try {
+      const controller = new AbortController();
+      const summary = await this.session.prompt(
+        [
+          {
+            role: 'system',
+            content: `Summarize the self reflection based on the user's input and output the summary in markdown format.
           Try to keep the user's voice and perspective in the summary.
           Use the I perspective to write the summary.`,
+          },
+        ],
+        {
+          signal: controller.signal,
         },
-      ],
-      {
-        signal: controller.signal,
-      },
-    );
+      );
+      if (!this.reflection) {
+        throw new Error('Reflection not initialized');
+      }
+      this.reflection = { ...this.reflection, summary: summary as string };
+      ReflectionIDB.setReflection(this.reflection.id, this.reflection);
+      this.notifySubscribers();
+    } catch (error) {
+      console.error('Error summarizing reflection', error);
+    } finally {
+      this.summarizing = false;
+    }
+  }
 
-    console.log('summary', summary);
+  saveSummary(summary: string) {
+    if (!this.reflection) {
+      throw new Error('Reflection not initialized');
+    }
+    this.reflection = { ...this.reflection, summary };
+    ReflectionIDB.setReflection(this.reflection.id, this.reflection);
+    this.notifySubscribers();
   }
 
   saveUnsubmittedText(input: string) {
-    if (this.reflection) {
-      this.reflection.unsubmittedText = input;
+    if (this.reflection && this.reflection.unsubmittedText !== input) {
+      this.reflection = { ...this.reflection, unsubmittedText: input };
       ReflectionIDB.setReflection(this.reflection.id, this.reflection);
     }
   }

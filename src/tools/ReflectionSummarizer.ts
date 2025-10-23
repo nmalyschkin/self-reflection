@@ -11,7 +11,6 @@ const options = {
 
 export class ReflectionSummarizer {
   static async summarize(reflection: Reflection) {
-    console.log('summarizing reflection', reflection);
     const text = reflection.entries
       .filter((entry) => entry.type === 'user')
       .map((entry) => entry.text)
@@ -20,8 +19,6 @@ export class ReflectionSummarizer {
     const summarizer = await window.Summarizer.create({
       options,
     });
-
-    console.log('text', text);
 
     return await summarizer.summarize(text, {
       context: `This self reflection was made with the following persona: ${getPersona(reflection.personaId).description}`,

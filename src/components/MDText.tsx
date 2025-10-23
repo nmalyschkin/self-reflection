@@ -6,13 +6,21 @@ import { Markdown } from '@tiptap/markdown';
 
 type MDTextProps = {
   value: string;
-  onChange: (markdown: string) => void;
+  onChange?: (markdown: string) => void;
   onSubmit?: () => void;
   placeholder?: string;
   minH?: string | number;
+  onBlur?: (markdown: string) => void;
 };
 
-export default function MDText({ value, onChange, onSubmit, placeholder, minH }: MDTextProps) {
+export default function MDText({
+  value,
+  onChange,
+  onSubmit,
+  placeholder,
+  minH,
+  onBlur,
+}: MDTextProps) {
   const isSettingContentRef = useRef(false);
 
   const extensions = useMemo(() => {
@@ -43,7 +51,15 @@ export default function MDText({ value, onChange, onSubmit, placeholder, minH }:
       // getMarkdown is available via the Markdown extension
       const md = (editor as any).getMarkdown?.() as string;
       if (typeof md === 'string') {
-        onChange(md);
+        onChange?.(md);
+      }
+    },
+    onBlur: ({ editor }) => {
+      if (onBlur) {
+        const md = (editor as any).getMarkdown?.() as string;
+        if (typeof md === 'string' && md !== value) {
+          onBlur(md);
+        }
       }
     },
   });

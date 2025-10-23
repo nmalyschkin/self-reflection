@@ -11,6 +11,7 @@ export interface Reflection {
   title?: string;
   personaId?: PersonaId;
   unsubmittedText?: string;
+  summary?: string;
 }
 
 export type Reflections = Reflection[];
