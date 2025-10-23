@@ -80,17 +80,14 @@ function ReflectView({
 }) {
   const [abort, setAbort] = useState<() => void>(() => {});
   const { showMdHint, dismissMdHint } = useHint();
-  const ref = useRef<{ input: string; reflectionSession: ReflectionSession }>({
-    input: reflectionSession.reflection?.unsubmittedText || '',
-    reflectionSession,
-  });
+  const inputRef = useRef<string>(reflectionSession.reflection?.unsubmittedText || '');
 
   const goBack = useNavigateTo('/');
 
   // Save unsubmitted text when the component unmounts
   useEffect(() => {
     return () => {
-      const { input, reflectionSession } = ref.current;
+      const input = inputRef.current;
       if (
         reflectionSession &&
         reflectionSession.reflection &&
@@ -99,23 +96,23 @@ function ReflectView({
         reflectionSession.saveUnsubmittedText(input);
       }
     };
-  }, [ref]);
+  }, [inputRef]);
 
   const submitReflectionStatement = useCallback(() => {
-    const { input, reflectionSession } = ref.current;
+    const input = inputRef.current;
     try {
       const abort = reflectionSession.userSubmit(input);
-      ref.current.input = '';
+      inputRef.current = '';
       setAbort(() => () => {
         abort();
         setAbort(() => () => {});
-        ref.current.input = input;
+        inputRef.current = input;
       });
     } catch (error) {
       // console.error('Error submitting reflection statement', error);
       // TODO: show error to the user
     }
-  }, [ref]);
+  }, [inputRef]);
 
   return (
     <VStack gap={4} align="stretch">
@@ -185,8 +182,8 @@ function ReflectView({
 
       <MDText
         placeholder="Write a reflection..."
-        value={ref.current.input}
-        onChange={(md) => (ref.current.input = md)}
+        value={inputRef.current}
+        onChange={(md) => (inputRef.current = md)}
         onSubmit={submitReflectionStatement}
         minH="120px"
       />
