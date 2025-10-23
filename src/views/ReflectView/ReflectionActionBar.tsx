@@ -1,36 +1,24 @@
-import { ActionBar, Button, Menu, Portal, Text, Dialog, useDisclosure } from '@chakra-ui/react';
+import { ActionBar, Button, Menu, Portal, Text } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import type { Reflection } from '../../types';
 import ReflectionSession from '../../state/ReflectionSession';
-import ReflectionIDB from '../../state/ReflectionIDB';
+import DeleteReflection from '../../components/DeleteReflection';
 
 export default function ReflectionActionBar({
   onSave,
+  onDelete,
   reflection,
   reflectionSession,
 }: {
   onSave: () => void;
+  onDelete: () => void;
   reflection: Reflection;
   reflectionSession: ReflectionSession;
 }) {
   const [open, setOpen] = useState(false);
   const hideTimerRef = useRef<number | null>(null);
-
-  const {
-    open: isDeleteOpen,
-    onOpen: openDelete,
-    onClose: closeDelete,
-    setOpen: setDeleteOpen,
-  } = useDisclosure();
-  const cancelRef = useRef<HTMLButtonElement>(null);
-
-  async function confirmDelete() {
-    try {
-      await ReflectionIDB.deleteReflection(reflection.id);
-    } finally {
-      onSave();
-    }
-  }
+  const openDeleteRef = useRef<() => void>(() => {});
+  const openDeleteStateRef = useRef<boolean>(false);
 
   const clearHideTimer = () => {
     if (hideTimerRef.current != null) {
@@ -46,7 +34,7 @@ export default function ReflectionActionBar({
 
   const handleMouseLeave = () => {
     // Don't auto-collapse while a dialog is open
-    if (isDeleteOpen) {
+    if (openDeleteStateRef.current) {
       return;
     }
     clearHideTimer();
@@ -60,7 +48,7 @@ export default function ReflectionActionBar({
   return (
     <>
       {/* Collapsed mini action bar with ellipsis */}
-      {!open && !isDeleteOpen && (
+      {!open && (
         <ActionBar.Root open>
           <Portal>
             <ActionBar.Positioner>
@@ -83,10 +71,10 @@ export default function ReflectionActionBar({
       )}
 
       <ActionBar.Root
-        open={open || isDeleteOpen}
+        open={open}
         onOpenChange={(e) => {
           // Prevent ActionBar from closing while dialog is open
-          if (isDeleteOpen) {
+          if (openDeleteStateRef.current) {
             setOpen(true);
             return;
           }
@@ -126,7 +114,7 @@ export default function ReflectionActionBar({
                 onClick={() => {
                   clearHideTimer();
                   setOpen(true);
-                  openDelete();
+                  openDeleteRef.current();
                 }}
               >
                 Delete
@@ -135,25 +123,12 @@ export default function ReflectionActionBar({
           </ActionBar.Positioner>
         </Portal>
       </ActionBar.Root>
-      <Dialog.Root open={isDeleteOpen} onOpenChange={(e) => setDeleteOpen(e.open)}>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-          <Dialog.Content>
-            <Dialog.Header fontSize="lg" fontWeight="bold">
-              Delete reflection
-            </Dialog.Header>
-            <Dialog.Body>Are you sure? This action cannot be undone.</Dialog.Body>
-            <Dialog.Footer>
-              <Button ref={cancelRef} onClick={closeDelete}>
-                Cancel
-              </Button>
-              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
-                Delete
-              </Button>
-            </Dialog.Footer>
-          </Dialog.Content>
-        </Dialog.Positioner>
-      </Dialog.Root>
+      <DeleteReflection
+        reflectionId={reflection.id}
+        onFinishDelete={onDelete}
+        openRef={openDeleteRef}
+        openStateRef={openDeleteStateRef}
+      />
     </>
   );
 }

@@ -179,6 +179,10 @@ function ReflectView({
       )}
       <ReflectionActionBar
         onSave={goBack}
+        onDelete={() => {
+          skippedSaveOnUnmountRef.current = true;
+          goBack();
+        }}
         reflection={reflection}
         reflectionSession={reflectionSession}
       />

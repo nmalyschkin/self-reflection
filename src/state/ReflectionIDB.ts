@@ -30,7 +30,7 @@ class ReflectionIDB {
   }
 
   static async getReflections() {
-    return await db.getAll('reflections');
+    return (await db.getAll('reflections')) as Reflection[];
   }
 
   static async deleteReflection(reflectionId: string) {

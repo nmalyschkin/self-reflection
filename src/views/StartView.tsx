@@ -1,17 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { LMStatus, Reflection } from '../types';
-import {
-  Box,
-  Button,
-  Heading,
-  Text,
-  VStack,
-  IconButton,
-  useDisclosure,
-  Dialog,
-} from '@chakra-ui/react';
+import { Box, Button, Heading, Text, VStack, IconButton } from '@chakra-ui/react';
 import ReflectionIDB from '../state/ReflectionIDB';
 import { useNavigate } from 'react-router-dom';
+import DeleteReflection from '../components/DeleteReflection';
 
 type Props = {
   lmStatus: LMStatus;
@@ -21,25 +13,35 @@ type Props = {
 
 function formatDate(iso: string): string {
   const d = new Date(iso);
-  return d.toLocaleString();
+  return d.toLocaleString(undefined, {
+    hour12: false,
+    hour: 'numeric',
+    minute: 'numeric',
+    month: '2-digit',
+    day: 'numeric',
+    year: '2-digit',
+    localeMatcher: 'best fit',
+  });
 }
 
 export default function StartView({ lmStatus, onStartDownload, downloadButton }: Props) {
   const [reflections, setReflections] = useState<Reflection[]>([]);
-  const [toDeleteId, setToDeleteId] = useState<string | null>(null);
-  const {
-    open: isDeleteOpen,
-    onOpen: openDelete,
-    onClose: closeDelete,
-    setOpen: setDeleteOpen,
-  } = useDisclosure();
-  const cancelRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
+
+  const updateReflections = useCallback(() => {
     (async () => {
       const reflections = await ReflectionIDB.getReflections();
-      setReflections(reflections);
+      setReflections(
+        reflections.sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        ),
+      );
     })();
   }, []);
+  useEffect(() => {
+    updateReflections();
+  }, [updateReflections]);
+
+  const openDeleteRef = useRef<(reflectionId?: string) => void>(() => {});
 
   const navigate = useNavigate();
   function openReflection(id: string) {
@@ -47,13 +49,6 @@ export default function StartView({ lmStatus, onStartDownload, downloadButton }:
     navigate(`/reflect/${encodeURIComponent(targetId)}`);
   }
 
-  async function confirmDelete() {
-    if (!toDeleteId) return;
-    await ReflectionIDB.deleteReflection(toDeleteId);
-    setReflections((prev) => prev.filter((r) => r.id !== toDeleteId));
-    setToDeleteId(null);
-    closeDelete();
-  }
   return (
     <VStack align="stretch" gap={4}>
       <Heading size="lg">Self Reflection</Heading>
@@ -97,7 +92,7 @@ export default function StartView({ lmStatus, onStartDownload, downloadButton }:
                   >
                     <Box textAlign="left" w="full">
                       <Text fontSize="sm" fontWeight="medium" lineClamp={1}>
-                        {r.title || firstLine || '(no text)'}
+                        {r.title || firstLine || 'draft'}
                       </Text>
                       <Text fontSize="xs" color="gray.500">
                         {formatDate(r.createdAt)}
@@ -116,8 +111,7 @@ export default function StartView({ lmStatus, onStartDownload, downloadButton }:
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setToDeleteId(r.id);
-                      openDelete();
+                      openDeleteRef.current(r.id);
                     }}
                   >
                     x
@@ -129,25 +123,7 @@ export default function StartView({ lmStatus, onStartDownload, downloadButton }:
         )}
       </Box>
 
-      <Dialog.Root open={isDeleteOpen} onOpenChange={(e) => setDeleteOpen(e.open)}>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-          <Dialog.Content>
-            <Dialog.Header fontSize="lg" fontWeight="bold">
-              Delete reflection
-            </Dialog.Header>
-            <Dialog.Body>Are you sure? This action cannot be undone.</Dialog.Body>
-            <Dialog.Footer>
-              <Button ref={cancelRef} onClick={closeDelete}>
-                Cancel
-              </Button>
-              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
-                Delete
-              </Button>
-            </Dialog.Footer>
-          </Dialog.Content>
-        </Dialog.Positioner>
-      </Dialog.Root>
+      <DeleteReflection openRef={openDeleteRef} onFinishDelete={updateReflections} />
     </VStack>
   );
 }
