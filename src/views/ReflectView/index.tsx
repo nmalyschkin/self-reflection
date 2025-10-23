@@ -1,24 +1,11 @@
 import type { Reflection } from '../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Box,
-  Button,
-  Menu,
-  Portal,
-  Flex,
-  Heading,
-  Spinner,
-  Text,
-  VStack,
-  EditableRoot,
-  EditablePreview,
-  EditableInput,
-} from '@chakra-ui/react';
+import { Box, Button, Menu, Portal, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
 import MDText from '../../components/MDText';
 import MDRender from '../../components/MDRender';
 import ReflectionSession from '../../state/ReflectionSession';
 import useHint from './useHint';
-import PersonaMenu from './PersonaMenu';
+import ReflectionHeaderBar from './reflectionHeaderBar';
 import useNavigateTo from '../../hooks/useNavigateTo';
 
 type Props = {
@@ -81,6 +68,9 @@ function ReflectView({
   const [abort, setAbort] = useState<() => void>(() => {});
   const { showMdHint, dismissMdHint } = useHint();
   const inputRef = useRef<string>(reflectionSession.reflection?.unsubmittedText || '');
+  const [isInputEmpty, setIsInputEmpty] = useState<boolean>(
+    !(inputRef.current && inputRef.current.trim().length > 0),
+  );
 
   const goBack = useNavigateTo('/');
 
@@ -103,10 +93,12 @@ function ReflectView({
     try {
       const abort = reflectionSession.userSubmit(input);
       inputRef.current = '';
+      setIsInputEmpty(true);
       setAbort(() => () => {
         abort();
         setAbort(() => () => {});
         inputRef.current = input;
+        setIsInputEmpty(input.trim().length === 0);
       });
     } catch (error) {
       // console.error('Error submitting reflection statement', error);
@@ -116,36 +108,11 @@ function ReflectView({
 
   return (
     <VStack gap={4} align="stretch">
-      <Flex align="center" justify="space-between">
-        <Box flex="1" minW={0}>
-          <Heading>
-            <EditableRoot
-              key={(reflection?.id || 'new') + (reflection?.title || '')}
-              defaultValue={reflection?.title || ''}
-            >
-              <EditablePreview fontSize="xl" fontWeight="bold" />
-              <EditableInput
-                onBlur={(e) => reflectionSession?.setTitle(e.currentTarget.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.currentTarget.blur();
-                  }
-                }}
-              />
-            </EditableRoot>
-          </Heading>
-        </Box>
-        <Flex align="center" gap={2}>
-          <PersonaMenu
-            canUpdatePersona={reflectionSession?.canUpdatePersona}
-            personaId={reflection?.personaId}
-            setPersonaId={(personaId) => reflectionSession?.setPersona(personaId)}
-          />
-          <Button variant="plain" colorScheme="blue" onClick={goBack}>
-            Back
-          </Button>
-        </Flex>
-      </Flex>
+      <ReflectionHeaderBar
+        reflectionSession={reflectionSession}
+        reflection={reflection}
+        goBack={goBack}
+      />
 
       <VStack gap={3} align="stretch">
         {reflection.entries.map((e, i) => (
@@ -183,7 +150,10 @@ function ReflectView({
       <MDText
         placeholder="Write a reflection..."
         value={inputRef.current}
-        onChange={(md) => (inputRef.current = md)}
+        onChange={(md) => {
+          inputRef.current = md;
+          setIsInputEmpty(md.trim().length === 0);
+        }}
         onSubmit={submitReflectionStatement}
         minH="120px"
       />
@@ -197,7 +167,7 @@ function ReflectView({
         </Flex>
       ) : (
         <Flex gap={2}>
-          <Button colorScheme="blue" onClick={submitReflectionStatement}>
+          <Button colorScheme="blue" onClick={submitReflectionStatement} disabled={isInputEmpty}>
             Deeper reflection (⌘+↵)
           </Button>
           <Menu.Root>

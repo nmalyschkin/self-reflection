@@ -6,8 +6,8 @@ export default function About() {
       <VStack align="start" gap={3}>
         <Heading size="lg">About this app</Heading>
         <Text>
-          This app helps you capture reflections and insights, organized by session. It uses a
-          simple, distraction-free interface so you can focus on your thoughts.
+          This app uses browser technologies to run completely locally and offline. We don't collect
+          or store any data and all your AI interactions are run locally in your browser.
         </Text>
       </VStack>
     </Box>
