@@ -1,4 +1,4 @@
-import { getPersona } from '../personas';
+import { getPersona } from '../data/personas';
 import type { Reflection } from '../types';
 
 const options = {

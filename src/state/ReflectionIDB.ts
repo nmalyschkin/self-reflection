@@ -1,6 +1,6 @@
 import { openDB } from 'idb';
 import type { Reflection } from '../types';
-import { DEFAULT_PERSONA_ID } from '../personas';
+import { DEFAULT_PERSONA_ID } from '../data/personas';
 
 const db = await openDB('reflections', 1, {
   upgrade(db) {

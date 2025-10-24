@@ -1,9 +1,9 @@
 import { Box, Button, Menu, Portal, Text } from '@chakra-ui/react';
-import { getPersona, listPersonas } from '../../personas';
+import { getPersona, listPersonas } from '../../data/personas';
 import { Flex } from '@chakra-ui/react';
 import type { PersonaId } from '../../types';
 import { useEffect, useState } from 'react';
-import type { Persona } from '../../personas';
+import type { Persona } from '../../data/personas';
 
 export default function PersonaMenu({
   canUpdatePersona,

@@ -2,7 +2,7 @@ import type { LanguageModelSession } from '../global';
 import type { Entry } from '../types';
 import type { Reflection } from '../types';
 import type { PersonaId } from '../types';
-import { DEFAULT_PERSONA_ID, getPersona } from '../personas';
+import { DEFAULT_PERSONA_ID, getPersona } from '../data/personas';
 import ReflectionIDB from './ReflectionIDB';
 
 class ReflectionSession {
