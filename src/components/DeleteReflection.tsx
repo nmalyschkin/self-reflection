@@ -40,7 +40,6 @@ export default function DeleteReflection({
   async function confirmDelete() {
     try {
       if (!(reflectionIdOverride || reflectionId)) {
-        // console.log('No reflection ID provided', reflectionIdOverride, reflectionId);
         throw new Error('No reflection ID provided');
       }
       await ReflectionIDB.deleteReflection(reflectionIdOverride || reflectionId!);

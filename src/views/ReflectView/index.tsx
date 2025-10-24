@@ -1,7 +1,7 @@
 import type { Reflection } from '../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Flex, Spinner, Text, VStack, Tabs } from '@chakra-ui/react';
-import MDText from '../../components/MDText';
+import MDText from '../../components/markdown/MDText';
 import ReflectionSession from '../../state/ReflectionSession';
 import ReflectionHeaderBar from './reflectionHeaderBar';
 import useNavigateTo from '../../hooks/useNavigateTo';
@@ -95,26 +95,23 @@ function ReflectView({
     };
   }, []);
 
-  const submitReflectionStatement = useCallback(
-    () => () => {
-      const input = inputRef.current;
-      try {
-        const abort = reflectionSession.userSubmit(input);
-        inputRef.current = '';
-        setIsInputEmpty(true);
-        setAbort(() => () => {
-          abort();
-          setAbort(() => () => {});
-          inputRef.current = input;
-          setIsInputEmpty(input.trim().length === 0);
-        });
-      } catch (error) {
-        // console.error('Error submitting reflection statement', error);
-        // TODO: show error to the user
-      }
-    },
-    [inputRef],
-  );
+  const submitReflectionStatement = useCallback(() => {
+    const input = inputRef.current;
+    try {
+      const abort = reflectionSession.userSubmit(input);
+      inputRef.current = '';
+      setIsInputEmpty(true);
+      setAbort(() => () => {
+        abort();
+        setAbort(() => () => {});
+        inputRef.current = input;
+        setIsInputEmpty(input.trim().length === 0);
+      });
+    } catch (error) {
+      // console.error('Error submitting reflection statement', error);
+      // TODO: show error to the user
+    }
+  }, [inputRef]);
 
   const chat = (
     <VStack gap={4} align="stretch">

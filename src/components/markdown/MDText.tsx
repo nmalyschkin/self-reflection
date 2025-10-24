@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { Box } from '@chakra-ui/react';
 import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { Markdown } from '@tiptap/markdown';
+import { useEditorConfig } from './editorConfig';
 
 type MDTextProps = {
   value: string;
@@ -13,34 +12,13 @@ type MDTextProps = {
   onBlur?: (markdown: string) => void;
 };
 
-export default function MDText({
-  value,
-  onChange,
-  onSubmit,
-  placeholder,
-  minH,
-  onBlur,
-}: MDTextProps) {
+function MDText({ value, onChange, onSubmit, placeholder, minH, onBlur }: MDTextProps) {
   const isSettingContentRef = useRef(false);
 
-  const extensions = useMemo(() => {
-    return [
-      StarterKit.configure({
-        heading: { levels: [1, 2, 3, 4, 5, 6] },
-      }),
-      Markdown.configure({}),
-    ];
-  }, []);
+  const editorConfig = useEditorConfig(placeholder);
 
   const editor = useEditor({
-    extensions,
-    editorProps: {
-      attributes: {
-        class: 'tiptap mdtext-content',
-        spellcheck: 'true',
-        'data-placeholder': placeholder || '',
-      },
-    },
+    ...editorConfig,
     onCreate: ({ editor }) => {
       isSettingContentRef.current = true;
       editor.commands.setContent(value || '', { contentType: 'markdown' });
@@ -115,3 +93,5 @@ export default function MDText({
     </Box>
   );
 }
+
+export default memo(MDText);

@@ -1,5 +1,5 @@
 import { Box, VStack } from '@chakra-ui/react';
-import MDRender from '../../components/MDRender';
+import MDRender from '../../components/markdown/MDRender';
 import type { Entry } from '../../types';
 
 type Props = {
