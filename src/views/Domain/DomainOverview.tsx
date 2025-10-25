@@ -1,11 +1,20 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Box, Heading, SimpleGrid, Text, VStack, HStack, Progress } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { domains as domainsRecord } from '../../data/domains';
+import DomainIDB from '../../state/DomainIDB';
 
 export default function Domains() {
   const navigate = useNavigate();
   const domains = useMemo(() => Object.values(domainsRecord), []);
+  const [progresses, setProgresses] = useState<Record<string, number>>(
+    Object.fromEntries(Object.keys(domainsRecord).map((domainId) => [domainId, 0])),
+  );
+  useEffect(() => {
+    DomainIDB.getAllDomainProgress().then((progresses) => {
+      setProgresses(progresses);
+    });
+  }, []);
 
   return (
     <VStack align="stretch" gap={4} w="full">
@@ -15,10 +24,8 @@ export default function Domains() {
       </Text> */}
 
       <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4}>
-        {domains.map((d, index) => {
-          const total = d.questions.length;
-          const answered = index * 2; // placeholder, will be computed from user history later
-          const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+        {domains.map((d) => {
+          const pct = progresses[d.id] || 0;
           return (
             <Box
               key={d.id}

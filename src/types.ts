@@ -14,6 +14,11 @@ export interface Reflection {
   summary?: string;
 }
 
+export type Question = Omit<Reflection, 'personaId'> & {
+  domainId: string;
+  finished: boolean;
+};
+
 export type Reflections = Reflection[];
 
 // Shared Language Model availability status for UI logic
