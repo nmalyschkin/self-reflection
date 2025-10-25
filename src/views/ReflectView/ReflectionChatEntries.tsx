@@ -15,6 +15,8 @@ export default function ReflectionChatEntries({ entries }: Props) {
           rounded="md"
           p={3}
           bg={e.type === 'user' ? 'blue.50' : 'green.50'}
+          marginLeft={e.type === 'user' ? '48px' : '0'}
+          marginRight={e.type === 'user' ? '0' : '48px'}
         >
           <MDRender markdown={e.text} />
         </Box>

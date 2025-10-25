@@ -27,21 +27,13 @@ class DomainSession {
           content: entry.text,
         }) as { role: 'user' | 'assistant'; content: string },
     );
-    const domainMeta = domainsRecord[question.domainId];
-    const questionMeta = domainMeta.questions.find((q) => q.id === question.id);
-    const domainName = domainMeta?.name ?? question.domainId;
-    const questionText = questionMeta?.question ?? '';
     return [
       {
         role: 'system',
         content:
-          `You are a reflective coach helping the user explore the domain "${domainName}".\n` +
+          `You are a reflective coach helping the user explore a self reflection question.".\n` +
           `Guide the user with curiosity and care.\n` +
-          `Based on the user's input, provide a concise question to explore further.`,
-      },
-      {
-        role: 'assistant',
-        content: questionText,
+          `Based on the user's input, provide a single concise follow-up question.`,
       },
       ...history,
     ];
@@ -56,10 +48,19 @@ class DomainSession {
           ((): Question => {
             const domain = domainsRecord[domainId];
             const qMeta = domain?.questions.find((q) => q.id === questionId);
+            if (!qMeta) {
+              throw new Error('Question not found');
+            }
             return {
               id: questionId,
               domainId,
-              entries: [],
+              entries: [
+                {
+                  text: qMeta.question,
+                  type: 'ai-question',
+                  createdAt: new Date().toISOString(),
+                },
+              ],
               createdAt: new Date().toISOString(),
               finished: false,
               title: qMeta?.shortDescription,
@@ -182,13 +183,13 @@ class DomainSession {
         if (Array.isArray(parsed)) {
           parsed = parsed[0];
         }
-        const { question, title, acknowledgement } = parsed;
+        const { question } = parsed;
 
-        if (!question || !acknowledgement) {
+        if (!question || typeof question !== 'string' || question.trim().length === 0) {
           throw new Error('Invalid response');
         }
 
-        const text = `${acknowledgement}\n\n*${question.trim()}*`;
+        const text = `*${question.trim()}*`;
         this.addEntries(
           [
             {
@@ -198,7 +199,6 @@ class DomainSession {
             },
           ],
           'idle',
-          title,
         );
       })
       .finally(() => {
@@ -219,11 +219,7 @@ class DomainSession {
     return abort;
   }
 
-  private addEntries(
-    entries: Entry[],
-    promptState: 'idle' | 'processing' = this.promptState,
-    title?: string,
-  ) {
+  private addEntries(entries: Entry[], promptState: 'idle' | 'processing' = this.promptState) {
     if (!this.question) {
       throw new Error('Question not initialized');
     }
@@ -232,9 +228,6 @@ class DomainSession {
         ...this.question,
         entries: [...this.question.entries, ...entries],
       } as Question;
-    }
-    if (title && !this.question.title) {
-      this.question = { ...this.question, title } as Question;
     }
     this.promptState = promptState;
     DomainIDB.setQuestion(this.question.domainId, this.question.id, this.question);
