@@ -7,6 +7,9 @@ import ReflectView from './views/ReflectView';
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from './components/sidebar';
 import InstallAPI from './views/InstallAPI';
+import Domains from './views/Domain/DomainOverview';
+import Domain from './views/Domain/Domain';
+import Question from './views/Domain/Question';
 
 function hasLanguageModel(): boolean {
   return typeof window !== 'undefined' && 'LanguageModel' in (window as any);
@@ -104,6 +107,9 @@ function App() {
           <Route path="/reflect" element={<ReflectRoute />} />
           <Route path="/reflect/:id" element={<ReflectRoute />} />
           <Route path="/about" element={<About />} />
+          <Route path="/domains" element={<Domains />} />
+          <Route path="/domains/:id" element={<Domain />} />
+          <Route path="/domains/:domainId/questions/:questionId" element={<Question />} />
         </Routes>
       </Box>
 

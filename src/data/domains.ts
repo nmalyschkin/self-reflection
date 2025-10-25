@@ -6,6 +6,7 @@ interface Domain {
   questions: {
     id: string;
     question: string;
+    shortDescription?: string;
   }[];
 }
 
@@ -18,62 +19,74 @@ Clarity in this domain is the bedrock of a well-examined life. However, this cla
     id: 'innerCompass',
     questions: [
       {
-        id: 'innerCompass-1',
+        id: 'difficult-decision',
+        shortDescription: 'Difficult decision',
         question:
           'Describe a decision you made that was difficult and unpopular with others, but which you knew in your gut was the right thing to do. What specific principle or value were you honoring that made it feel so correct?',
       },
       {
-        id: 'innerCompass-2',
+        id: 'angry-moment',
+        shortDescription: 'Angry moment',
         question:
           'Recall a time you felt a profound sense of anger or indignation about a situation you witnessed or experienced. What unspoken "rule" about how the world should work was being violated?',
       },
       {
-        id: 'innerCompass-3',
+        id: 'admired-person',
+        shortDescription: 'Admired person',
         question:
           'Think of a person you deeply admire, either personally or publicly. List three specific actions or qualities they possess that earn your admiration. What do these admired traits reveal about the values you hold most dear?',
       },
       {
-        id: 'innerCompass-4',
+        id: 'purposeful-project',
+        shortDescription: 'Purposeful project',
         question:
           'If you knew you could not fail and all practical constraints were removed, what is the one project or cause you would dedicate your time to achieving? What does your answer reveal about what you believe your purpose is?',
       },
       {
-        id: 'innerCompass-5',
+        id: 'significant-sacrifice',
+        shortDescription: 'Significant sacrifice',
         question:
           'Reflect on a time you made a significant sacrifice (of time, money, or opportunity) for someone or something else. What made that person or cause worthy of your sacrifice? What value does this point to?',
       },
       {
-        id: 'innerCompass-6',
+        id: 'most-alive-moment',
+        shortDescription: 'Most alive moment',
         question:
           'When in your life have you felt most alive and true to yourself? Describe the circumstances in detail. What were you doing, who were you with, and what core part of your identity was being expressed?',
       },
       {
-        id: 'innerCompass-7',
+        id: 'belief-shift',
+        shortDescription: 'Belief shift',
         question:
           'What is a belief you held strongly five years ago that you have since changed your mind about? Describe the process or experience that led to this shift in your worldview.',
       },
       {
-        id: 'innerCompass-8',
+        id: 'flow-activity',
+        shortDescription: 'Flow activity',
         question:
           'Consider the activities that make you lose track of time—the ones that put you in a state of "flow." What is the inherent nature of these activities (e.g., problem-solving, creating, organizing, nurturing) that you find so engaging?',
       },
       {
-        id: 'innerCompass-9',
+        id: 'recurring-topic',
+        shortDescription: 'Recurring topic',
         question:
           'What recurring topic or idea do you find yourself consistently bringing up in conversations or thinking about in your spare time? What deep-seated interest or passion does this point to?',
       },
       {
-        id: 'innerCompass-10',
+        id: 'proud-creation',
+        shortDescription: 'Proud creation',
         question:
           'Describe something you have created or built that you are proud of (this could be anything from a piece of art to a well-organized spreadsheet to a strong relationship). What aspect of its creation gives you the most satisfaction?',
       },
       {
-        id: 'innerCompass-11',
+        id: 'injustice-problem',
+        shortDescription: 'Injustice problem',
         question:
           'What is one injustice or problem in the world that, if you could, you would solve immediately? What does your choice say about your fundamental beliefs regarding responsibility and community?',
       },
       {
-        id: 'innerCompass-12',
+        id: 'desired-legacy',
+        shortDescription: 'Desired legacy',
         question:
           'How do you want to be remembered by the people who matter most to you? Write down five adjectives you hope they would use to describe you. Which of these are you actively embodying now, and which require more focus?',
       },
@@ -221,7 +234,7 @@ Clarity in this domain is the bedrock of a well-examined life. However, this cla
     name: 'The Narrative Arc',
     description: `We make sense of our lives by weaving disparate events into an ongoing story. This "narrative identity" is the internal, evolving tale of who we are, where we have come from, and where we are going. This domain focuses on the conscious authorship of that story. While the facts of the past cannot be changed, our relationship to them can be. Through reflection, painful events can be reframed as sources of wisdom, and failures can be reinterpreted as crucial turning points. This process connects the lessons of the past to the deliberate creation of a compelling and meaningful future.
  A key element of a healthy narrative identity is the ability to construct a "redemptive narrative." This is not a story devoid of hardship, but one in which suffering and setbacks are ultimately redeemed by the growth, meaning, or positive outcomes they produce. A painful job loss, for example, can be narrated as the necessary catalyst that led to a more fulfilling career path. This is not an exercise in toxic positivity but an act of profound personal agency—the power to find meaning and benefit even in adversity. It is a practical application of a positive outlook, which is the ability to see opportunity in situations where others might only see a devastating setback. The following prompts are designed to help you act as the author of your life story, prompting you to revisit key "chapters," find the through-line of growth, and intentionally script the chapters yet to come.`,
-    shortDescription: 'Narrative Identity and Redemptive Storytelling',
+    shortDescription: 'Past Experiences and Future Aspirations',
     id: 'narrativeArc',
     questions: [
       {
@@ -290,11 +303,12 @@ Clarity in this domain is the bedrock of a well-examined life. However, this cla
     name: 'The Engine of Growth',
     description: `This domain focuses on the dynamic interplay between capability and application. It involves a clear-eyed assessment of one's personal assets and a strategic consideration of how they can be deployed to create value in the world. It is useful to differentiate between strengths and skills. Strengths are innate talents and patterns of thought, feeling, and behavior that are authentic, energizing, and lead to effective performance. Skills, by contrast, are competencies that are learned and developed through practice. While both are crucial, growth is often most profound and sustainable when it is built around the cultivation and application of natural strengths.
  The ultimate aim of developing these capabilities is contribution. A sense of fulfillment and purpose often arises not from merely possessing strengths and skills, but from applying them to meet a genuine need—whether in one's career, family, or community. The most impactful and satisfying work often lies at the intersection of what one is uniquely good at and what the world truly needs. This moves the focus from a self-centered inventory of "what am I good at?" to a more service-oriented question: "What problems am I uniquely equipped to solve?" This framework provides a powerful formula for personal and professional development: Contribution = (Strengths + Skills) x (Addressing a Need). The following prompts are designed to help you identify your unique capabilities, understand how to develop them, and align them with opportunities for meaningful contribution.`,
-    shortDescription: 'Capability and Application',
+    shortDescription: 'Strengths, Skills, and Contributions',
     id: 'engineOfGrowth',
     questions: [
       {
         id: 'engineOfGrowth-1',
+        shortDescription: 'In the zone',
         question:
           'Describe a time you felt "in the zone" or completely absorbed and effective in an activity. Deconstruct that experience: what specific strengths (e.g., strategic thinking, empathy, focus) and skills (e.g., public speaking, data analysis) were you using?',
       },

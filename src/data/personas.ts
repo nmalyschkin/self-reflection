@@ -1,4 +1,4 @@
-import type { PersonaId } from './types';
+import type { PersonaId } from '../types';
 
 export type Persona = {
   id: PersonaId;

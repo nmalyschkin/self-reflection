@@ -63,6 +63,16 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           >
             New reflection
           </Button>
+          <Button
+            colorScheme="blue"
+            onClick={() => {
+              onClose();
+              navigate('/domains');
+            }}
+          >
+            Domains
+          </Button>
+
           <Box flex="1" />
           <VStack align="stretch" gap={2}>
             <Link href="https://forms.gle/b5BS5VPmf35L71Wx7" target="_blank" color="gray.500">
