@@ -1,6 +1,6 @@
 import type { Reflection } from '../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Flex, Spinner, Text, VStack, Tabs } from '@chakra-ui/react';
+import { Button, Flex, Spinner, Text, VStack, Tabs, Box } from '@chakra-ui/react';
 import MDText from '../../components/markdown/MDText';
 import ReflectionSession from '../../state/ReflectionSession';
 import ReflectionHeaderBar from './reflectionHeaderBar';
@@ -113,11 +113,17 @@ function ReflectView({
     }
   }, [inputRef]);
 
-  const chat = (
+  // Scrollable chat content (messages + hint)
+  const chatContent = (
     <VStack gap={4} align="stretch">
-      {/* this will go into the chat tab */}
       <ReflectionChatEntries entries={reflection.entries} />
       <MDHint />
+    </VStack>
+  );
+
+  // Persistent input/footer area
+  const chatInput = (
+    <VStack gap={3} align="stretch" pt={2} pb={6}>
       <MDText
         placeholder="Write a reflection..."
         value={inputRef.current}
@@ -146,33 +152,59 @@ function ReflectView({
   );
 
   return (
-    <VStack gap={4} align="stretch">
+    <VStack
+      gap={4}
+      align="stretch"
+      h="calc(100dvh - 32px)"
+      maxH="calc(100dvh - 32px)"
+      overflow="hidden"
+    >
       <ReflectionHeaderBar
         reflectionSession={reflectionSession}
         reflection={reflection}
         goBack={goBack}
       />
       {displayTabs ? (
-        <Tabs.Root
-          value={activeTab}
-          onValueChange={(details) => setActiveTab(details.value as 'chat' | 'summary')}
-        >
-          <Tabs.List>
-            <Tabs.Trigger value="chat">Chat</Tabs.Trigger>
-            <Tabs.Trigger value="summary">Summary</Tabs.Trigger>
-          </Tabs.List>
-          <Tabs.Content value="chat">{chat}</Tabs.Content>
-          <Tabs.Content value="summary">
-            <MDText
-              value={reflection.summary || ''}
-              onBlur={(summary) => {
-                reflectionSession.saveSummary(summary);
-              }}
-            />
-          </Tabs.Content>
-        </Tabs.Root>
+        <VStack gap={3} align="stretch" flex="1" overflow="hidden">
+          <Tabs.Root
+            value={activeTab}
+            onValueChange={(details) => setActiveTab(details.value as 'chat' | 'summary')}
+            display="flex"
+            flexDirection="column"
+            flex="1"
+            overflow="hidden"
+          >
+            <Tabs.List>
+              <Tabs.Trigger value="chat">Chat</Tabs.Trigger>
+              <Tabs.Trigger value="summary">Summary</Tabs.Trigger>
+            </Tabs.List>
+            {/* Chat tab: content grows with messages; scrolls only when needed; input sits just below */}
+            <Tabs.Content value="chat" display="flex" flexDirection="column" flex="1" minH={0}>
+              <Box flex="0 1 auto" overflowY="auto">
+                {chatContent}
+              </Box>
+              {chatInput}
+            </Tabs.Content>
+            {/* Summary tab: make content scrollable if long */}
+            <Tabs.Content value="summary" display="flex" flexDirection="column" flex="1" minH={0}>
+              <Box flex="1 1 auto" overflowY="auto">
+                <MDText
+                  value={reflection.summary || ''}
+                  onBlur={(summary) => {
+                    reflectionSession.saveSummary(summary);
+                  }}
+                />
+              </Box>
+            </Tabs.Content>
+          </Tabs.Root>
+        </VStack>
       ) : (
-        chat
+        <VStack gap={3} align="stretch" flex="1" overflow="hidden">
+          <Box flex="0 1 auto" overflowY="auto">
+            {chatContent}
+          </Box>
+          {chatInput}
+        </VStack>
       )}
       <ReflectionActionBar
         onSave={goBack}
