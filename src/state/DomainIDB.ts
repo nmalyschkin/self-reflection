@@ -2,10 +2,13 @@ import { openDB } from 'idb';
 import type { Question } from '../types';
 import { domains as domainsRecord } from '../data/domains';
 
-const db = await openDB('domains', 1, {
+const db = await openDB('domains', 2, {
   upgrade(db) {
     db.createObjectStore('domains', { keyPath: 'id' });
-    db.createObjectStore('questions', { keyPath: ['domainId', 'questionId'] });
+    const questions = db.createObjectStore('questions', {
+      keyPath: ['domainId', 'questionId'],
+    });
+    questions.createIndex('by-domain', 'domainId');
   },
 });
 
@@ -15,11 +18,11 @@ class DomainIDB {
   }
 
   static async setQuestion(domainId: string, questionId: string, question: Question) {
-    return await db.put('questions', question, [domainId, questionId]);
+    return await db.put('questions', { ...question, domainId, questionId });
   }
 
   static async getQuestions(domainId: string): Promise<Question[]> {
-    return await db.getAll('questions', [domainId]);
+    return await db.getAllFromIndex('questions', 'by-domain', domainId);
   }
 
   static async deleteQuestion(domainId: string, questionId: string) {
@@ -28,7 +31,7 @@ class DomainIDB {
 
   static async getDomainProgress(domainId: string): Promise<number> {
     return await db
-      .getAll('questions', [domainId])
+      .getAllFromIndex('questions', 'by-domain', domainId)
       .then((questions) =>
         Math.round(
           (questions.filter((q) => q.finished).length / domainsRecord[domainId].questions.length) *

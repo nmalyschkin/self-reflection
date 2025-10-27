@@ -99,7 +99,20 @@ class DomainSession {
 
     try {
       const controller = new AbortController();
-      const summary = await this.session.prompt(
+
+      const initialPrompts = [
+        ...this.question.entries
+          .filter((e) => e.type === 'user')
+          .map((e) => ({
+            role: 'user',
+            content: e.text,
+          })),
+      ];
+      console.log('initialPrompts', initialPrompts);
+      const summarySession = await window.LanguageModel.create({
+        initialPrompts,
+      });
+      const summary = await summarySession.prompt(
         [
           {
             role: 'system',
@@ -112,6 +125,7 @@ class DomainSession {
       );
       this.question = { ...this.question, summary: summary as string } as Question;
       await DomainIDB.setQuestion(this.question.domainId, this.question.id, this.question);
+      summarySession.destroy();
       this.notifySubscribers();
     } catch (error) {
       console.error('Error summarizing question', error);

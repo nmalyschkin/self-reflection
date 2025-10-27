@@ -116,7 +116,7 @@ function QuestionView({
       if (
         domainSession &&
         domainSession.question &&
-        (input || domainSession.question.entries.length > 0)
+        (input || domainSession.question.entries.length > 1)
       ) {
         domainSession.saveUnsubmittedText(input);
       }
