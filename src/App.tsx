@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback, lazy, Suspense } from 'react';
 import { Box, IconButton, useDisclosure } from '@chakra-ui/react';
 import type { LMStatus } from './types';
 import StartView from './views/StartView';
@@ -10,6 +10,8 @@ import InstallAPI from './views/InstallAPI';
 import Domains from './views/Domain/DomainOverview';
 import Domain from './views/Domain/Domain';
 import Question from './views/Domain/Question';
+const DebugOverview = import.meta.env.DEV ? lazy(() => import('./debug/overview')) : undefined;
+const DebugSummarizer = import.meta.env.DEV ? lazy(() => import('./debug/summarizer')) : undefined;
 
 function hasLanguageModel(): boolean {
   return typeof window !== 'undefined' && 'LanguageModel' in (window as any);
@@ -110,6 +112,26 @@ function App() {
           <Route path="/domains" element={<Domains />} />
           <Route path="/domains/:id" element={<Domain />} />
           <Route path="/domains/:domainId/questions/:questionId" element={<Question />} />
+          {import.meta.env.DEV && DebugOverview ? (
+            <Route
+              path="/debug"
+              element={
+                <Suspense fallback={<div />}>
+                  <DebugOverview />
+                </Suspense>
+              }
+            />
+          ) : null}
+          {import.meta.env.DEV && DebugSummarizer ? (
+            <Route
+              path="/debug/summarizer"
+              element={
+                <Suspense fallback={<div />}>
+                  <DebugSummarizer />
+                </Suspense>
+              }
+            />
+          ) : null}
         </Routes>
       </Box>
 

@@ -78,6 +78,17 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             <Link href="https://forms.gle/b5BS5VPmf35L71Wx7" target="_blank" color="gray.500">
               Feedback
             </Link>
+            {import.meta.env.DEV ? (
+              <Link
+                color="gray.500"
+                onClick={() => {
+                  onClose();
+                  navigate('/debug/summarizer');
+                }}
+              >
+                Summarizer (debug)
+              </Link>
+            ) : null}
             <Link
               color="gray.500"
               onClick={() => {
