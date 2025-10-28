@@ -98,19 +98,16 @@ export default function DebugOverview() {
 
         <Card.Root>
           <Card.Header>
-            <Heading size="md">Navigation</Heading>
+            <Heading size="md">Debug Tools</Heading>
           </Card.Header>
           <Card.Body>
             <Stack gap={3}>
               <Button asChild variant="outline">
-                <Link to="/">Go to Start</Link>
+                <Link to="/debug/persona">Persona Debug</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link to="/domains">All Domains</Link>
+                <Link to="/debug/summarizer">Summarizer Debug</Link>
               </Button>
-              <Text fontSize="sm" color="fg.muted">
-                Use the menu to access reflection views.
-              </Text>
             </Stack>
           </Card.Body>
         </Card.Root>
@@ -145,7 +142,7 @@ export default function DebugOverview() {
           <Heading size="md">Env</Heading>
         </Card.Header>
         <Card.Body>
-          <Stack gap={1} fontSize="sm">
+          <Stack gap={0} fontSize="sm">
             <Text>
               <b>MODE</b>: <Code>{import.meta.env.MODE}</Code>
             </Text>

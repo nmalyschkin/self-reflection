@@ -12,6 +12,7 @@ import Domain from './views/Domain/Domain';
 import Question from './views/Domain/Question';
 const DebugOverview = import.meta.env.DEV ? lazy(() => import('./debug/overview')) : undefined;
 const DebugSummarizer = import.meta.env.DEV ? lazy(() => import('./debug/summarizer')) : undefined;
+const DebugPersona = import.meta.env.DEV ? lazy(() => import('./debug/persona')) : undefined;
 
 function hasLanguageModel(): boolean {
   return typeof window !== 'undefined' && 'LanguageModel' in (window as any);
@@ -128,6 +129,16 @@ function App() {
               element={
                 <Suspense fallback={<div />}>
                   <DebugSummarizer />
+                </Suspense>
+              }
+            />
+          ) : null}
+          {import.meta.env.DEV && DebugPersona ? (
+            <Route
+              path="/debug/persona"
+              element={
+                <Suspense fallback={<div />}>
+                  <DebugPersona />
                 </Suspense>
               }
             />
