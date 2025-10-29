@@ -9,6 +9,7 @@ import {
   Spinner,
   Text,
   Tabs,
+  Dialog,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import useNavigateTo from '../../hooks/useNavigateTo';
@@ -103,6 +104,7 @@ function QuestionView({
   );
   const [abort, setAbort] = useState<() => void>(() => {});
   const skippedSaveOnUnmountRef = useRef<boolean>(false);
+  const [isSummarizeDialogOpen, setSummarizeDialogOpen] = useState(false);
 
   const displayTabs = question.summary || domainSession.summarizing;
   const [activeTab, setActiveTab] = useState<'chat' | 'summary'>('chat');
@@ -140,10 +142,14 @@ function QuestionView({
 
   const finishAndSummarize = useCallback(async () => {
     try {
+      setSummarizeDialogOpen(true);
       await domainSession.summarize();
       domainSession.setFinished(true);
       setActiveTab('summary');
-    } catch {}
+    } catch {
+    } finally {
+      setSummarizeDialogOpen(false);
+    }
   }, [domainSession]);
 
   const chatContent = (
@@ -245,6 +251,30 @@ function QuestionView({
           {chatInput}
         </VStack>
       )}
+      <Dialog.Root
+        open={isSummarizeDialogOpen}
+        onOpenChange={(e) => setSummarizeDialogOpen(e.open)}
+      >
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header fontSize="lg" fontWeight="bold">
+              Summarizing
+            </Dialog.Header>
+            <Dialog.Body>summarizing...</Dialog.Body>
+            <Dialog.Footer>
+              <Button
+                onClick={() => {
+                  domainSession.abortSummarize();
+                  setSummarizeDialogOpen(false);
+                }}
+              >
+                Abort
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
     </VStack>
   );
 }

@@ -19,6 +19,7 @@ class ReflectionSession {
     [];
   summarizing: boolean = false;
   sessionId: string = crypto.randomUUID().slice(0, 8);
+  private summarizerAbortController: AbortController | null = null;
 
   sessionInitialized: Promise<void>;
   static createInitialPrompts(
@@ -81,9 +82,14 @@ class ReflectionSession {
     }
 
     this.summarizing = true;
+    this.notifySubscribers();
 
     try {
-      const summary = await ReflectionSummarizer.summarize(this.reflection);
+      this.summarizerAbortController = new AbortController();
+      const summary = await ReflectionSummarizer.summarizeLong(
+        this.reflection,
+        this.summarizerAbortController,
+      );
       this.saveSummary(summary);
       this.reflection = { ...this.reflection, summary: summary as string };
       ReflectionIDB.setReflection(this.reflection.id, this.reflection);
@@ -92,6 +98,20 @@ class ReflectionSession {
       console.error('Error summarizing reflection', error);
     } finally {
       this.summarizing = false;
+      this.summarizerAbortController = null;
+      this.notifySubscribers();
+    }
+  }
+
+  abortSummarize() {
+    if (this.summarizerAbortController) {
+      try {
+        this.summarizerAbortController.abort('User aborted');
+      } finally {
+        this.summarizing = false;
+        this.summarizerAbortController = null;
+        this.notifySubscribers();
+      }
     }
   }
 

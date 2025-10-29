@@ -22,6 +22,7 @@ interface Summarizer {
 
 interface SummarizerSession {
   summarize(text: string, options?: unknown): Promise<string>;
+  destroy(): void;
 }
 
 declare global {

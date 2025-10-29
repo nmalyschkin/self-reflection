@@ -1,5 +1,5 @@
-import { ActionBar, Button, Menu, Portal, Text } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { ActionBar, Button, Menu, Portal, Text, Dialog } from '@chakra-ui/react';
+import { useRef, useState } from 'react';
 import type { Reflection } from '../../types';
 import ReflectionSession from '../../state/ReflectionSession';
 import DeleteReflection from '../../components/DeleteReflection';
@@ -16,34 +16,21 @@ export default function ReflectionActionBar({
   reflectionSession: ReflectionSession;
 }) {
   const [open, setOpen] = useState(false);
-  const hideTimerRef = useRef<number | null>(null);
   const openDeleteRef = useRef<() => void>(() => {});
   const openDeleteStateRef = useRef<boolean>(false);
+  const expandedContentRef = useRef<HTMLDivElement | null>(null);
+  const menuOpenRef = useRef<boolean>(false);
+  const [isSummarizeDialogOpen, setSummarizeDialogOpen] = useState(false);
 
-  const clearHideTimer = () => {
-    if (hideTimerRef.current != null) {
-      window.clearTimeout(hideTimerRef.current);
-      hideTimerRef.current = null;
-    }
-  };
-
-  const handleMouseEnter = () => {
-    clearHideTimer();
-    setOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    // Don't auto-collapse while a dialog is open
-    if (openDeleteStateRef.current) {
+  const handleExpandedBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    const next = e.relatedTarget as Node | null;
+    if (openDeleteStateRef.current || menuOpenRef.current || isSummarizeDialogOpen) {
       return;
     }
-    clearHideTimer();
-    hideTimerRef.current = window.setTimeout(() => setOpen(false), 2000);
+    if (!next || (expandedContentRef.current && !expandedContentRef.current.contains(next))) {
+      setOpen(false);
+    }
   };
-
-  useEffect(() => {
-    return () => clearHideTimer();
-  }, []);
 
   return (
     <>
@@ -52,18 +39,17 @@ export default function ReflectionActionBar({
         <ActionBar.Root open>
           <Portal>
             <ActionBar.Positioner>
-              <ActionBar.Content
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                w="auto"
-                mx="auto"
-                rounded="md"
-                px={3}
-                py={1}
-              >
-                <Text fontSize="sm" color="gray.500">
-                  •••
-                </Text>
+              <ActionBar.Content w="auto" mx="auto" rounded="md" px={3} py={1}>
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  aria-label="Open actions"
+                  onClick={() => setOpen(true)}
+                >
+                  <Text fontSize="sm" color="gray.500">
+                    •••
+                  </Text>
+                </Button>
               </ActionBar.Content>
             </ActionBar.Positioner>
           </Portal>
@@ -83,11 +69,15 @@ export default function ReflectionActionBar({
       >
         <Portal>
           <ActionBar.Positioner>
-            <ActionBar.Content onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-              <Menu.Root>
+            <ActionBar.Content ref={expandedContentRef} onBlur={handleExpandedBlur}>
+              <Menu.Root
+                onOpenChange={(e) => {
+                  menuOpenRef.current = e.open;
+                }}
+              >
                 <Menu.Trigger asChild>
                   <Button variant="outline" size="sm">
-                    Tools
+                    Summarize
                   </Button>
                 </Menu.Trigger>
                 <Portal>
@@ -97,10 +87,12 @@ export default function ReflectionActionBar({
                         value="summary-of-all-entries"
                         disabled={reflection?.entries.length === 0}
                         onClick={() => {
-                          reflectionSession?.summarize();
+                          setSummarizeDialogOpen(true);
+                          const p = reflectionSession?.summarize();
+                          Promise.resolve(p).finally(() => setSummarizeDialogOpen(false));
                         }}
                       >
-                        Summary of all entries
+                        Summarize all entries
                       </Menu.Item>
                     </Menu.Content>
                   </Menu.Positioner>
@@ -112,7 +104,6 @@ export default function ReflectionActionBar({
               <Button
                 variant="outline"
                 onClick={() => {
-                  clearHideTimer();
                   setOpen(true);
                   openDeleteRef.current();
                 }}
@@ -123,6 +114,30 @@ export default function ReflectionActionBar({
           </ActionBar.Positioner>
         </Portal>
       </ActionBar.Root>
+      <Dialog.Root
+        open={isSummarizeDialogOpen}
+        onOpenChange={(e) => setSummarizeDialogOpen(e.open)}
+      >
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header fontSize="lg" fontWeight="bold">
+              Summarizing
+            </Dialog.Header>
+            <Dialog.Body>summarizing...</Dialog.Body>
+            <Dialog.Footer>
+              <Button
+                onClick={() => {
+                  reflectionSession?.abortSummarize();
+                  setSummarizeDialogOpen(false);
+                }}
+              >
+                Abort
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
       <DeleteReflection
         reflectionId={reflection.id}
         onFinishDelete={onDelete}

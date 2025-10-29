@@ -17,6 +17,7 @@ export interface Reflection {
 export type Question = Omit<Reflection, 'personaId'> & {
   domainId: string;
   finished: boolean;
+  headline?: string;
 };
 
 export type Reflections = Reflection[];

@@ -14,6 +14,7 @@ class DomainSession {
   private subscribers: ((question: Question, promptState: 'idle' | 'processing') => void)[] = [];
   summarizing: boolean = false;
   sessionId: string = crypto.randomUUID().slice(0, 8);
+  private summarizerAbortController: AbortController | null = null;
 
   sessionInitialized: Promise<void>;
 
@@ -97,17 +98,40 @@ class DomainSession {
     }
 
     this.summarizing = true;
+    this.notifySubscribers();
 
     try {
-      const summary = await ReflectionSummarizer.summarize(this.question);
+      this.summarizerAbortController = new AbortController();
+      const [summary, headline] = await Promise.all([
+        ReflectionSummarizer.summarizeLong(this.question, this.summarizerAbortController),
+        ReflectionSummarizer.summarizeHeadline(this.question, this.summarizerAbortController),
+      ]);
 
-      this.question = { ...this.question, summary: summary as string } as Question;
+      this.question = {
+        ...this.question,
+        summary: summary,
+        headline: headline,
+      } as Question;
       await DomainIDB.setQuestion(this.question.domainId, this.question.id, this.question);
       this.notifySubscribers();
     } catch (error) {
       console.error('Error summarizing question', error);
     } finally {
       this.summarizing = false;
+      this.summarizerAbortController = null;
+      this.notifySubscribers();
+    }
+  }
+
+  abortSummarize() {
+    if (this.summarizerAbortController) {
+      try {
+        this.summarizerAbortController.abort('User aborted');
+      } finally {
+        this.summarizing = false;
+        this.summarizerAbortController = null;
+        this.notifySubscribers();
+      }
     }
   }
 
