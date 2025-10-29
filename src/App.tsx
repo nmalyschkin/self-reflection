@@ -10,9 +10,11 @@ import InstallAPI from './views/InstallAPI';
 import Domains from './views/Domain/DomainOverview';
 import Domain from './views/Domain/Domain';
 import Question from './views/Domain/Question';
-const DebugOverview = import.meta.env.DEV ? lazy(() => import('./debug/overview')) : undefined;
-const DebugSummarizer = import.meta.env.DEV ? lazy(() => import('./debug/summarizer')) : undefined;
-const DebugPersona = import.meta.env.DEV ? lazy(() => import('./debug/persona')) : undefined;
+const isDebugBuild = import.meta.env.DEV || import.meta.env.MODE === 'development';
+const DebugOverview = isDebugBuild ? lazy(() => import('./debug/overview')) : undefined;
+const DebugSummarizer = isDebugBuild ? lazy(() => import('./debug/summarizer')) : undefined;
+const DebugRewriter = isDebugBuild ? lazy(() => import('./debug/rewriter')) : undefined;
+const DebugPersona = isDebugBuild ? lazy(() => import('./debug/persona')) : undefined;
 
 function hasLanguageModel(): boolean {
   return typeof window !== 'undefined' && 'LanguageModel' in (window as any);
@@ -113,7 +115,7 @@ function App() {
           <Route path="/domains" element={<Domains />} />
           <Route path="/domains/:id" element={<Domain />} />
           <Route path="/domains/:domainId/questions/:questionId" element={<Question />} />
-          {import.meta.env.DEV && DebugOverview ? (
+          {isDebugBuild && DebugOverview ? (
             <Route
               path="/debug"
               element={
@@ -123,7 +125,7 @@ function App() {
               }
             />
           ) : null}
-          {import.meta.env.DEV && DebugSummarizer ? (
+          {isDebugBuild && DebugSummarizer ? (
             <Route
               path="/debug/summarizer"
               element={
@@ -133,7 +135,17 @@ function App() {
               }
             />
           ) : null}
-          {import.meta.env.DEV && DebugPersona ? (
+          {isDebugBuild && DebugRewriter ? (
+            <Route
+              path="/debug/rewriter"
+              element={
+                <Suspense fallback={<div />}>
+                  <DebugRewriter />
+                </Suspense>
+              }
+            />
+          ) : null}
+          {isDebugBuild && DebugPersona ? (
             <Route
               path="/debug/persona"
               element={
