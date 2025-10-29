@@ -4,6 +4,7 @@ import type { Reflection } from '../types';
 import type { PersonaId } from '../types';
 import { DEFAULT_PERSONA_ID, getPersona } from '../data/personas';
 import ReflectionIDB from './ReflectionIDB';
+import { ReflectionSummarizer } from '../tools/ReflectionSummarizer';
 
 class ReflectionSession {
   private session: LanguageModelSession | null = null;
@@ -75,27 +76,15 @@ class ReflectionSession {
     if (this.promptState === 'processing') {
       throw new Error('Prompt is already processing');
     }
+    if (!this.reflection) {
+      throw new Error('Reflection not initialized');
+    }
 
     this.summarizing = true;
 
     try {
-      const controller = new AbortController();
-      const summary = await this.session.prompt(
-        [
-          {
-            role: 'system',
-            content: `Summarize the self reflection based on the user's input and output the summary in markdown format.
-          Try to keep the user's voice and perspective in the summary.
-          Use the I perspective to write the summary.`,
-          },
-        ],
-        {
-          signal: controller.signal,
-        },
-      );
-      if (!this.reflection) {
-        throw new Error('Reflection not initialized');
-      }
+      const summary = await ReflectionSummarizer.summarize(this.reflection);
+      this.saveSummary(summary);
       this.reflection = { ...this.reflection, summary: summary as string };
       ReflectionIDB.setReflection(this.reflection.id, this.reflection);
       this.notifySubscribers();

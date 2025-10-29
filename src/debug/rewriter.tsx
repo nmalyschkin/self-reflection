@@ -21,10 +21,12 @@ type RewriterFormat = 'markdown' | 'plain-text' | 'as-is';
 type RewriterLength = 'shorter' | 'as-is' | 'longer';
 
 export default function RewriterDebug() {
-  const [sharedContext, setSharedContext] = useState<string>('This is a demo context.');
+  const [sharedContext, setSharedContext] = useState<string>(
+    'This is the user input from a self reflection dialogue. Rewrite it into a coherent self-reflection without loosing any orignal thoughts. Try to retain the wording used by the user.',
+  );
   const [tone, setTone] = useState<RewriterTone>('as-is');
   const [format, setFormat] = useState<RewriterFormat>('markdown');
-  const [length, setLength] = useState<RewriterLength>('as-is');
+  const [length, setLength] = useState<RewriterLength>('shorter');
   const [markdownInput, setMarkdownInput] = useState<string>(
     '## Example\n\nRewrite this markdown to a different tone or length.',
   );

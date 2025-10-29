@@ -2,6 +2,7 @@ import type { LanguageModelSession } from '../global';
 import type { Entry, Question } from '../types';
 import { domains as domainsRecord } from '../data/domains';
 import DomainIDB from './DomainIDB';
+import { ReflectionSummarizer } from '../tools/ReflectionSummarizer';
 
 class DomainSession {
   private session: LanguageModelSession | null = null;
@@ -98,34 +99,10 @@ class DomainSession {
     this.summarizing = true;
 
     try {
-      const controller = new AbortController();
+      const summary = await ReflectionSummarizer.summarize(this.question);
 
-      const initialPrompts = [
-        ...this.question.entries
-          .filter((e) => e.type === 'user')
-          .map((e) => ({
-            role: 'user',
-            content: e.text,
-          })),
-      ];
-      console.log('initialPrompts', initialPrompts);
-      const summarySession = await window.LanguageModel.create({
-        initialPrompts,
-      });
-      const summary = await summarySession.prompt(
-        [
-          {
-            role: 'system',
-            content: `Summarize the conversation in markdown. Keep user's voice and perspective. Use first person.`,
-          },
-        ],
-        {
-          signal: controller.signal,
-        },
-      );
       this.question = { ...this.question, summary: summary as string } as Question;
       await DomainIDB.setQuestion(this.question.domainId, this.question.id, this.question);
-      summarySession.destroy();
       this.notifySubscribers();
     } catch (error) {
       console.error('Error summarizing question', error);
