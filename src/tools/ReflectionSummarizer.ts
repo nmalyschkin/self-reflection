@@ -36,14 +36,22 @@ export class ReflectionSummarizer {
       .join('\n');
 
     const summarizer = await window.Summarizer.create({
-      sharedContext: 'Summarize the key points of the following text.', // TODO: add shared context
+      sharedContext:
+        'Analyze the text to identify the main conclusions, decisions, or action items. Focus on outcomes rather than just descriptions.',
       type: 'key-points',
       format: 'markdown',
       length: 'medium',
       signal: controller?.signal,
     });
 
-    const summary = summarizer.summarize(text, { signal: controller?.signal });
+    const summary = summarizer.summarize(text, {
+      signal: controller?.signal,
+      context: `A key-point should look like this:
+- I want to ...
+- I feel that ... 
+Make it as if the author of the reflection wrote the key points themselves.
+`,
+    });
     summary.finally(() => {
       summarizer.destroy();
     });
@@ -61,14 +69,23 @@ export class ReflectionSummarizer {
       .join('\n');
 
     const summarizer = await window.Summarizer.create({
-      sharedContext: 'Summarize the headline of the following text.', // TODO: add shared context
       type: 'headline',
-      format: 'markdown',
       length: 'short',
+      format: 'plain-text',
       signal: controller?.signal,
     });
 
-    const summary = summarizer.summarize(text, { signal: controller?.signal });
+    const summary = summarizer.summarize(text, {
+      signal: controller?.signal,
+      context: `This is a user reflection about: ${reflection.title}
+The user gives a specific example to illustrate an underlying principle.
+Distil *only the underlying principle* into one sentence, formatted as a general belief.
+Do not summarize the example itself.
+Here are some examples:
+- I value happiness over material things
+- Social recognition is important to me
+- Emotional wellbeing is important`,
+    });
     summary.finally(() => {
       summarizer.destroy();
     });

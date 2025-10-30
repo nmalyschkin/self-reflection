@@ -70,7 +70,7 @@ class ReflectionSession {
     }
   }
 
-  async summarize() {
+  async summarize(type: 'long' | 'key-points' = 'long') {
     if (!this.session) {
       throw new Error('Session not initialized');
     }
@@ -86,10 +86,17 @@ class ReflectionSession {
 
     try {
       this.summarizerAbortController = new AbortController();
-      const summary = await ReflectionSummarizer.summarizeLong(
-        this.reflection,
-        this.summarizerAbortController,
-      );
+      let summarizer: (reflection: Reflection, controller?: AbortController) => Promise<string>;
+      switch (type) {
+        case 'long':
+        default:
+          summarizer = ReflectionSummarizer.summarizeLong;
+          break;
+        case 'key-points':
+          summarizer = ReflectionSummarizer.summarizeKeyPoints;
+          break;
+      }
+      const summary = await summarizer(this.reflection, this.summarizerAbortController);
       this.saveSummary(summary);
       this.reflection = { ...this.reflection, summary: summary as string };
       ReflectionIDB.setReflection(this.reflection.id, this.reflection);

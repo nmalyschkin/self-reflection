@@ -84,15 +84,26 @@ export default function ReflectionActionBar({
                   <Menu.Positioner>
                     <Menu.Content>
                       <Menu.Item
-                        value="summary-of-all-entries"
+                        value="summary-long"
                         disabled={reflection?.entries.length === 0}
                         onClick={() => {
                           setSummarizeDialogOpen(true);
-                          const p = reflectionSession?.summarize();
-                          Promise.resolve(p).finally(() => setSummarizeDialogOpen(false));
+                          const p = reflectionSession?.summarize('long');
+                          p.finally(() => setSummarizeDialogOpen(false));
                         }}
                       >
-                        Summarize all entries
+                        Summarize long
+                      </Menu.Item>
+                      <Menu.Item
+                        value="summary-key-points"
+                        disabled={reflection?.entries.length === 0}
+                        onClick={() => {
+                          setSummarizeDialogOpen(true);
+                          const p = reflectionSession?.summarize('key-points');
+                          p.finally(() => setSummarizeDialogOpen(false));
+                        }}
+                      >
+                        Summarize key points
                       </Menu.Item>
                     </Menu.Content>
                   </Menu.Positioner>

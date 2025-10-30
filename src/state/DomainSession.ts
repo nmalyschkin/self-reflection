@@ -112,6 +112,7 @@ class DomainSession {
         summary: summary,
         headline: headline,
       } as Question;
+      console.log('summarized question', summary, headline);
       await DomainIDB.setQuestion(this.question.domainId, this.question.id, this.question);
       this.notifySubscribers();
     } catch (error) {
