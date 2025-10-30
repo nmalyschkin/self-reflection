@@ -10,6 +10,10 @@ interface Domain {
   }[];
 }
 
+// IDs exposed for clarity across state/data layers
+export type DomainId = string;
+export type QuestionId = string;
+
 export const domains: Record<string, Domain> = {
   innerCompass: {
     name: 'The Inner Compass',
@@ -417,3 +421,20 @@ Clarity in this domain is the bedrock of a well-examined life. However, this cla
     ],
   },
 };
+
+// Lightweight helpers to keep lookups DRY and safe
+export const domainIds: readonly DomainId[] = Object.freeze(Object.keys(domains));
+export const domainsMap: ReadonlyMap<DomainId, Domain> = new Map(Object.entries(domains));
+
+export function getDomain(domainId: DomainId): Domain | undefined {
+  return domainsMap.get(domainId);
+}
+
+export function getQuestionMeta(domainId: DomainId, questionId: QuestionId) {
+  const d = getDomain(domainId);
+  return d?.questions.find((q) => q.id === questionId);
+}
+
+export function getQuestionCount(domainId: DomainId): number {
+  return getDomain(domainId)?.questions.length ?? 0;
+}

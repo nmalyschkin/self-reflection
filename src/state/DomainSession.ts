@@ -10,14 +10,29 @@ import {
 } from '../language/languageSelection';
 import i18n from '../i18n';
 
+type PromptState = 'idle' | 'processing';
+type DomainResponse = { question: string };
+
+function parseDomainResponse(raw: string): DomainResponse {
+  try {
+    const parsed = JSON.parse(raw);
+    const obj = Array.isArray(parsed) ? parsed[0] : parsed;
+    const question = typeof obj?.question === 'string' ? obj.question.trim() : '';
+    if (!question) throw new Error('Invalid response: missing question');
+    return { question };
+  } catch {
+    throw new Error('Failed to parse model response');
+  }
+}
+
 class DomainSession {
   private session: LanguageModelSession | null = null;
   private responseSchema: any = {
     question: 'string',
   };
   question: Question | null = null;
-  private promptState: 'idle' | 'processing' = 'idle';
-  private subscribers: ((question: Question, promptState: 'idle' | 'processing') => void)[] = [];
+  private promptState: PromptState = 'idle';
+  private subscribers: ((question: Question, promptState: PromptState) => void)[] = [];
   summarizing: boolean = false;
   sessionId: string = crypto.randomUUID().slice(0, 8);
   private summarizerAbortController: AbortController | null = null;
@@ -118,12 +133,7 @@ class DomainSession {
         ReflectionSummarizer.summarizeHeadline(this.question, this.summarizerAbortController),
       ]);
 
-      this.question = {
-        ...this.question,
-        summary: summary,
-        headline: headline,
-      } as Question;
-      console.log('summarized question', summary, headline);
+      this.question = { ...this.question, summary: summary, headline: headline } as Question;
       await DomainIDB.setQuestion(this.question.domainId, this.question.id, this.question);
       this.notifySubscribers();
     } catch (error) {
@@ -206,17 +216,8 @@ class DomainSession {
         signal: controller.signal,
       })
       .then((response) => {
-        let parsed = JSON.parse(response);
-        if (Array.isArray(parsed)) {
-          parsed = parsed[0];
-        }
-        const { question } = parsed;
-
-        if (!question || typeof question !== 'string' || question.trim().length === 0) {
-          throw new Error('Invalid response');
-        }
-
-        const text = `*${question.trim()}*`;
+        const { question } = parseDomainResponse(response);
+        const text = `*${question}*`;
         this.addEntries(
           [
             {

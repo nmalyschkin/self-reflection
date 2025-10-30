@@ -1,6 +1,7 @@
 import { openDB } from 'idb';
 import type { Question } from '../types';
-import { domains as domainsRecord } from '../data/domains';
+import { domains as domainsRecord, getQuestionCount } from '../data/domains';
+import { formatTimestampForFilename } from './utils/format';
 
 const db = await openDB('domains', 2, {
   upgrade(db) {
@@ -30,23 +31,19 @@ class DomainIDB {
   }
 
   static async getDomainProgress(domainId: string): Promise<number> {
-    return await db
-      .getAllFromIndex('questions', 'by-domain', domainId)
-      .then((questions) =>
-        Math.round(
-          (questions.filter((q) => q.finished).length / domainsRecord[domainId].questions.length) *
-            100,
-        ),
-      );
+    return await db.getAllFromIndex('questions', 'by-domain', domainId).then((questions) => {
+      const total = getQuestionCount(domainId);
+      if (total === 0) return 0;
+      const finished = questions.filter((q) => q.finished).length;
+      return Math.round((finished / total) * 100);
+    });
   }
 
   static async getAllDomainProgress(): Promise<Record<string, number>> {
-    return Promise.all(
-      Object.keys(domainsRecord).map((domainId) => this.getDomainProgress(domainId)),
-    ).then((progresses) =>
-      Object.fromEntries(
-        progresses.map((progress, index) => [Object.keys(domainsRecord)[index], progress]),
-      ),
+    const keys = Object.keys(domainsRecord);
+    return Promise.all(keys.map((domainId) => this.getDomainProgress(domainId))).then(
+      (progresses) =>
+        Object.fromEntries(progresses.map((progress, index) => [keys[index], progress])),
     );
   }
 
@@ -61,12 +58,7 @@ class DomainIDB {
 
   static async exportData(): Promise<{ filename: string; data: any[] }> {
     const questions = (await db.getAll('questions')) as any[];
-    const timestamp = new Date()
-      .toISOString()
-      .replace(/[:.]/g, '-')
-      .replace('T', '_')
-      .replace('Z', 'Z');
-    const filename = `domains-${timestamp}.json`;
+    const filename = formatTimestampForFilename('domains');
     return { filename, data: questions };
   }
 

@@ -2,8 +2,7 @@ import { openDB } from 'idb';
 import type { Reflection } from '../types';
 import { DEFAULT_PERSONA_ID } from '../data/personas';
 import { languageSelection } from '../language/languageSelection';
-
-console.log('ReflectionIDB');
+import { formatTimestampForFilename } from './utils/format';
 
 const db = await openDB('reflections', 1, {
   upgrade(db) {
@@ -47,12 +46,7 @@ class ReflectionIDB {
 
   static async exportData(): Promise<{ filename: string; data: Reflection[] }> {
     const reflections = await this.getReflections();
-    const timestamp = new Date()
-      .toISOString()
-      .replace(/[:.]/g, '-')
-      .replace('T', '_')
-      .replace('Z', 'Z');
-    const filename = `reflections-${timestamp}.json`;
+    const filename = formatTimestampForFilename('reflections');
     return { filename, data: reflections };
   }
 

@@ -7,6 +7,23 @@ import ReflectionIDB from './ReflectionIDB';
 import { ReflectionSummarizer } from '../tools/ReflectionSummarizer';
 import { languageOptions, languageAppendix } from '../language/languageSelection';
 
+type PromptState = 'idle' | 'processing';
+type ReflectionResponse = { title?: string; acknowledgement: string; question: string };
+
+function parseReflectionResponse(raw: string): ReflectionResponse {
+  try {
+    const parsed = JSON.parse(raw);
+    const obj = Array.isArray(parsed) ? parsed[0] : parsed;
+    const question = typeof obj?.question === 'string' ? obj.question.trim() : '';
+    const acknowledgement = typeof obj?.acknowledgement === 'string' ? obj.acknowledgement : '';
+    const title = typeof obj?.title === 'string' ? obj.title.trim() : undefined;
+    if (!question || !acknowledgement) throw new Error('Invalid response');
+    return { question, acknowledgement, title };
+  } catch {
+    throw new Error('Failed to parse model response');
+  }
+}
+
 class ReflectionSession {
   private session: LanguageModelSession | null = null;
   private responseSchema: any = {
@@ -15,9 +32,8 @@ class ReflectionSession {
     question: 'string',
   };
   reflection: Reflection | null = null;
-  private promptState: 'idle' | 'processing' = 'idle';
-  private subscribers: ((reflection: Reflection, promptState: 'idle' | 'processing') => void)[] =
-    [];
+  private promptState: PromptState = 'idle';
+  private subscribers: ((reflection: Reflection, promptState: PromptState) => void)[] = [];
   summarizing: boolean = false;
   sessionId: string = crypto.randomUUID().slice(0, 8);
   private summarizerAbortController: AbortController | null = null;
@@ -60,12 +76,6 @@ class ReflectionSession {
           initialPrompts: initialPrompts,
           ...languageOptions(reflection?.language),
         });
-        console.log(
-          'session initialized',
-          this.session,
-          reflection,
-          languageOptions(reflection?.language),
-        );
         resolve();
       })();
     });
@@ -197,19 +207,10 @@ class ReflectionSession {
         signal: controller.signal,
       })
       .then((response) => {
-        let parsed = JSON.parse(response);
-        if (Array.isArray(parsed)) {
-          parsed = parsed[0];
-        }
-        const { question, title, acknowledgement } = parsed;
-
-        if (!question || !acknowledgement) {
-          throw new Error('Invalid response');
-        }
-
+        const { question, title, acknowledgement } = parseReflectionResponse(response);
         const text = `${acknowledgement}
 
-*${question.trim()}*`;
+*${question}*`;
         this.addEntries(
           [
             {
@@ -272,6 +273,13 @@ class ReflectionSession {
     return () => {
       this.subscribers = this.subscribers.filter((c) => c !== callback);
     };
+  }
+
+  // Backwards-compatible correctly spelled alias
+  subscribeReflectionState(
+    callback: (reflection: Reflection, promptState: PromptState) => void,
+  ): () => void {
+    return this.subscribeReflectioState(callback as any);
   }
 
   private notifySubscribers() {
