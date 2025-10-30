@@ -1,0 +1,60 @@
+{
+  "app.title": "セルフリフレクション",
+  "app.menuAria": "メニューを開く",
+  "app.modelReady": "モデルのダウンロード準備ができました…",
+  "app.downloading": "オンデバイスモデルをダウンロード中… {{pct, number}}%",
+
+  "sidebar.home": "ホーム",
+  "sidebar.newReflection": "新しいリフレクション",
+  "sidebar.domains": "ドメイン",
+  "sidebar.feedback": "フィードバック",
+  "sidebar.about": "このアプリについて",
+  "sidebar.language": "言語",
+
+  "start.startReflecting": "リフレクションを開始",
+  "start.downloadModel": "モデルをダウンロード",
+  "start.history": "履歴",
+  "start.emptyHistory": "まだリフレクションがありません。",
+  "start.draft": "下書き",
+  "start.delete": "リフレクションを削除",
+
+  "domains.percentComplete": "{{pct}}% 完了",
+
+  "domain.notFound": "ドメインが見つかりません",
+  "domain.notFoundDesc": "要求されたドメインは存在しません。",
+
+  "nav.back": "戻る",
+
+  "question.initializing": "セッションを初期化中...",
+  "question.thinking": "考え中...",
+  "question.abort": "中止",
+  "question.goDeeper": "さらに深掘りする",
+  "question.finishAndSummarize": "終了して要約",
+  "question.tabs.chat": "チャット",
+  "question.tabs.summary": "要約",
+  "question.summarizing.title": "要約中",
+  "question.summarizing.body": "要約しています...",
+
+  "md.support": "Markdownをサポートしています",
+  "md.dismiss": "閉じる",
+
+  "installApi.title": "このアプリは実験的な Chrome Prompt API を使用して構築されています",
+  "installApi.instruction": "Chrome Flag で Prompt API を有効にしてください:",
+  "installApi.learnMore": "詳細はこちら",
+  "installApi.flagPath": "chrome://flags/#prompt-api-for-gemini-nano-multimodal-input",
+
+  "about.title": "このアプリについて",
+  "about.body1": "このアプリはブラウザ技術を使用しており、完全にローカルおよびオフラインで動作します。私たちはデータを収集・保存せず、あなたのAIとのやり取りはすべてブラウザ内でローカルに実行されます。",
+  "about.mobile.title": "モバイル互換性",
+  "about.mobile.body": "ブラウザのAI APIはモバイルをサポートしていないため、このアプリはまだモバイルデバイスに対応していません。",
+  "reflection.initializing": "AIセッションを初期化中...",
+  "reflection.placeholder": "リフレクションを記入...",
+  "reflection.deeper": "より深く内省する",
+  "reflection.summarize": "要約する",
+  "reflection.summarizeLong": "長く要約する",
+  "reflection.summarizeKeyPoints": "キーポイントを要約する",
+  "reflection.save": "保存",
+  "reflection.delete": "削除",
+  "reflection.openActions": "アクションを開く",
+  "persona.locked": "リフレクション開始後はペルソナを変更できません"
+}

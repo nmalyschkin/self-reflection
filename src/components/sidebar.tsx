@@ -90,9 +90,11 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                   <Button variant="outline" size="sm" w="full" justifyContent="flex-start">
                     <Flex align="center" gap={2}>
                       <Box fontSize="lg" lineHeight={1}>
-                        {lang === 'en' ? '🇬🇧' : '🇪🇸'}
+                        {lang === 'en' ? '🇬🇧' : lang === 'es' ? '🇪🇸' : '🇯🇵'}
                       </Box>
-                      <Text fontSize="sm">{lang === 'en' ? 'English' : 'Español'}</Text>
+                      <Text fontSize="sm">
+                        {lang === 'en' ? 'English' : lang === 'es' ? 'Español' : '日本語'}
+                      </Text>
                     </Flex>
                   </Button>
                 </Menu.Trigger>
@@ -129,6 +131,22 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                             {'🇪🇸'}
                           </Box>
                           <Text fontSize="sm">Español</Text>
+                        </Flex>
+                      </Menu.Item>
+                      <Menu.Item
+                        value="ja"
+                        onClick={() => {
+                          const value = 'ja' as LanguageCode;
+                          setLang(value);
+                          setUserLanguage(value);
+                          void i18n.changeLanguage(value);
+                        }}
+                      >
+                        <Flex align="center" gap={2}>
+                          <Box fontSize="lg" lineHeight={1}>
+                            {'🇯🇵'}
+                          </Box>
+                          <Text fontSize="sm">日本語</Text>
                         </Flex>
                       </Menu.Item>
                     </Menu.Content>

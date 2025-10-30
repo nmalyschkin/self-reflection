@@ -1,4 +1,4 @@
-export type LanguageCode = 'en' | 'es';
+export type LanguageCode = 'en' | 'es' | 'ja';
 
 class LanguageSelection {
   private static instance: LanguageSelection | null = null;
@@ -48,7 +48,7 @@ class LanguageSelection {
   private detectDefault(): LanguageCode {
     if (typeof navigator !== 'undefined' && navigator.language) {
       const primary = navigator.language.split('-')[0];
-      if (!['en', 'es'].includes(primary)) {
+      if (!['en', 'es', 'ja'].includes(primary)) {
         return 'en';
       }
       return primary as LanguageCode;
@@ -61,11 +61,11 @@ export const languageAppendix = (language: LanguageCode | undefined) => {
   switch (language) {
     case 'es':
       return 'Please respond in spanish.';
+    case 'ja':
+      return 'Please respond in japanese.';
     case 'en':
     default:
       return 'Please respond in english.';
-    //   case 'ja':
-    //     return 'Please respond in japanese.';
   }
 };
 

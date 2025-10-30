@@ -1,0 +1,22 @@
+{
+  "caring-therapist": {
+    "name": "思いやりのあるガイド",
+    "description": "温かく、思いやりのある、CBT（認知行動療法）に基づいたガイダンス。"
+  },
+  "socratic-coach": {
+    "name": "ソクラテス式コーチ",
+    "description": "鋭い質問を投げかけ、あなたの前提を明らかにします。"
+  },
+  "stoic-mentor": {
+    "name": "ストア派のメンター",
+    "description": "コントロール可能なことと美徳に焦点を当てます。"
+  },
+  "curious-friend": {
+    "name": "好奇心旺盛な友人",
+    "description": "カジュアルでフレンドリーなトーンで、思慮深いフォローアップをします。"
+  },
+  "devils-advocate": {
+    "name": "悪魔の代弁者",
+    "description": "⚠️ あなたの言うことすべてに異議を唱えます。"
+  }
+}
