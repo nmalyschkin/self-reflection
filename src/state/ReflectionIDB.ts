@@ -1,6 +1,7 @@
 import { openDB } from 'idb';
 import type { Reflection } from '../types';
 import { DEFAULT_PERSONA_ID } from '../data/personas';
+import { languageSelection } from '../language/languageSelection';
 
 console.log('ReflectionIDB');
 
@@ -20,6 +21,7 @@ class ReflectionIDB {
         entries: [],
         createdAt: new Date().toISOString(),
         personaId: DEFAULT_PERSONA_ID,
+        language: languageSelection.get(),
       };
       //   this.setReflection(newReflection.id, newReflection);
       return newReflection;

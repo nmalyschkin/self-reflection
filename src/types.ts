@@ -1,3 +1,4 @@
+import type { LanguageCode } from './language/languageSelection';
 export type Entry = {
   text: string;
   createdAt: string;
@@ -12,6 +13,7 @@ export interface Reflection {
   personaId?: PersonaId;
   unsubmittedText?: string;
   summary?: string;
+  language?: LanguageCode;
 }
 
 export type Question = Omit<Reflection, 'personaId'> & {

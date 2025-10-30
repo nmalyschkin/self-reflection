@@ -15,6 +15,7 @@ import type { LanguageModelSession } from '../global';
 import type { Entry } from '../types';
 import MDText from '../components/markdown/MDText';
 import MDRender from '../components/markdown/MDRender';
+import { languageOptions } from '../language/languageSelection';
 
 export default function PersonaDebug() {
   const [systemPreamble, setSystemPreamble] = useState<string>(
@@ -68,7 +69,7 @@ export default function PersonaDebug() {
           // 'The acknowledgement should reflect empathy and briefly reflect the user input. The question should be one concise follow-up question.',
         },
       ];
-      const s = await window.LanguageModel.create({ initialPrompts });
+      const s = await window.LanguageModel.create({ initialPrompts, ...languageOptions() });
       sessionRef.current = s;
       setSession(s);
     } catch (e: any) {

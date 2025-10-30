@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import MDText from '../components/markdown/MDText';
 import MDRender from '../components/markdown/MDRender';
+import { languageOptionsRewriter } from '../language/languageSelection';
 
 type RewriterTone = 'more-formal' | 'as-is' | 'more-casual';
 type RewriterFormat = 'markdown' | 'plain-text' | 'as-is';
@@ -52,9 +53,7 @@ export default function RewriterDebug() {
         tone,
         format,
         length,
-        expectedInputLanguages: ['en'],
-        expectedContextLanguages: ['en'],
-        outputLanguage: 'en',
+        ...languageOptionsRewriter(),
       };
 
       // Availability check and potential download monitoring

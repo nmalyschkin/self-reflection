@@ -3,6 +3,7 @@ import type { Entry, Question } from '../types';
 import { domains as domainsRecord } from '../data/domains';
 import DomainIDB from './DomainIDB';
 import { ReflectionSummarizer } from '../tools/ReflectionSummarizer';
+import { languageOptions, languageSelection } from '../language/languageSelection';
 
 class DomainSession {
   private session: LanguageModelSession | null = null;
@@ -66,6 +67,7 @@ class DomainSession {
               createdAt: new Date().toISOString(),
               finished: false,
               title: qMeta?.shortDescription,
+              language: languageSelection.get(),
             } as Question;
           })();
 
@@ -73,6 +75,7 @@ class DomainSession {
         const initialPrompts = DomainSession.createInitialPrompts(question);
         this.session = await window.LanguageModel.create({
           initialPrompts,
+          ...languageOptions(question?.language),
         });
         resolve();
       })();

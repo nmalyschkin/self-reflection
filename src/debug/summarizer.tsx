@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import MDText from '../components/markdown/MDText';
 import MDRender from '../components/markdown/MDRender';
+import { languageOptionsRewriter } from '../language/languageSelection';
 
 type SummaryType = 'key-points' | 'tldr' | 'teaser' | 'headline';
 type SummaryFormat = 'markdown' | 'plain-text';
@@ -50,6 +51,7 @@ export default function SummarizerDebug() {
         type: summaryType,
         format: summaryFormat,
         length: summaryLength,
+        ...languageOptionsRewriter(),
       };
 
       // Button click provides user activation

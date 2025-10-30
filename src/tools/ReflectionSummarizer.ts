@@ -1,3 +1,4 @@
+import { languageOptionsRewriter } from '../language/languageSelection';
 import type { Reflection, Question } from '../types';
 
 export class ReflectionSummarizer {
@@ -16,6 +17,7 @@ export class ReflectionSummarizer {
       format: 'markdown',
       length: 'shorter',
       signal: controller?.signal,
+      ...languageOptionsRewriter(reflection?.language),
     });
 
     const summary = summarizer.rewrite(text, { signal: controller?.signal });
@@ -42,6 +44,7 @@ export class ReflectionSummarizer {
       format: 'markdown',
       length: 'medium',
       signal: controller?.signal,
+      ...languageOptionsRewriter(reflection?.language),
     });
 
     const summary = summarizer.summarize(text, {
@@ -73,6 +76,7 @@ Make it as if the author of the reflection wrote the key points themselves.
       length: 'short',
       format: 'plain-text',
       signal: controller?.signal,
+      ...languageOptionsRewriter(reflection?.language),
     });
 
     const summary = summarizer.summarize(text, {

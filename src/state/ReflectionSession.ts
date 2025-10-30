@@ -5,6 +5,7 @@ import type { PersonaId } from '../types';
 import { DEFAULT_PERSONA_ID, getPersona } from '../data/personas';
 import ReflectionIDB from './ReflectionIDB';
 import { ReflectionSummarizer } from '../tools/ReflectionSummarizer';
+import { languageOptions } from '../language/languageSelection';
 
 class ReflectionSession {
   private session: LanguageModelSession | null = null;
@@ -57,6 +58,7 @@ class ReflectionSession {
         const initialPrompts = ReflectionSession.createInitialPrompts(reflection);
         this.session = await window.LanguageModel.create({
           initialPrompts: initialPrompts,
+          ...languageOptions(reflection?.language),
         });
         resolve();
       })();
