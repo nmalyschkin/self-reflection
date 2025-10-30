@@ -1,6 +1,6 @@
 import type { Reflection } from '../../types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Flex, Spinner, Text, VStack, Tabs, Box } from '@chakra-ui/react';
+import { Button, Flex, Spinner, Text, VStack, Box } from '@chakra-ui/react';
 import MDText from '../../components/markdown/MDText';
 import ReflectionSession from '../../state/ReflectionSession';
 import ReflectionHeaderBar from './reflectionHeaderBar';
@@ -10,6 +10,8 @@ import MDHint from './MDHint';
 import ReflectionChatEntries from './ReflectionChatEntries';
 import { useTranslation } from 'react-i18next';
 import { getSubmitShortcut } from '../../tools/Oshelper';
+import ChatSummaryTabs from '../shared/ChatSummaryTabs';
+import { useSaveOnUnmount } from '../shared/useSaveOnUnmount';
 
 type Props = {
   reflectionId: string | null;
@@ -25,7 +27,7 @@ export default function ReflectionSessionLoader({ reflectionId }: Props) {
 
   useEffect(() => {
     const reflectionSession = new ReflectionSession(reflectionId);
-    reflectionSession.subscribeReflectioState((reflection, promptState) => {
+    reflectionSession.subscribeReflectionState((reflection, promptState) => {
       setReflection(reflection);
       setPromptState(promptState);
     });
@@ -83,21 +85,12 @@ function ReflectView({
   const goBack = useNavigateTo('/');
 
   // Save unsubmitted text when the component unmounts
-  useEffect(() => {
-    return () => {
-      if (skippedSaveOnUnmountRef.current) {
-        return;
-      }
-      const input = inputRef.current;
-      if (
-        reflectionSession &&
-        reflectionSession.reflection &&
-        (input || reflectionSession.reflection.entries.length > 0)
-      ) {
-        reflectionSession.saveUnsubmittedText(input);
-      }
-    };
-  }, []);
+  useSaveOnUnmount(
+    skippedSaveOnUnmountRef,
+    () => inputRef.current,
+    () => !!reflectionSession?.reflection && reflectionSession.reflection.entries.length > 0,
+    (text) => reflectionSession.saveUnsubmittedText(text),
+  );
 
   const submitReflectionStatement = useCallback(() => {
     const input = inputRef.current;
@@ -169,39 +162,16 @@ function ReflectView({
         goBack={goBack}
       />
       {displayTabs ? (
-        <VStack gap={3} align="stretch" flex="1" overflow="hidden">
-          <Tabs.Root
-            value={activeTab}
-            onValueChange={(details) => setActiveTab(details.value as 'chat' | 'summary')}
-            display="flex"
-            flexDirection="column"
-            flex="1"
-            overflow="hidden"
-          >
-            <Tabs.List>
-              <Tabs.Trigger value="chat">{t('question.tabs.chat')}</Tabs.Trigger>
-              <Tabs.Trigger value="summary">{t('question.tabs.summary')}</Tabs.Trigger>
-            </Tabs.List>
-            {/* Chat tab: content grows with messages; scrolls only when needed; input sits just below */}
-            <Tabs.Content value="chat" display="flex" flexDirection="column" flex="1" minH={0}>
-              <Box flex="0 1 auto" overflowY="auto">
-                {chatContent}
-              </Box>
-              {chatInput}
-            </Tabs.Content>
-            {/* Summary tab: make content scrollable if long */}
-            <Tabs.Content value="summary" display="flex" flexDirection="column" flex="1" minH={0}>
-              <Box flex="1 1 auto" overflowY="auto">
-                <MDText
-                  value={reflection.summary || ''}
-                  onBlur={(summary) => {
-                    reflectionSession.saveSummary(summary);
-                  }}
-                />
-              </Box>
-            </Tabs.Content>
-          </Tabs.Root>
-        </VStack>
+        <ChatSummaryTabs
+          activeTab={activeTab}
+          onActiveTabChange={setActiveTab}
+          chatContent={chatContent}
+          chatInput={chatInput}
+          summaryValue={reflection.summary || ''}
+          onSummaryBlur={(summary) => {
+            reflectionSession.saveSummary(summary);
+          }}
+        />
       ) : (
         <VStack gap={3} align="stretch" flex="1" overflow="hidden">
           <Box flex="0 1 auto" overflowY="auto">

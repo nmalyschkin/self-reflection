@@ -8,7 +8,6 @@ import {
   Button,
   Spinner,
   Text,
-  Tabs,
   Dialog,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState, useCallback } from 'react';
@@ -21,6 +20,8 @@ import MDHint from '../ReflectView/MDHint';
 import ReflectionChatEntries from '../ReflectView/ReflectionChatEntries';
 import { useTranslation } from 'react-i18next';
 import { getSubmitShortcut } from '../../tools/Oshelper';
+import ChatSummaryTabs from '../shared/ChatSummaryTabs';
+import { useSaveOnUnmount } from '../shared/useSaveOnUnmount';
 
 export default function Question({}: {}) {
   const { domainId, questionId } = useParams<{ domainId: string; questionId: string }>();
@@ -113,21 +114,12 @@ function QuestionView({
   const displayTabs = question.summary || domainSession.summarizing;
   const [activeTab, setActiveTab] = useState<'chat' | 'summary'>('chat');
 
-  useEffect(() => {
-    return () => {
-      if (skippedSaveOnUnmountRef.current) {
-        return;
-      }
-      const input = inputRef.current;
-      if (
-        domainSession &&
-        domainSession.question &&
-        (input || domainSession.question.entries.length > 1)
-      ) {
-        domainSession.saveUnsubmittedText(input);
-      }
-    };
-  }, []);
+  useSaveOnUnmount(
+    skippedSaveOnUnmountRef,
+    () => inputRef.current,
+    () => !!domainSession?.question && domainSession.question.entries.length > 1,
+    (text) => domainSession.saveUnsubmittedText(text),
+  );
 
   const submit = useCallback(() => {
     const input = inputRef.current;
@@ -216,37 +208,16 @@ function QuestionView({
       </HStack>
 
       {displayTabs ? (
-        <VStack gap={3} align="stretch" flex="1" overflow="hidden">
-          <Tabs.Root
-            value={activeTab}
-            onValueChange={(details) => setActiveTab(details.value as 'chat' | 'summary')}
-            display="flex"
-            flexDirection="column"
-            flex="1"
-            overflow="hidden"
-          >
-            <Tabs.List>
-              <Tabs.Trigger value="chat">{t('question.tabs.chat')}</Tabs.Trigger>
-              <Tabs.Trigger value="summary">{t('question.tabs.summary')}</Tabs.Trigger>
-            </Tabs.List>
-            <Tabs.Content value="chat" display="flex" flexDirection="column" flex="1" minH={0}>
-              <Box flex="0 1 auto" overflowY="auto">
-                {chatContent}
-              </Box>
-              {chatInput}
-            </Tabs.Content>
-            <Tabs.Content value="summary" display="flex" flexDirection="column" flex="1" minH={0}>
-              <Box flex="1 1 auto" overflowY="auto">
-                <MDText
-                  value={question.summary || ''}
-                  onBlur={(summary) => {
-                    domainSession.saveSummary(summary);
-                  }}
-                />
-              </Box>
-            </Tabs.Content>
-          </Tabs.Root>
-        </VStack>
+        <ChatSummaryTabs
+          activeTab={activeTab}
+          onActiveTabChange={setActiveTab}
+          chatContent={chatContent}
+          chatInput={chatInput}
+          summaryValue={question.summary || ''}
+          onSummaryBlur={(summary) => {
+            domainSession.saveSummary(summary);
+          }}
+        />
       ) : (
         <VStack gap={3} align="stretch" flex="1" overflow="hidden">
           <Box flex="0 1 auto" overflowY="auto">

@@ -1,4 +1,5 @@
 import { Button, Dialog, useDisclosure } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 import ReflectionIDB from '../state/ReflectionIDB';
 
@@ -13,6 +14,7 @@ export default function DeleteReflection({
   openRef: React.RefObject<() => void>;
   openStateRef?: React.RefObject<boolean>;
 }) {
+  const { t } = useTranslation('common');
   const [reflectionIdOverride, setReflectionIdOverride] = useState<string | null>(null);
   const {
     open: isDeleteOpen,
@@ -54,15 +56,17 @@ export default function DeleteReflection({
       <Dialog.Positioner>
         <Dialog.Content>
           <Dialog.Header fontSize="lg" fontWeight="bold">
-            Delete reflection
+            {t('delete.title', { defaultValue: 'Delete reflection' })}
           </Dialog.Header>
-          <Dialog.Body>Are you sure? This action cannot be undone.</Dialog.Body>
+          <Dialog.Body>
+            {t('delete.body', { defaultValue: 'Are you sure? This action cannot be undone.' })}
+          </Dialog.Body>
           <Dialog.Footer>
             <Button ref={cancelRef} onClick={closeDelete}>
-              Cancel
+              {t('delete.cancel', { defaultValue: 'Cancel' })}
             </Button>
             <Button colorScheme="red" onClick={confirmDelete} ml={3}>
-              Delete
+              {t('delete.confirm', { defaultValue: 'Delete' })}
             </Button>
           </Dialog.Footer>
         </Dialog.Content>

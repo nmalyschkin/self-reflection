@@ -101,54 +101,29 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                 <Portal>
                   <Menu.Positioner>
                     <Menu.Content>
-                      <Menu.Item
-                        value="en"
-                        onClick={() => {
-                          const value = 'en' as LanguageCode;
-                          setLang(value);
-                          setUserLanguage(value);
-                          void i18n.changeLanguage(value);
-                        }}
-                      >
-                        <Flex align="center" gap={2}>
-                          <Box fontSize="lg" lineHeight={1}>
-                            {'🇬🇧'}
-                          </Box>
-                          <Text fontSize="sm">English</Text>
-                        </Flex>
-                      </Menu.Item>
-                      <Menu.Item
-                        value="es"
-                        onClick={() => {
-                          const value = 'es' as LanguageCode;
-                          setLang(value);
-                          setUserLanguage(value);
-                          void i18n.changeLanguage(value);
-                        }}
-                      >
-                        <Flex align="center" gap={2}>
-                          <Box fontSize="lg" lineHeight={1}>
-                            {'🇪🇸'}
-                          </Box>
-                          <Text fontSize="sm">Español</Text>
-                        </Flex>
-                      </Menu.Item>
-                      <Menu.Item
-                        value="ja"
-                        onClick={() => {
-                          const value = 'ja' as LanguageCode;
-                          setLang(value);
-                          setUserLanguage(value);
-                          void i18n.changeLanguage(value);
-                        }}
-                      >
-                        <Flex align="center" gap={2}>
-                          <Box fontSize="lg" lineHeight={1}>
-                            {'🇯🇵'}
-                          </Box>
-                          <Text fontSize="sm">日本語</Text>
-                        </Flex>
-                      </Menu.Item>
+                      {[
+                        { code: 'en', flag: '🇬🇧', label: 'English' },
+                        { code: 'es', flag: '🇪🇸', label: 'Español' },
+                        { code: 'ja', flag: '🇯🇵', label: '日本語' },
+                      ].map((opt) => (
+                        <Menu.Item
+                          key={opt.code}
+                          value={opt.code}
+                          onClick={() => {
+                            const value = opt.code as LanguageCode;
+                            setLang(value);
+                            setUserLanguage(value);
+                            void i18n.changeLanguage(value);
+                          }}
+                        >
+                          <Flex align="center" gap={2}>
+                            <Box fontSize="lg" lineHeight={1}>
+                              {opt.flag}
+                            </Box>
+                            <Text fontSize="sm">{opt.label}</Text>
+                          </Flex>
+                        </Menu.Item>
+                      ))}
                     </Menu.Content>
                   </Menu.Positioner>
                 </Portal>

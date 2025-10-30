@@ -1,9 +1,7 @@
-import { Box, Button, Menu, Portal, Text } from '@chakra-ui/react';
+import { Box, Button, Menu, Portal, Text, Flex } from '@chakra-ui/react';
 import { getPersona } from '../../data/personas';
-import { Flex } from '@chakra-ui/react';
 import type { PersonaId } from '../../types';
-import { useEffect, useState } from 'react';
-import type { Persona } from '../../data/personas';
+import { useMemo } from 'react';
 import { listLocalizedPersonas, getLocalizedPersona } from '../../data/personas.i18n';
 import { useTranslation } from 'react-i18next';
 
@@ -17,12 +15,7 @@ export default function PersonaMenu({
   setPersonaId: (personaId: PersonaId) => void;
 }) {
   const { t } = useTranslation('common');
-  const [persona, setPersona] = useState<Persona | ReturnType<typeof getLocalizedPersona>>(
-    getPersona(personaId),
-  );
-  useEffect(() => {
-    setPersona(getPersona(personaId));
-  }, [personaId]);
+  const persona = useMemo(() => getPersona(personaId), [personaId]);
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
