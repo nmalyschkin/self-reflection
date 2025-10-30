@@ -101,61 +101,73 @@ Clarity in this domain is the bedrock of a well-examined life. However, this cla
     questions: [
       {
         id: 'emotionalLandscape-1',
+        shortDescription: 'Strong emotional reaction',
         question:
           'Recall a recent situation where you had a strong emotional reaction that felt disproportionate to the event. Trace the feeling backward in time. What was the initial trigger, and what earlier thoughts or events might have sensitized you to it?',
       },
       {
         id: 'emotionalLandscape-2',
+        shortDescription: 'Recurring low-grade mood',
         question:
           'Identify a recurring, low-grade mood you often experience (e.g., irritability, melancholy, restlessness). For one week, keep a log of when this mood appears. Note the time, location, and what you were doing or thinking just before it emerged. What patterns do you notice?',
       },
       {
         id: 'emotionalLandscape-3',
+        shortDescription: 'Primary coping mechanism',
         question:
           'Think about your primary coping mechanism when faced with high stress or emotional pain. Do you tend to analyze, withdraw, seek distraction, or confront the issue directly? How effective is this default strategy in the long term?',
       },
       {
         id: 'emotionalLandscape-4',
+        shortDescription: 'Envy or jealousy',
         question:
           'Describe a time you felt envy or jealousy. What specific quality, possession, or circumstance in the other person triggered this feeling? What does this emotion reveal about an unmet desire or insecurity within yourself?',
       },
       {
         id: 'emotionalLandscape-5',
+        shortDescription: 'Overshadowing anger',
         question:
           'Often, a "presenting emotion" like anger masks a more vulnerable underlying emotion like hurt or fear. Think of a recent time you felt angry. Can you identify a softer, more vulnerable feeling that might have been underneath it?',
       },
       {
         id: 'emotionalLandscape-6',
+        shortDescription: 'Physical sensation',
         question:
           'What is a physical sensation in your body that consistently correlates with a specific emotion (e.g., a tight chest with anxiety, a hot face with embarrassment)? How can you use these bodily signals as an early warning system?',
       },
       {
         id: 'emotionalLandscape-7',
+        shortDescription: 'Calm or contentment',
         question:
           'Describe a situation that consistently brings you a feeling of calm or contentment. Deconstruct the elements of that situation. What specific sensory inputs, activities, or mental states contribute to this feeling of peace?',
       },
       {
         id: 'emotionalLandscape-8',
+        shortDescription: 'Reaction to criticism',
         question:
           'How do you typically react to receiving criticism or negative feedback? Describe your internal monologue and emotional response. What does this reveal about your relationship with self-worth and perfectionism?',
       },
       {
         id: 'emotionalLandscape-9',
+        shortDescription: 'Pure, simple joy',
         question:
           'Reflect on a recent moment of pure, simple joy. What were you doing? Who were you with? How can you intentionally create more opportunities for this specific kind of experience in your life?',
       },
       {
         id: 'emotionalLandscape-10',
+        shortDescription: 'Limiting belief',
         question:
           'What is one limiting belief you hold about your own emotional capacity (e.g., "I\'m not good at handling conflict," "I\'m too sensitive")? Where did this belief originate, and what evidence exists that might challenge it?',
       },
       {
         id: 'emotionalLandscape-11',
+        shortDescription: 'Managing difficult emotions',
         question:
           'Think of a time you successfully managed a difficult emotion instead of letting it control you. What specific thought or action allowed you to regulate your response? What did you learn from this experience of emotional self-control?',
       },
       {
         id: 'emotionalLandscape-12',
+        shortDescription: 'Difficult emotion to express',
         question:
           'What emotion do you find most difficult to express? What are your fears or beliefs about what would happen if you were to express it more openly and honestly?',
       },
@@ -170,61 +182,73 @@ Clarity in this domain is the bedrock of a well-examined life. However, this cla
     questions: [
       {
         id: 'tapestryOfConnections-1',
+        shortDescription: 'Primary constellation of relationships',
         question:
           'Map out your primary "constellation" of relationships (e.g., inner circle, secondary circle). For each key relationship, assess the flow of energy. Does this connection generally energize you or drain you? What factors contribute to this dynamic?',
       },
       {
         id: 'tapestryOfConnections-2',
+        shortDescription: 'Conflict or misunderstanding',
         question:
           "Consider a recent conflict or misunderstanding. Without defending your own position, write the story of what happened from the other person's perspective, using what you know about their values, fears, and pressures. What new understanding does this exercise offer?",
       },
       {
         id: 'tapestryOfConnections-3',
+        shortDescription: 'Most authentic relationship',
         question:
           'In which relationship do you feel most able to be your authentic self? What specific behaviors and attitudes from the other person (and yourself) create this sense of psychological safety?',
       },
       {
         id: 'tapestryOfConnections-4',
+        shortDescription: 'Recurring pattern in relationships',
         question:
           'Identify a recurring pattern in your relationships (e.g., playing the caregiver, avoiding conflict, seeking validation). Where else in your life, past or present, has this pattern appeared? What core need or fear might be driving this behavior?',
       },
       {
         id: 'tapestryOfConnections-5',
+        shortDescription: 'Stimulus value',
         question:
           'Reflect on your "stimulus value"—the impression you believe you make on people when they first meet you. What behaviors or aspects of your personality contribute to this first impression? How accurately does it reflect who you truly are?',
       },
       {
         id: 'tapestryOfConnections-6',
+        shortDescription: 'Genuinely helpful support',
         question:
           'Think of a time you received support that was genuinely helpful. What did the other person do or say that made it so effective? Conversely, think of a time support was offered but missed the mark. What was the difference?',
       },
       {
         id: 'tapestryOfConnections-7',
+        shortDescription: 'Unspoken rules',
         question:
           'Are there any unspoken "rules" that govern your most important relationships (e.g., "We don\'t talk about money," "It\'s not okay to express anger")? How do these rules serve or hinder the health of the connection?',
       },
       {
         id: 'tapestryOfConnections-8',
+        shortDescription: 'Successfully repaired relationship',
         question:
           'Describe a time you successfully repaired a relationship after a conflict. What specific actions or words were crucial to the reconciliation process? What did you learn about forgiveness, either giving or receiving it?',
       },
       {
         id: 'tapestryOfConnections-9',
+        shortDescription: 'Support for personal growth',
         question:
           'In what ways do the people closest to you support your personal growth? In what ways might they, consciously or unconsciously, hinder it?',
       },
       {
         id: 'tapestryOfConnections-10',
+        shortDescription: 'Communication skills',
         question:
           'Evaluate your communication skills in a recent important conversation. Did you listen more than you spoke? Did you seek to understand before seeking to be understood? What is one aspect of your communication you could improve?',
       },
       {
         id: 'tapestryOfConnections-11',
+        shortDescription: 'Relationship in need of attention',
         question:
           'Which relationship in your life currently requires more of your positive attention and effort? What is one specific, small action you can take this week to invest in that connection?',
       },
       {
         id: 'tapestryOfConnections-12',
+        shortDescription: 'Contribution to community well-being',
         question:
           'How do you contribute to the well-being of the communities you are a part of (e.g., your family, workplace, neighborhood)? Where could your contribution be more intentional or impactful?',
       },
@@ -239,61 +263,73 @@ Clarity in this domain is the bedrock of a well-examined life. However, this cla
     questions: [
       {
         id: 'narrativeArc-1',
+        shortDescription: 'Major plot twist',
         question:
           'Identify a major "plot twist" or turning point in your life—an event that fundamentally altered your trajectory. How did this event change the story you were living? What new identity or path did it set you on?',
       },
       {
         id: 'narrativeArc-2',
+        shortDescription: 'Significant failure or accomplishment',
         question:
           'Reflect on a significant failure or accomplishment from your past. What was the story you told yourself about this event at the time? From your current perspective, what is a wiser or more compassionate story you can tell about it now?',
       },
       {
         id: 'narrativeArc-3',
+        shortDescription: 'Letter of advice to self',
         question:
           'If you were to write a letter of advice to your self from ten years ago, what are the three most important things you would tell them? What does this advice reveal about the most significant lessons you have learned?',
       },
       {
         id: 'narrativeArc-4',
+        shortDescription: 'Challenge overcome',
         question:
           'Describe a challenge you overcame that you are particularly proud of. Detail the specific internal resources (e.g., courage, creativity, discipline) and external supports you drew upon to succeed.',
       },
       {
         id: 'narrativeArc-5',
+        shortDescription: 'Painful memory',
         question:
           'What is a painful memory you tend to avoid thinking about? Without dwelling on the trauma, what is one strength you developed or one crucial lesson you learned as a direct result of navigating that experience?',
       },
       {
         id: 'narrativeArc-6',
+        shortDescription: 'Future life',
         question:
           'Envision yourself five years from now, living a life that is deeply satisfying to you. Describe a typical day in that future life in vivid detail. What is the biggest difference between that life and your life today?',
       },
       {
         id: 'narrativeArc-7',
+        shortDescription: 'Most important milestone',
         question:
           'Working backward from that five-year vision, what is the most important milestone you need to achieve in the next twelve months to make it a reality? What is the very first step?',
       },
       {
         id: 'narrativeArc-8',
+        shortDescription: 'Story from family history',
         question:
           'What is a story from your family history or upbringing that has had a profound impact on shaping who you are today? How has this story influenced your beliefs about yourself and the world?',
       },
       {
         id: 'narrativeArc-9',
+        shortDescription: 'Area of life stuck',
         question:
           'Consider an area of your life where you feel "stuck." What is the narrative you are telling yourself about this situation (e.g., "I\'m not good enough," "It\'s too late," "The circumstances are impossible")? What is an alternative, more empowering story you could choose to believe?',
       },
       {
         id: 'narrativeArc-10',
+        shortDescription: 'Ambition or dream',
         question:
           'What was an ambition or dream you had when you were younger that you have since let go of? What did you learn from the process of pursuing it and eventually releasing it?',
       },
       {
         id: 'narrativeArc-11',
+        shortDescription: 'Legacy',
         question:
           'What legacy do you want to leave? When your story is finished, what impact do you want to have had on the people and world around you?',
       },
       {
         id: 'narrativeArc-12',
+        shortDescription: 'Most important lesson',
         question:
           'Look back at the last year. What was the most important lesson you learned, and how has it changed the way you approach your life today?',
       },
@@ -314,56 +350,67 @@ Clarity in this domain is the bedrock of a well-examined life. However, this cla
       },
       {
         id: 'engineOfGrowth-2',
+        shortDescription: 'Problems or challenges',
         question:
           'What kinds of problems or challenges do friends, family, or colleagues consistently bring to you for help or advice? What does this pattern reveal about the strengths others perceive in you?',
       },
       {
         id: 'engineOfGrowth-3',
+        shortDescription: 'Skill to develop',
         question:
           'Identify one skill that, if you developed it over the next year, would have the greatest positive impact on your personal or professional life. What is the first concrete step you can take to begin learning it?',
       },
       {
         id: 'engineOfGrowth-4',
+        shortDescription: 'Biggest professional accomplishment',
         question:
           'Reflect on your biggest professional accomplishment. What personal qualities were just as important to that success as your technical skills?',
       },
       {
         id: 'engineOfGrowth-5',
+        shortDescription: 'Weakness or growth edge',
         question:
           'What is a weakness or "growth edge" that you have consciously decided is not a priority to fix? Explain your reasoning for choosing to focus on your strengths instead.',
       },
       {
         id: 'engineOfGrowth-6',
+        shortDescription: 'Job craft',
         question:
           'Consider your current job or primary role. How could you "job craft" or reshape your responsibilities to spend 10% more of your time using your greatest strengths?',
       },
       {
         id: 'engineOfGrowth-7',
+        shortDescription: 'Talent to develop',
         question:
           'What is a talent you possess that you currently underutilize? Brainstorm three new ways you could apply this talent in your life or work.',
       },
       {
         id: 'engineOfGrowth-8',
+        shortDescription: 'Teaching',
         question:
           'Think about a time you taught someone else how to do something effectively. What did the act of teaching reveal to you about your own level of mastery and your way of thinking about the subject?',
       },
       {
         id: 'engineOfGrowth-9',
+        shortDescription: 'Most constructive piece of feedback',
         question:
           'What is the most constructive piece of feedback you have ever received? How did you incorporate it, and how did it contribute to your growth?',
       },
       {
         id: 'engineOfGrowth-10',
+        shortDescription: 'Unique contribution',
         question:
           'Beyond your job description, what is your unique contribution to your team or organization? What is the value that you, specifically, bring to the table?',
       },
       {
         id: 'engineOfGrowth-11',
+        shortDescription: 'Area of life playing small',
         question:
           'In what area of your life are you currently "playing small" when you know you have the potential to do more? What fear or limiting belief is holding you back from stepping into your full capability?',
       },
       {
         id: 'engineOfGrowth-12',
+        shortDescription: 'Wisdom to share',
         question:
           'What is one thing you know now that you wish you had known at the beginning of your career? How can you share that wisdom to contribute to the growth of someone who is just starting out?',
       },
