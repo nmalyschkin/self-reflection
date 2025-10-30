@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import { Flex, Text } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function useHint() {
   const [showMdHint, setShowMdHint] = useState(false);
@@ -28,6 +29,7 @@ function useHint() {
 
 export default function MDHint() {
   const { showMdHint, dismissMdHint } = useHint();
+  const { t } = useTranslation('common');
 
   if (!showMdHint) return null;
   return (
@@ -42,10 +44,10 @@ export default function MDHint() {
       rounded="md"
     >
       <Text fontSize="xs" color="yellow.900">
-        We support Markdown
+        {t('md.support')}
       </Text>
       <Button size="xs" variant="ghost" onClick={dismissMdHint}>
-        Dismiss
+        {t('md.dismiss')}
       </Button>
     </Flex>
   );

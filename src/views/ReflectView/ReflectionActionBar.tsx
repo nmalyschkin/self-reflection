@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import type { Reflection } from '../../types';
 import ReflectionSession from '../../state/ReflectionSession';
 import DeleteReflection from '../../components/DeleteReflection';
+import { useTranslation } from 'react-i18next';
 
 export default function ReflectionActionBar({
   onSave,
@@ -15,6 +16,7 @@ export default function ReflectionActionBar({
   reflection: Reflection;
   reflectionSession: ReflectionSession;
 }) {
+  const { t } = useTranslation('common');
   const [open, setOpen] = useState(false);
   const openDeleteRef = useRef<() => void>(() => {});
   const openDeleteStateRef = useRef<boolean>(false);
@@ -43,7 +45,7 @@ export default function ReflectionActionBar({
                 <Button
                   variant="ghost"
                   size="xs"
-                  aria-label="Open actions"
+                  aria-label={t('reflection.openActions')}
                   onClick={() => setOpen(true)}
                 >
                   <Text fontSize="sm" color="gray.500">
@@ -77,7 +79,7 @@ export default function ReflectionActionBar({
               >
                 <Menu.Trigger asChild>
                   <Button variant="outline" size="sm">
-                    Summarize
+                    {t('reflection.summarize')}
                   </Button>
                 </Menu.Trigger>
                 <Portal>
@@ -92,7 +94,7 @@ export default function ReflectionActionBar({
                           p.finally(() => setSummarizeDialogOpen(false));
                         }}
                       >
-                        Summarize long
+                        {t('reflection.summarizeLong')}
                       </Menu.Item>
                       <Menu.Item
                         value="summary-key-points"
@@ -103,14 +105,14 @@ export default function ReflectionActionBar({
                           p.finally(() => setSummarizeDialogOpen(false));
                         }}
                       >
-                        Summarize key points
+                        {t('reflection.summarizeKeyPoints')}
                       </Menu.Item>
                     </Menu.Content>
                   </Menu.Positioner>
                 </Portal>
               </Menu.Root>
               <Button variant="outline" onClick={onSave}>
-                Save
+                {t('reflection.save')}
               </Button>
               <Button
                 variant="outline"
@@ -119,7 +121,7 @@ export default function ReflectionActionBar({
                   openDeleteRef.current();
                 }}
               >
-                Delete
+                {t('reflection.delete')}
               </Button>
             </ActionBar.Content>
           </ActionBar.Positioner>
@@ -133,9 +135,9 @@ export default function ReflectionActionBar({
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header fontSize="lg" fontWeight="bold">
-              Summarizing
+              {t('question.summarizing.title')}
             </Dialog.Header>
-            <Dialog.Body>summarizing...</Dialog.Body>
+            <Dialog.Body>{t('question.summarizing.body')}</Dialog.Body>
             <Dialog.Footer>
               <Button
                 onClick={() => {
@@ -143,7 +145,7 @@ export default function ReflectionActionBar({
                   setSummarizeDialogOpen(false);
                 }}
               >
-                Abort
+                {t('question.abort')}
               </Button>
             </Dialog.Footer>
           </Dialog.Content>

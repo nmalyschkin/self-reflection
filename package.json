@@ -21,9 +21,11 @@
     "@tiptap/react": "^3.7.2",
     "@tiptap/starter-kit": "^3.7.2",
     "framer-motion": "^11.18.2",
+    "i18next": "^23.16.8",
     "idb": "^8.0.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-i18next": "^13.5.0",
     "react-router-dom": "^6.30.1"
   },
   "devDependencies": {

@@ -8,12 +8,15 @@ import useNavigateTo from '../../hooks/useNavigateTo';
 import ReflectionActionBar from './ReflectionActionBar';
 import MDHint from './MDHint';
 import ReflectionChatEntries from './ReflectionChatEntries';
+import { useTranslation } from 'react-i18next';
+import { getSubmitShortcut } from '../../tools/Oshelper';
 
 type Props = {
   reflectionId: string | null;
 };
 
 export default function ReflectionSessionLoader({ reflectionId }: Props) {
+  const { t } = useTranslation('common');
   const [reflectionSession, setReflectionSession] = useState<ReflectionSession | null>(null);
   const [promptState, setPromptState] = useState<'idle' | 'processing' | 'initializing'>(
     'initializing',
@@ -41,7 +44,7 @@ export default function ReflectionSessionLoader({ reflectionId }: Props) {
     return (
       <Flex gap={2}>
         <Text fontSize="sm" color="gray.500">
-          Initializing AI session...
+          {t('reflection.initializing')}
         </Text>
         <Spinner />
       </Flex>
@@ -66,6 +69,7 @@ function ReflectView({
   reflection: Reflection;
   promptState: 'idle' | 'processing';
 }) {
+  const { t } = useTranslation('common');
   const [abort, setAbort] = useState<() => void>(() => {});
   const inputRef = useRef<string>(reflectionSession.reflection?.unsubmittedText || '');
   const skippedSaveOnUnmountRef = useRef<boolean>(false);
@@ -125,7 +129,7 @@ function ReflectView({
   const chatInput = (
     <VStack gap={3} align="stretch" pt={2} pb={6}>
       <MDText
-        placeholder="Write a reflection..."
+        placeholder={t('reflection.placeholder')}
         value={inputRef.current}
         onChange={(md) => {
           inputRef.current = md;
@@ -137,14 +141,14 @@ function ReflectView({
       {promptState === 'processing' ? (
         <Flex gap={2}>
           <Text fontSize="sm" color="gray.500">
-            Thinking...
+            {t('question.thinking')}
           </Text>
-          <Button onClick={abort}>Abort</Button>
+          <Button onClick={abort}>{t('question.abort')}</Button>
         </Flex>
       ) : (
         <Flex align="center" justify="space-between">
           <Button colorScheme="blue" onClick={submitReflectionStatement} disabled={isInputEmpty}>
-            Deeper reflection (⌘+↵)
+            {t('reflection.deeper')} ({getSubmitShortcut()})
           </Button>
         </Flex>
       )}
@@ -175,8 +179,8 @@ function ReflectView({
             overflow="hidden"
           >
             <Tabs.List>
-              <Tabs.Trigger value="chat">Chat</Tabs.Trigger>
-              <Tabs.Trigger value="summary">Summary</Tabs.Trigger>
+              <Tabs.Trigger value="chat">{t('question.tabs.chat')}</Tabs.Trigger>
+              <Tabs.Trigger value="summary">{t('question.tabs.summary')}</Tabs.Trigger>
             </Tabs.List>
             {/* Chat tab: content grows with messages; scrolls only when needed; input sits just below */}
             <Tabs.Content value="chat" display="flex" flexDirection="column" flex="1" minH={0}>

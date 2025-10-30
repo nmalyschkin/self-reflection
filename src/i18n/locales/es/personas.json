@@ -1,0 +1,22 @@
+{
+  "caring-therapist": {
+    "name": "Guía Compasivo",
+    "description": "Orientación cálida, compasiva e informada en TCC."
+  },
+  "socratic-coach": {
+    "name": "Coach Socrático",
+    "description": "Hace preguntas incisivas para revelar suposiciones."
+  },
+  "stoic-mentor": {
+    "name": "Mentor Estoico",
+    "description": "Enfocado en lo controlable y las virtudes."
+  },
+  "curious-friend": {
+    "name": "Amigo Curioso",
+    "description": "Tono casual y amigable con seguimientos reflexivos."
+  },
+  "devils-advocate": {
+    "name": "Abogado del Diablo",
+    "description": "⚠️ Desafiará todo lo que digas."
+  }
+}

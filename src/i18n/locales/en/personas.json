@@ -1,0 +1,22 @@
+{
+  "caring-therapist": {
+    "name": "Caring Guide",
+    "description": "Warm, compassionate, CBT-informed guidance."
+  },
+  "socratic-coach": {
+    "name": "Socratic Coach",
+    "description": "Asks incisive questions to reveal assumptions."
+  },
+  "stoic-mentor": {
+    "name": "Stoic Mentor",
+    "description": "Focus on what is controllable and virtues."
+  },
+  "curious-friend": {
+    "name": "Curious Friend",
+    "description": "Casual, friendly tone with thoughtful follow-ups."
+  },
+  "devils-advocate": {
+    "name": "Devils Advocate",
+    "description": "⚠️ Will challenge anything you say."
+  }
+}

@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Box, Heading, IconButton, SimpleGrid, Text, VStack, HStack } from '@chakra-ui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { domains as domainsRecord } from '../../data/domains';
+import { getLocalizedDomain } from '../../data/domains.i18n';
 import DomainIDB from '../../state/DomainIDB';
+import { useTranslation } from 'react-i18next';
 
 type DomainType = (typeof domainsRecord)[keyof typeof domainsRecord];
 type QuestionMeta = DomainType['questions'][number];
@@ -11,7 +13,8 @@ export default function Domain() {
   const navigate = useNavigate();
   const { id } = useParams();
   const domainId = id ? decodeURIComponent(id) : '';
-  const domain = useMemo(() => domainsRecord[domainId], [domainId]);
+  const { t } = useTranslation('common');
+  const domain = useMemo(() => getLocalizedDomain(domainId, t as any), [domainId, t]);
   const [finishedById, setFinishedById] = useState<Record<string, boolean>>({});
   const [headlineById, setHeadlineById] = useState<Record<string, string | undefined>>({});
 
@@ -34,11 +37,11 @@ export default function Domain() {
   if (!domain) {
     return (
       <VStack align="stretch" gap={4}>
-        <IconButton aria-label="Back" variant="ghost" onClick={() => navigate('/domains')}>
+        <IconButton aria-label={t('nav.back')} variant="ghost" onClick={() => navigate('/domains')}>
           ←
         </IconButton>
-        <Heading size="md">Domain not found</Heading>
-        <Text color="gray.600">The requested domain does not exist.</Text>
+        <Heading size="md">{t('domain.notFound')}</Heading>
+        <Text color="gray.600">{t('domain.notFoundDesc')}</Text>
       </VStack>
     );
   }
@@ -57,7 +60,7 @@ export default function Domain() {
   return (
     <VStack align="stretch" gap={4}>
       <HStack align="center" gap={2}>
-        <IconButton aria-label="Back" variant="ghost" onClick={() => navigate('/domains')}>
+        <IconButton aria-label={t('nav.back')} variant="ghost" onClick={() => navigate('/domains')}>
           ←
         </IconButton>
         <Heading size="lg" flex="1" minW={0}>

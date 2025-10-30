@@ -10,6 +10,7 @@ import {
 import type { Reflection } from '../../types';
 import ReflectionSession from '../../state/ReflectionSession';
 import PersonaMenu from './PersonaMenu';
+import { useTranslation } from 'react-i18next';
 
 export default function ReflectionHeaderBar({
   reflectionSession,
@@ -20,13 +21,14 @@ export default function ReflectionHeaderBar({
   reflection: Reflection;
   goBack: () => void;
 }) {
+  const { t } = useTranslation('common');
   return (
     <Flex align="center" justify="space-between">
       <IconButton
         variant="plain"
         colorScheme="blue"
         onClick={goBack}
-        aria-label="Back"
+        aria-label={t('nav.back')}
         borderRadius="full"
       >
         <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">

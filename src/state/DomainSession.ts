@@ -3,7 +3,12 @@ import type { Entry, Question } from '../types';
 import { domains as domainsRecord } from '../data/domains';
 import DomainIDB from './DomainIDB';
 import { ReflectionSummarizer } from '../tools/ReflectionSummarizer';
-import { languageOptions, languageSelection } from '../language/languageSelection';
+import {
+  languageAppendix,
+  languageOptions,
+  languageSelection,
+} from '../language/languageSelection';
+import i18n from '../i18n';
 
 class DomainSession {
   private session: LanguageModelSession | null = null;
@@ -36,7 +41,7 @@ class DomainSession {
         content:
           `You are a reflective coach helping the user explore a self reflection question.".\n` +
           `Guide the user with curiosity and care.\n` +
-          `Based on the user's input, provide a single concise follow-up question.`,
+          `Based on the user's input, provide a single concise follow-up question. ${languageAppendix(question.language)}`,
       },
       ...history,
     ];
@@ -54,19 +59,22 @@ class DomainSession {
             if (!qMeta) {
               throw new Error('Question not found');
             }
+            const base = `${domainId}.questions.${questionId}` as const;
+            const aiQuestion = i18n.t(`${base}.question`, { ns: 'domains' });
+            const title = i18n.t(`${base}.shortDescription`, { ns: 'domains' });
             return {
               id: questionId,
               domainId,
               entries: [
                 {
-                  text: qMeta.question,
+                  text: aiQuestion,
                   type: 'ai-question',
                   createdAt: new Date().toISOString(),
                 },
               ],
               createdAt: new Date().toISOString(),
               finished: false,
-              title: qMeta?.shortDescription,
+              title: title,
               language: languageSelection.get(),
             } as Question;
           })();

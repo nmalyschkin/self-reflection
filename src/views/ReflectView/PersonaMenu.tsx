@@ -1,9 +1,11 @@
 import { Box, Button, Menu, Portal, Text } from '@chakra-ui/react';
-import { getPersona, listPersonas } from '../../data/personas';
+import { getPersona } from '../../data/personas';
 import { Flex } from '@chakra-ui/react';
 import type { PersonaId } from '../../types';
 import { useEffect, useState } from 'react';
 import type { Persona } from '../../data/personas';
+import { listLocalizedPersonas, getLocalizedPersona } from '../../data/personas.i18n';
+import { useTranslation } from 'react-i18next';
 
 export default function PersonaMenu({
   canUpdatePersona,
@@ -14,7 +16,10 @@ export default function PersonaMenu({
   personaId: PersonaId | undefined;
   setPersonaId: (personaId: PersonaId) => void;
 }) {
-  const [persona, setPersona] = useState<Persona>(getPersona(personaId));
+  const { t } = useTranslation('common');
+  const [persona, setPersona] = useState<Persona | ReturnType<typeof getLocalizedPersona>>(
+    getPersona(personaId),
+  );
   useEffect(() => {
     setPersona(getPersona(personaId));
   }, [personaId]);
@@ -25,22 +30,22 @@ export default function PersonaMenu({
           variant="outline"
           size="sm"
           disabled={!canUpdatePersona}
-          title={!canUpdatePersona ? 'Persona is locked after reflection starts' : undefined}
+          title={!canUpdatePersona ? t('persona.locked') : undefined}
         >
-          {persona.avatar} {persona.name}
+          {persona.avatar} {getLocalizedPersona(persona.id, t as any).name}
         </Button>
       </Menu.Trigger>
       <Portal>
         <Menu.Positioner>
           <Menu.Content>
-            {listPersonas().map((p) => (
+            {listLocalizedPersonas(t as any).map((p) => (
               <Menu.Item
                 key={p.id}
                 value={p.id}
                 disabled={!canUpdatePersona}
                 onClick={() => {
                   if (canUpdatePersona) {
-                    setPersonaId(p.id);
+                    setPersonaId(p.id as PersonaId);
                   }
                 }}
               >

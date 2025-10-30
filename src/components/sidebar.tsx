@@ -1,6 +1,10 @@
-import { useEffect } from 'react';
-import { Box, VStack, Button, Heading, Link } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Box, VStack, Button, Heading, Link, Text, Menu, Portal, Flex } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
+import type { LanguageCode } from '../language/languageSelection';
+import { getUserLanguage, setUserLanguage } from '../language/languageSelection';
 
 type SidebarProps = {
   open: boolean;
@@ -9,6 +13,8 @@ type SidebarProps = {
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [lang, setLang] = useState<LanguageCode>(getUserLanguage());
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -43,7 +49,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         p={4}
       >
         <VStack align="stretch" gap={3} h="full">
-          <Heading size="md">Self Reflection</Heading>
+          <Heading size="md">{t('app.title')}</Heading>
           <Box role="separator" h="1px" bg="gray.200" />
           <Button
             variant="ghost"
@@ -52,7 +58,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               navigate('/');
             }}
           >
-            Home
+            {t('sidebar.home')}
           </Button>
           <Button
             colorScheme="blue"
@@ -61,7 +67,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               navigate('/reflect');
             }}
           >
-            New reflection
+            {t('sidebar.newReflection')}
           </Button>
           <Button
             colorScheme="blue"
@@ -70,13 +76,68 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               navigate('/domains');
             }}
           >
-            Domains
+            {t('sidebar.domains')}
           </Button>
 
           <Box flex="1" />
           <VStack align="stretch" gap={2}>
+            <Box>
+              <Text fontSize="xs" color="gray.500" mb={1}>
+                {t('sidebar.language')}
+              </Text>
+              <Menu.Root>
+                <Menu.Trigger asChild>
+                  <Button variant="outline" size="sm" w="full" justifyContent="flex-start">
+                    <Flex align="center" gap={2}>
+                      <Box fontSize="lg" lineHeight={1}>
+                        {lang === 'en' ? '🇬🇧' : '🇪🇸'}
+                      </Box>
+                      <Text fontSize="sm">{lang === 'en' ? 'English' : 'Español'}</Text>
+                    </Flex>
+                  </Button>
+                </Menu.Trigger>
+                <Portal>
+                  <Menu.Positioner>
+                    <Menu.Content>
+                      <Menu.Item
+                        value="en"
+                        onClick={() => {
+                          const value = 'en' as LanguageCode;
+                          setLang(value);
+                          setUserLanguage(value);
+                          void i18n.changeLanguage(value);
+                        }}
+                      >
+                        <Flex align="center" gap={2}>
+                          <Box fontSize="lg" lineHeight={1}>
+                            {'🇬🇧'}
+                          </Box>
+                          <Text fontSize="sm">English</Text>
+                        </Flex>
+                      </Menu.Item>
+                      <Menu.Item
+                        value="es"
+                        onClick={() => {
+                          const value = 'es' as LanguageCode;
+                          setLang(value);
+                          setUserLanguage(value);
+                          void i18n.changeLanguage(value);
+                        }}
+                      >
+                        <Flex align="center" gap={2}>
+                          <Box fontSize="lg" lineHeight={1}>
+                            {'🇪🇸'}
+                          </Box>
+                          <Text fontSize="sm">Español</Text>
+                        </Flex>
+                      </Menu.Item>
+                    </Menu.Content>
+                  </Menu.Positioner>
+                </Portal>
+              </Menu.Root>
+            </Box>
             <Link href="https://forms.gle/b5BS5VPmf35L71Wx7" target="_blank" color="gray.500">
-              Feedback
+              {t('sidebar.feedback')}
             </Link>
             <Link
               color="gray.500"
@@ -85,7 +146,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                 navigate('/about');
               }}
             >
-              About this app
+              {t('sidebar.about')}
             </Link>
           </VStack>
         </VStack>

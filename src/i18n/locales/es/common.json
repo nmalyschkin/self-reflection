@@ -1,0 +1,60 @@
+{
+  "app.title": "Autorreflexión",
+  "app.menuAria": "Abrir menú",
+  "app.modelReady": "Modelo listo para descargar…",
+  "app.downloading": "Descargando modelo en el dispositivo… {{pct, number}}%",
+
+  "sidebar.home": "Inicio",
+  "sidebar.newReflection": "Nueva reflexión",
+  "sidebar.domains": "Dominios",
+  "sidebar.feedback": "Comentarios",
+  "sidebar.about": "Acerca de esta app",
+  "sidebar.language": "Idioma",
+
+  "start.startReflecting": "Comenzar a reflexionar",
+  "start.downloadModel": "Descargar modelo",
+  "start.history": "Historial",
+  "start.emptyHistory": "Aún no hay reflexiones.",
+  "start.draft": "borrador",
+  "start.delete": "Eliminar reflexión",
+
+  "domains.percentComplete": "{{pct}}% completado",
+
+  "domain.notFound": "Dominio no encontrado",
+  "domain.notFoundDesc": "El dominio solicitado no existe.",
+
+  "nav.back": "Atrás",
+
+  "question.initializing": "Iniciando sesión...",
+  "question.thinking": "Pensando...",
+  "question.abort": "Cancelar",
+  "question.goDeeper": "Profundizar",
+  "question.finishAndSummarize": "Finalizar y resumir",
+  "question.tabs.chat": "Chat",
+  "question.tabs.summary": "Resumen",
+  "question.summarizing.title": "Resumiendo",
+  "question.summarizing.body": "resumiendo...",
+
+  "md.support": "Compatible con Markdown",
+  "md.dismiss": "Descartar",
+
+  "installApi.title": "Esta app está construida con la API experimental Chrome Prompt",
+  "installApi.instruction": "Por favor, activa la API Prompt en las 'Flags' de Chrome:",
+  "installApi.learnMore": "Más información",
+  "installApi.flagPath": "chrome://flags/#prompt-api-for-gemini-nano-multimodal-input",
+
+  "about.title": "Acerca de esta app",
+  "about.body1": "Esta app utiliza tecnologías del navegador para funcionar de forma completamente local y sin conexión. No recopilamos ni almacenamos ningún dato y todas tus interacciones con la IA se ejecutan localmente en tu navegador.",
+  "about.mobile.title": "Compatibilidad móvil",
+  "about.mobile.body": "Dado que no existe soporte móvil para las APIs de IA del navegador, esta app aún no es compatible con dispositivos móviles.",
+  "reflection.initializing": "Iniciando sesión de IA...",
+  "reflection.placeholder": "Escribe una reflexión...",
+  "reflection.deeper": "Reflexión más profunda",
+  "reflection.summarize": "Resumir",
+  "reflection.summarizeLong": "Resumir largo",
+  "reflection.summarizeKeyPoints": "Resumir puntos clave",
+  "reflection.save": "Guardar",
+  "reflection.delete": "Eliminar",
+  "reflection.openActions": "Abrir acciones",
+  "persona.locked": "La persona se bloquea después de iniciar la reflexión"
+}

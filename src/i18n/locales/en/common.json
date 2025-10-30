@@ -1,0 +1,60 @@
+{
+  "app.title": "Self Reflection",
+  "app.menuAria": "Open menu",
+  "app.modelReady": "Model ready to download…",
+  "app.downloading": "Downloading on-device model… {{pct, number}}%",
+
+  "sidebar.home": "Home",
+  "sidebar.newReflection": "New reflection",
+  "sidebar.domains": "Domains",
+  "sidebar.feedback": "Feedback",
+  "sidebar.about": "About this app",
+  "sidebar.language": "Language",
+
+  "start.startReflecting": "Start reflecting",
+  "start.downloadModel": "Download model",
+  "start.history": "History",
+  "start.emptyHistory": "No reflections yet.",
+  "start.draft": "draft",
+  "start.delete": "Delete reflection",
+
+  "domains.percentComplete": "{{pct}}% complete",
+
+  "domain.notFound": "Domain not found",
+  "domain.notFoundDesc": "The requested domain does not exist.",
+
+  "nav.back": "Back",
+
+  "question.initializing": "Initializing session...",
+  "question.thinking": "Thinking...",
+  "question.abort": "Abort",
+  "question.goDeeper": "Go deeper",
+  "question.finishAndSummarize": "Finish & summarize",
+  "question.tabs.chat": "Chat",
+  "question.tabs.summary": "Summary",
+  "question.summarizing.title": "Summarizing",
+  "question.summarizing.body": "summarizing...",
+
+  "md.support": "We support Markdown",
+  "md.dismiss": "Dismiss",
+
+  "installApi.title": "This app is built with the experimental Chrome Prompt API",
+  "installApi.instruction": "Please activate the Prompt API in Chrome Flag:",
+  "installApi.learnMore": "Learn more",
+  "installApi.flagPath": "chrome://flags/#prompt-api-for-gemini-nano-multimodal-input",
+
+  "about.title": "About this app",
+  "about.body1": "This app uses browser technologies to run completely locally and offline. We don't collect or store any data and all your AI interactions are run locally in your browser.",
+  "about.mobile.title": "Mobile compatibility",
+  "about.mobile.body": "Since there is no mobile support for browser AI APIs, this app is not yet compatible with mobile devices.",
+  "reflection.initializing": "Initializing AI session...",
+  "reflection.placeholder": "Write a reflection...",
+  "reflection.deeper": "Deeper reflection",
+  "reflection.summarize": "Summarize",
+  "reflection.summarizeLong": "Summarize long",
+  "reflection.summarizeKeyPoints": "Summarize key points",
+  "reflection.save": "Save",
+  "reflection.delete": "Delete",
+  "reflection.openActions": "Open actions",
+  "persona.locked": "Persona is locked after reflection starts"
+}

@@ -10,6 +10,7 @@ import InstallAPI from './views/InstallAPI';
 import Domains from './views/Domain/DomainOverview';
 import Domain from './views/Domain/Domain';
 import Question from './views/Domain/Question';
+import { useTranslation } from 'react-i18next';
 const isDebugBuild = import.meta.env.DEV || import.meta.env.MODE === 'development';
 const DebugOverview = isDebugBuild ? lazy(() => import('./debug/overview')) : undefined;
 const DebugSummarizer = isDebugBuild ? lazy(() => import('./debug/summarizer')) : undefined;
@@ -33,6 +34,7 @@ function App() {
   const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
   const modelOptions = useMemo(() => ({}), []); // Keep options consistent between availability and prompt
   const { open: isSidebarOpen, onOpen: openSidebar, onClose: closeSidebar } = useDisclosure();
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     getLmStatus(modelOptions).then(setLmStatus);
@@ -64,7 +66,7 @@ function App() {
     <Box minH="100dvh" minW="100dvw" display="flex" alignItems="center" justifyContent="center">
       {/* Sidebar toggle button */}
       <IconButton
-        aria-label="Open menu"
+        aria-label={t('app.menuAria')}
         position="fixed"
         top={2}
         left={2}
@@ -92,12 +94,14 @@ function App() {
             boxShadow="sm"
           >
             {lmStatus === 'downloadable'
-              ? 'Model ready to download…'
+              ? t('app.modelReady')
               : (() => {
                   const raw = downloadProgress;
                   const pct =
                     typeof raw === 'number' ? Math.round(raw <= 1 ? raw * 100 : raw) : null;
-                  return `Downloading on-device model…${pct !== null ? ` ${pct}%` : ''}`;
+                  return pct !== null
+                    ? t('app.downloading', { pct })
+                    : t('app.downloading', { pct: '' });
                 })()}
           </Box>
         )}

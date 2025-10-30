@@ -1,17 +1,19 @@
 import { Box, Link } from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 const InstallAPI = () => {
+  const { t } = useTranslation('common');
   return (
     <Box minH="100dvh" minW="100dvw" display="flex" alignItems="center" justifyContent="center">
       <Box position="relative" p={4} w="100%" maxW="2xl" mx="auto">
-        <Text>This app is built with the experimental Chrome Prompt API</Text>
-        <Text>Please activate the Prompt API in Chrome Flag:</Text>
+        <Text>{t('installApi.title')}</Text>
+        <Text>{t('installApi.instruction')}</Text>
         <Text fontSize="sm" color="gray.500">
-          chrome://flags/#prompt-api-for-gemini-nano-multimodal-input
+          {t('installApi.flagPath')}
         </Text>
         <Link href="https://developer.chrome.com/docs/ai/built-in" target="_blank" color="blue.500">
-          Learn more
+          {t('installApi.learnMore')}
         </Link>
       </Box>
     </Box>

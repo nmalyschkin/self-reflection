@@ -57,6 +57,18 @@ class LanguageSelection {
   }
 }
 
+export const languageAppendix = (language: LanguageCode | undefined) => {
+  switch (language) {
+    case 'es':
+      return 'Please respond in spanish.';
+    case 'en':
+    default:
+      return 'Please respond in english.';
+    //   case 'ja':
+    //     return 'Please respond in japanese.';
+  }
+};
+
 export const languageSelection = LanguageSelection.getInstance();
 
 export const languageOptions = (language: LanguageCode = languageSelection.get()) => ({

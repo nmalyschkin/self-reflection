@@ -19,6 +19,8 @@ import type { Question as QuestionType } from '../../types';
 import MDText from '../../components/markdown/MDText';
 import MDHint from '../ReflectView/MDHint';
 import ReflectionChatEntries from '../ReflectView/ReflectionChatEntries';
+import { useTranslation } from 'react-i18next';
+import { getSubmitShortcut } from '../../tools/Oshelper';
 
 export default function Question({}: {}) {
   const { domainId, questionId } = useParams<{ domainId: string; questionId: string }>();
@@ -44,6 +46,7 @@ function QuestionSessionLoader({
   questionId: string;
   toDomain: () => void;
 }) {
+  const { t } = useTranslation('common');
   const [domainSession, setDomainSession] = useState<DomainSession | null>(null);
   const [promptState, setPromptState] = useState<'idle' | 'processing' | 'initializing'>(
     'initializing',
@@ -70,7 +73,7 @@ function QuestionSessionLoader({
     return (
       <Flex gap={2} align="center">
         <Text fontSize="sm" color="gray.500">
-          Initializing session...
+          {t('question.initializing')}
         </Text>
         <Spinner />
       </Flex>
@@ -98,6 +101,7 @@ function QuestionView({
   promptState: 'idle' | 'processing';
   toDomain: () => void;
 }) {
+  const { t } = useTranslation('common');
   const inputRef = useRef<string>(domainSession.question?.unsubmittedText || '');
   const [isInputEmpty, setIsInputEmpty] = useState<boolean>(
     !(inputRef.current && inputRef.current.trim().length > 0),
@@ -177,17 +181,17 @@ function QuestionView({
       {promptState === 'processing' ? (
         <Flex gap={2} align="center">
           <Text fontSize="sm" color="gray.500">
-            Thinking...
+            {t('question.thinking')}
           </Text>
-          <Button onClick={abort}>Abort</Button>
+          <Button onClick={abort}>{t('question.abort')}</Button>
         </Flex>
       ) : (
         <Flex align="center" justify="space-between">
           <Button colorScheme="blue" onClick={submit} disabled={isInputEmpty || isBusy}>
-            Go deeper (⌘+↵)
+            {t('question.goDeeper')} ({getSubmitShortcut()})
           </Button>
           <Button variant="outline" onClick={finishAndSummarize} disabled={isBusy || !hasUserEntry}>
-            Finish & summarize
+            {t('question.finishAndSummarize')}
           </Button>
         </Flex>
       )}
@@ -203,7 +207,7 @@ function QuestionView({
       overflow="hidden"
     >
       <HStack align="center" gap={2}>
-        <IconButton aria-label="Back" variant="ghost" onClick={toDomain}>
+        <IconButton aria-label={t('nav.back')} variant="ghost" onClick={toDomain}>
           ←
         </IconButton>
         <Heading size="lg" lineClamp={1}>
@@ -222,8 +226,8 @@ function QuestionView({
             overflow="hidden"
           >
             <Tabs.List>
-              <Tabs.Trigger value="chat">Chat</Tabs.Trigger>
-              <Tabs.Trigger value="summary">Summary</Tabs.Trigger>
+              <Tabs.Trigger value="chat">{t('question.tabs.chat')}</Tabs.Trigger>
+              <Tabs.Trigger value="summary">{t('question.tabs.summary')}</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="chat" display="flex" flexDirection="column" flex="1" minH={0}>
               <Box flex="0 1 auto" overflowY="auto">
@@ -259,9 +263,9 @@ function QuestionView({
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header fontSize="lg" fontWeight="bold">
-              Summarizing
+              {t('question.summarizing.title')}
             </Dialog.Header>
-            <Dialog.Body>summarizing...</Dialog.Body>
+            <Dialog.Body>{t('question.summarizing.body')}</Dialog.Body>
             <Dialog.Footer>
               <Button
                 onClick={() => {
@@ -269,7 +273,7 @@ function QuestionView({
                   setSummarizeDialogOpen(false);
                 }}
               >
-                Abort
+                {t('question.abort')}
               </Button>
             </Dialog.Footer>
           </Dialog.Content>

@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Box, Heading, SimpleGrid, Text, VStack, HStack, Progress } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { domains as domainsRecord } from '../../data/domains';
+import { getLocalizedDomains } from '../../data/domains.i18n';
 import DomainIDB from '../../state/DomainIDB';
 
 export default function Domains() {
   const navigate = useNavigate();
-  const domains = useMemo(() => Object.values(domainsRecord), []);
+  const { t } = useTranslation('common');
+  const domains = useMemo(() => getLocalizedDomains(t as any), [t]);
   const [progresses, setProgresses] = useState<Record<string, number>>(
     Object.fromEntries(Object.keys(domainsRecord).map((domainId) => [domainId, 0])),
   );
@@ -61,7 +64,7 @@ export default function Domains() {
                     </Progress.Track>
                   </Progress.Root>
                   <Text mt={1} fontSize="xs" color="gray.500">
-                    {pct}% complete
+                    {t('domains.percentComplete', { pct })}
                   </Text>
                 </Box>
               </VStack>

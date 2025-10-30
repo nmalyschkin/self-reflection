@@ -4,6 +4,7 @@ import { Box, Button, Heading, Text, VStack, IconButton } from '@chakra-ui/react
 import ReflectionIDB from '../state/ReflectionIDB';
 import { useNavigate } from 'react-router-dom';
 import DeleteReflection from '../components/DeleteReflection';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   lmStatus: LMStatus;
@@ -26,6 +27,7 @@ function formatDate(iso: string): string {
 
 export default function StartView({ lmStatus, onStartDownload, downloadButton }: Props) {
   const [reflections, setReflections] = useState<Reflection[]>([]);
+  const { t } = useTranslation();
 
   const updateReflections = useCallback(() => {
     (async () => {
@@ -51,23 +53,24 @@ export default function StartView({ lmStatus, onStartDownload, downloadButton }:
 
   return (
     <VStack align="stretch" gap={4}>
-      <Heading size="lg">Self Reflection</Heading>
+      <Heading size="lg">{t('app.title')}</Heading>
       <Button colorScheme="blue" onClick={() => openReflection('')}>
-        Start reflecting
+        {t('start.startReflecting')}
       </Button>
       {downloadButton && lmStatus === 'downloadable' && (
         <Button colorScheme="blue" onClick={onStartDownload}>
-          Download model
+          {t('start.downloadModel')}
         </Button>
       )}
 
       <Box mt={6}>
         <Heading size="md" mb={2}>
-          History
+          {' '}
+          {t('start.history')}{' '}
         </Heading>
         {reflections.length === 0 ? (
           <Text fontSize="sm" color="gray.500">
-            No reflections yet.
+            {t('start.emptyHistory')}
           </Text>
         ) : (
           <VStack align="stretch" gap={0}>
@@ -92,7 +95,7 @@ export default function StartView({ lmStatus, onStartDownload, downloadButton }:
                   >
                     <Box textAlign="left" w="full">
                       <Text fontSize="sm" fontWeight="medium" lineClamp={1}>
-                        {r.title || firstLine || 'draft'}
+                        {r.title || firstLine || t('start.draft')}
                       </Text>
                       <Text fontSize="xs" color="gray.500">
                         {formatDate(r.createdAt)}
@@ -100,7 +103,7 @@ export default function StartView({ lmStatus, onStartDownload, downloadButton }:
                     </Box>
                   </Button>
                   <IconButton
-                    aria-label="Delete reflection"
+                    aria-label={t('start.delete')}
                     variant="ghost"
                     colorScheme="red"
                     size="sm"

@@ -1,0 +1,277 @@
+{
+  "innerCompass": {
+    "name": "La Brújula Interior",
+    "shortDescription": "Valores, Creencias y Propósito",
+    "description": "Los valores no son ideales abstractos para enumerar en una hoja de trabajo; son los principios activos y orientadores de una vida. Funcionan como una brújula interior, proporcionando dirección en tiempos de incertidumbre y un estándar contra el cual medir las decisiones. Nuestras creencias fundamentales, a su vez, son las lentes a través de las cuales interpretamos la realidad, moldeando nuestras percepciones y expectativas. Cuando las acciones están alineadas con estos valores y creencias fundamentales, el resultado es un sentido de integridad y autenticidad. Cuando están desalineadas, el resultado suele ser frustración, disonancia cognitiva y una sensación de estar a la deriva. Un sentido claro de propósito, que a menudo surge de la aplicación de los valores fundamentales a un objetivo significativo, proporciona el combustible motivacional para la resiliencia y la persistencia, especialmente frente a los obstáculos.\nLa claridad en este dominio es la base de una vida bien examinada. Sin embargo, esta claridad rara vez se logra preguntando directamente por los valores. Un método más efectivo es aplicarles ingeniería inversa a partir de la experiencia vivida. Nuestras emociones más fuertes a menudo actúan como señales poderosas, marcando momentos en los que un valor fundamental ha sido honrado o violado. Un momento de intenso orgullo después de un proyecto difícil apunta a valores subyacentes como la perseverancia o la excelencia. Una oleada de ira en respuesta a una injusticia revela un profundo compromiso con la equidad. Al examinar estos momentos emocionalmente resonantes, uno puede descubrir el \"ADN moral\" incrustado en las historias personales. Las siguientes preguntas están diseñadas como herramientas de investigación para explorar este espacio de valores a través de la lente de decisiones específicas, sacrificios, momentos de admiración y fuentes de profunda satisfacción.",
+    "questions": {
+      "difficult-decision": {
+        "shortDescription": "Decisión difícil",
+        "question": "Describe una decisión que tomaste que fue difícil e impopular entre otros, pero que en el fondo sabías que era lo correcto. ¿Qué principio o valor específico estabas honrando que te hizo sentir que era tan correcto?"
+      },
+      "angry-moment": {
+        "shortDescription": "Momento de enfado",
+        "question": "Recuerda un momento en que sentiste una profunda sensación de enfado o indignación por una situación que presenciaste o experimentaste. ¿Qué \"regla\" no dicha sobre cómo debería funcionar el mundo se estaba violando?"
+      },
+      "admired-person": {
+        "shortDescription": "Persona admirada",
+        "question": "Piensa en una persona que admiras profundamente, ya sea personal o públicamente. Enumera tres acciones o cualidades específicas que poseen y que ganan tu admiración. ¿Qué revelan estos rasgos admirados sobre los valores que más aprecias?"
+      },
+      "purposeful-project": {
+        "shortDescription": "Proyecto con propósito",
+        "question": "Si supieras que no puedes fracasar y se eliminaran todas las limitaciones prácticas, ¿cuál es el único proyecto o causa a la que dedicarías tu tiempo para lograr? ¿Qué revela tu respuesta sobre lo que crees que es tu propósito?"
+      },
+      "significant-sacrifice": {
+        "shortDescription": "Sacrificio significativo",
+        "question": "Reflexiona sobre un momento en que hiciste un sacrificio significativo (de tiempo, dinero u oportunidad) por alguien o algo más. ¿Qué hizo que esa persona o causa fuera digna de tu sacrificio? ¿A qué valor apunta esto?"
+      },
+      "most-alive-moment": {
+        "shortDescription": "Momento de mayor plenitud",
+        "question": "¿Cuándo en tu vida te has sentido más vivo y fiel a ti mismo? Describe las circunstancias en detalle. ¿Qué estabas haciendo, con quién estabas y qué parte central de tu identidad se estaba expresando?"
+      },
+      "belief-shift": {
+        "shortDescription": "Cambio de creencia",
+        "question": "¿Cuál es una creencia que sostenías firmemente hace cinco años sobre la que desde entonces has cambiado de opinión? Describe el proceso o la experiencia que te llevó a este cambio en tu visión del mundo."
+      },
+      "flow-activity": {
+        "shortDescription": "Actividad de 'flujo'",
+        "question": "Considera las actividades que te hacen perder la noción del tiempo, aquellas que te ponen en un estado de \"flujo\". ¿Cuál es la naturaleza inherente de estas actividades (p. ej., resolver problemas, crear, organizar, nutrir) que encuentras tan absorbentes?"
+      },
+      "recurring-topic": {
+        "shortDescription": "Tema recurrente",
+        "question": "¿Qué tema o idea recurrente te encuentras constantemente mencionando en conversaciones o pensando en tu tiempo libre? ¿A qué interés o pasión profunda apunta esto?"
+      },
+      "proud-creation": {
+        "shortDescription": "Creación de la que te enorgulleces",
+        "question": "Describe algo que hayas creado o construido de lo que estés orgulloso (podría ser cualquier cosa, desde una obra de arte hasta una hoja de cálculo bien organizada o una relación sólida). ¿Qué aspecto de su creación te da la mayor satisfacción?"
+      },
+      "injustice-problem": {
+        "shortDescription": "Problema de injusticia",
+        "question": "¿Cuál es una injusticia o problema en el mundo que, si pudieras, resolverías de inmediato? ¿Qué dice tu elección sobre tus creencias fundamentales con respecto a la responsabilidad y la comunidad?"
+      },
+      "desired-legacy": {
+        "shortDescription": "Legado deseado",
+        "question": "¿Cómo quieres ser recordado por las personas que más te importan? Escribe cinco adjetivos que esperas que usen para describirte. ¿Cuáles de estos estás encarnando activamente ahora y cuáles requieren más enfoque?"
+      }
+    }
+  },
+  "emotionalLandscape": {
+    "name": "El Paisaje Emocional",
+    "shortDescription": "Conciencia, Regulación y Resiliencia",
+    "description": "Las emociones no son interrupciones aleatorias e inconvenientes para el pensamiento racional. Son flujos vitales de datos, que proporcionan información crítica sobre nuestro estado interno y nuestra relación con el mundo. Una emoción como el miedo señala una amenaza potencial, la tristeza indica una pérdida y la alegría apunta hacia una experiencia que satisface una necesidad profunda. La inteligencia emocional, por lo tanto, es la habilidad de interpretar con precisión estos datos y usarlos para guiar el pensamiento y la acción. Este dominio se centra en tres competencias centrales: conciencia (la capacidad de reconocer y nombrar las propias emociones), regulación (la capacidad de gestionar la intensidad y expresión de esas emociones) y resiliencia (la capacidad de navegar y recuperarse de los desafíos emocionales).\nLa reflexión eficaz en este dominio va más allá de analizar eventos emocionales únicos, o \"tormentas\", para identificar los \"patrones climáticos\" recurrentes de la propia vida. Una sola instancia de ansiedad es un punto de datos; un patrón constante de ansiedad cada domingo por la tarde es una tendencia que apunta a una causa sistémica, como el estrés no resuelto sobre la próxima semana laboral. Al actuar como un meteorólogo del mundo interior, uno puede comenzar a mapear estos estados emocionales recurrentes en contextos específicos (personas, lugares y momentos) y analizar las condiciones atmosféricas subyacentes, como necesidades insatisfechas, creencias limitantes o mecanismos de defensa. Las siguientes preguntas están diseñadas para mejorar esta alfabetización emocional, ayudando a identificar patrones, comprender los desencadenantes y desarrollar respuestas más saludables y conscientes.",
+    "questions": {
+      "emotionalLandscape-1": {
+        "shortDescription": "Reacción emocional fuerte",
+        "question": "Recuerda una situación reciente en la que tuviste una fuerte reacción emocional que pareció desproporcionada al evento. Rastrea el sentimiento hacia atrás en el tiempo. ¿Cuál fue el desencadenante inicial y qué pensamientos o eventos anteriores podrían haberte sensibilizado a él?"
+      },
+      "emotionalLandscape-2": {
+        "shortDescription": "Estado de ánimo recurrente",
+        "question": "Identifica un estado de ánimo recurrente y de baja intensidad que experimentas a menudo (p. ej., irritabilidad, melancolía, inquietud). Durante una semana, lleva un registro de cuándo aparece este estado de ánimo. Anota la hora, el lugar y lo que estabas haciendo o pensando justo antes de que surgiera. ¿Qué patrones notas?"
+      },
+      "emotionalLandscape-3": {
+        "shortDescription": "Mecanismo de afrontamiento",
+        "question": "Piensa en tu principal mecanismo de afrontamiento cuando te enfrentas a un alto estrés o dolor emocional. ¿Tiendes a analizar, retirarte, buscar distracciones o enfrentar el problema directamente? ¿Cuán efectiva es esta estrategia predeterminada a largo plazo?"
+      },
+      "emotionalLandscape-4": {
+        "shortDescription": "Envidia o celos",
+        "question": "Describe un momento en que sentiste envidia o celos. ¿Qué cualidad, posesión o circunstancia específica de la otra persona desencadenó este sentimiento? ¿Qué revela esta emoción sobre un deseo insatisfecho o una inseguridad dentro de ti?"
+      },
+      "emotionalLandscape-5": {
+        "shortDescription": "Ira que oculta algo",
+        "question": "A menudo, una \"emoción de presentación\" como la ira enmascara una emoción subyacente más vulnerable como el dolor o el miedo. Piensa en un momento reciente en que te sentiste enfadado. ¿Puedes identificar un sentimiento más suave y vulnerable que podría haber estado debajo?"
+      },
+      "emotionalLandscape-6": {
+        "shortDescription": "Sensación física",
+        "question": "¿Cuál es una sensación física en tu cuerpo que se correlaciona consistentemente con una emoción específica (p. ej., opresión en el pecho con ansiedad, cara caliente con vergüenza)? ¿Cómo puedes usar estas señales corporales como un sistema de alerta temprana?"
+      },
+      "emotionalLandscape-7": {
+        "shortDescription": "Calma o contentamiento",
+        "question": "Describe una situación que consistentemente te brinda una sensación de calma o contentamiento. Deconstruye los elementos de esa situación. ¿Qué estímulos sensoriales, actividades o estados mentales específicos contribuyen a esta sensación de paz?"
+      },
+      "emotionalLandscape-8": {
+        "shortDescription": "Reacción a la crítica",
+        "question": "¿Cómo reaccionas normalmente al recibir críticas o comentarios negativos? Describe tu monólogo interno y tu respuesta emocional. ¿Qué revela esto sobre tu relación con la autoestima y el perfeccionismo?"
+      },
+      "emotionalLandscape-9": {
+        "shortDescription": "Alegría pura y simple",
+        "question": "Reflexiona sobre un momento reciente de alegría pura y simple. ¿Qué estabas haciendo? ¿Con quién estabas? ¿Cómo puedes crear intencionalmente más oportunidades para este tipo específico de experiencia en tu vida?"
+      },
+      "emotionalLandscape-10": {
+        "shortDescription": "Creencia limitante",
+        "question": "¿Cuál es una creencia limitante que tienes sobre tu propia capacidad emocional (p. ej., \"No soy bueno manejando conflictos\", \"Soy demasiado sensible\")? ¿Dónde se originó esta creencia y qué evidencia existe que podría desafiarla?"
+      },
+      "emotionalLandscape-11": {
+        "shortDescription": "Manejo de emociones difíciles",
+        "question": "Piensa en un momento en que manejaste con éxito una emoción difícil en lugar de dejar que te controlara. ¿Qué pensamiento o acción específica te permitió regular tu respuesta? ¿Qué aprendiste de esta experiencia de autocontrol emocional?"
+      },
+      "emotionalLandscape-12": {
+        "shortDescription": "Emoción difícil de expresar",
+        "question": "¿Qué emoción te resulta más difícil de expresar? ¿Cuáles son tus miedos o creencias sobre lo que sucedería si la expresaras más abierta y honestamente?"
+      }
+    }
+  },
+  "tapestryOfConnections": {
+    "name": "El Tapiz de las Conexiones",
+    "shortDescription": "Relaciones y el Ser Social",
+    "description": "Los seres humanos son criaturas fundamentalmente sociales, definidas y moldeadas por el intrincado tapiz de sus conexiones. Nuestro sentido de identidad no se forja en el aislamiento, sino que se co-crea continuamente a través de nuestras interacciones con los demás. Este dominio se extiende más allá de las parejas románticas y la familia para abarcar amistades, colaboraciones profesionales y lazos comunitarios. La reflexión aquí se centra en la calidad de estas conexiones, los roles que habitualmente desempeñamos dentro de ellas, el equilibrio entre dar y recibir apoyo, y el impacto que estas relaciones tienen en nuestro bienestar y crecimiento personal.\nUn poderoso cambio de perspectiva ocurre cuando uno deja de ver las relaciones como entidades estáticas y en su lugar las ve como sistemas dinámicos e interconectados. Dentro de este marco, nuestras relaciones actúan como poderosos espejos, reflejando nuestros propios patrones, estilos de apego y problemas no resueltos. Un conflicto recurrente a menudo no se trata solo de una \"persona problemática\", sino de una \"dinámica problemática\" que inconscientemente ayudamos a mantener. Esto reencuadra el desafío de uno de culpa a uno de responsabilidad compartida y empoderamiento; si una dinámica es co-creada, uno tiene el poder de cambiar su contribución a ella. Esta visión sistémica fomenta un análisis del propio rol en el mantenimiento del statu quo, fomentando la empatía y una mayor capacidad para el cambio constructivo. Las siguientes preguntas guían una exploración de estos sistemas relacionales, los roles desempeñados dentro de ellos y las formas en que nuestras conexiones desafían y apoyan nuestro crecimiento.",
+    "questions": {
+      "tapestryOfConnections-1": {
+        "shortDescription": "Constelación de relaciones",
+        "question": "Haz un mapa de tu \"constelación\" primaria de relaciones (p. ej., círculo íntimo, círculo secundario). Para cada relación clave, evalúa el flujo de energía. ¿Esta conexión generalmente te energiza o te drena? ¿Qué factores contribuyen a esta dinámica?"
+      },
+      "tapestryOfConnections-2": {
+        "shortDescription": "Conflicto o malentendido",
+        "question": "Considera un conflicto o malentendido reciente. Sin defender tu propia posición, escribe la historia de lo que sucedió desde la perspectiva de la otra persona, usando lo que sabes sobre sus valores, miedos y presiones. ¿Qué nueva comprensión te ofrece este ejercicio?"
+      },
+      "tapestryOfConnections-3": {
+        "shortDescription": "Relación más auténtica",
+        "question": "¿En qué relación sientes que puedes ser tu yo más auténtico? ¿Qué comportamientos y actitudes específicas de la otra persona (y de ti mismo) crean esta sensación de seguridad psicológica?"
+      },
+      "tapestryOfConnections-4": {
+        "shortDescription": "Patrón recurrente en relaciones",
+        "question": "Identifica un patrón recurrente en tus relaciones (p. ej., jugar al cuidador, evitar conflictos, buscar validación). ¿En qué otro lugar de tu vida, pasada o presente, ha aparecido este patrón? ¿Qué necesidad o miedo central podría estar impulsando este comportamiento?"
+      },
+      "tapestryOfConnections-5": {
+        "shortDescription": "Valor como estímulo",
+        "question": "Reflexiona sobre tu \"valor como estímulo\": la impresión que crees que causas en las personas cuando te conocen por primera vez. ¿Qué comportamientos o aspectos de tu personalidad contribuyen a esta primera impresión? ¿Con qué precisión refleja quién eres realmente?"
+      },
+      "tapestryOfConnections-6": {
+        "shortDescription": "Apoyo genuinamente útil",
+        "question": "Piensa en un momento en que recibiste apoyo que fue genuinamente útil. ¿Qué hizo o dijo la otra persona que lo hizo tan efectivo? Por el contrario, piensa en un momento en que se ofreció apoyo pero no dio en el blanco. ¿Cuál fue la diferencia?"
+      },
+      "tapestryOfConnections-7": {
+        "shortDescription": "Reglas no dichas",
+        "question": "¿Existen \"reglas\" no dichas que gobiernan tus relaciones más importantes (p. ej., \"No hablamos de dinero\", \"No está bien expresar enojo\")? ¿Cómo sirven o dificultan estas reglas la salud de la conexión?"
+      },
+      "tapestryOfConnections-8": {
+        "shortDescription": "Relación reparada con éxito",
+        "question": "Describe un momento en que reparaste con éxito una relación después de un conflicto. ¿Qué acciones o palabras específicas fueron cruciales para el proceso de reconciliación? ¿Qué aprendiste sobre el perdón, ya sea darlo o recibirlo?"
+      },
+      "tapestryOfConnections-9": {
+        "shortDescription": "Apoyo al crecimiento personal",
+        "question": "¿De qué maneras las personas más cercanas a ti apoyan tu crecimiento personal? ¿De qué maneras podrían, consciente o inconscientemente, obstaculizarlo?"
+      },
+      "tapestryOfConnections-10": {
+        "shortDescription": "Habilidades de comunicación",
+        "question": "Evalúa tus habilidades de comunicación en una conversación importante reciente. ¿Escuchaste más de lo que hablaste? ¿Buscaste entender antes de buscar ser entendido? ¿Cuál es un aspecto de tu comunicación que podrías mejorar?"
+      },
+      "tapestryOfConnections-11": {
+        "shortDescription": "Relación que necesita atención",
+        "question": "¿Qué relación en tu vida requiere actualmente más de tu atención y esfuerzo positivos? ¿Cuál es una acción pequeña y específica que puedes tomar esta semana para invertir en esa conexión?"
+      },
+      "tapestryOfConnections-12": {
+        "shortDescription": "Contribución al bienestar",
+        "question": "¿Cómo contribuyes al bienestar de las comunidades de las que formas parte (p. ej., tu familia, lugar de trabajo, vecindario)? ¿Dónde podría tu contribución ser más intencional o impactante?"
+      }
+    }
+  },
+  "narrativeArc": {
+    "name": "El Arco Narrativo",
+    "shortDescription": "Experiencias Pasadas y Aspiraciones Futuras",
+    "description": "Damos sentido a nuestras vidas tejiendo eventos dispares en una historia continua. Esta \"identidad narrativa\" es el relato interno y en evolución de quiénes somos, de dónde venimos y hacia dónde vamos. Este dominio se centra en la autoría consciente de esa historia. Si bien los hechos del pasado no se pueden cambiar, nuestra relación con ellos sí. A través de la reflexión, los eventos dolorosos pueden reencuadrarse como fuentes de sabiduría, y los fracasos pueden reinterpretarse como puntos de inflexión cruciales. Este proceso conecta las lecciones del pasado con la creación deliberada de un futuro convincente y significativo.\nUn elemento clave de una identidad narrativa saludable es la capacidad de construir una \"narrativa redentora\". Esta no es una historia desprovista de dificultades, sino una en la que el sufrimiento y los contratiempos se redimen en última instancia por el crecimiento, el significado o los resultados positivos que producen. Una dolorosa pérdida de trabajo, por ejemplo, puede narrarse como el catalizador necesario que condujo a un camino profesional más satisfactorio. Esto no es un ejercicio de positividad tóxica, sino un acto de profunda agencia personal: el poder de encontrar significado y beneficio incluso en la adversidad. Es una aplicación práctica de una perspectiva positiva, que es la capacidad de ver oportunidades en situaciones donde otros solo podrían ver un revés devastador. Las siguientes preguntas están diseñadas para ayudarte a actuar como el autor de la historia de tu vida, incitándote a revisar \"capítulos\" clave, encontrar el hilo conductor del crecimiento y escribir intencionalmente los capítulos que están por venir.",
+    "questions": {
+      "narrativeArc-1": {
+        "shortDescription": "Giro argumental importante",
+        "question": "Identifica un \"giro argumental\" o punto de inflexión importante en tu vida, un evento que alteró fundamentalmente tu trayectoria. ¿Cómo cambió este evento la historia que estabas viviendo? ¿Qué nueva identidad o camino te marcó?"
+      },
+      "narrativeArc-2": {
+        "shortDescription": "Fracaso o logro",
+        "question": "Reflexiona sobre un fracaso o logro significativo de tu pasado. ¿Cuál fue la historia que te contaste sobre este evento en ese momento? Desde tu perspectiva actual, ¿cuál es una historia más sabia o compasiva que puedes contar al respecto ahora?"
+      },
+      "narrativeArc-3": {
+        "shortDescription": "Carta de consejo a tu yo",
+        "question": "Si tuvieras que escribirle una carta de consejo a tu yo de hace diez años, ¿cuáles son las tres cosas más importantes que le dirías? ¿Qué revela este consejo sobre las lecciones más significativas que has aprendido?"
+      },
+      "narrativeArc-4": {
+        "shortDescription": "Desafío superado",
+        "question": "Describe un desafío que superaste del que estás particularmente orgulloso. Detalla los recursos internos específicos (p. ej., coraje, creatividad, disciplina) y los apoyos externos en los que te basaste para tener éxito."
+      },
+      "narrativeArc-5": {
+        "shortDescription": "Recuerdo doloroso",
+        "question": "¿Cuál es un recuerdo doloroso en el que tiendes a evitar pensar? Sin regodearte en el trauma, ¿cuál es una fortaleza que desarrollaste o una lección crucial que aprendiste como resultado directo de navegar esa experiencia?"
+      },
+      "narrativeArc-6": {
+        "shortDescription": "Vida futura",
+        "question": "Visualízate dentro de cinco años, viviendo una vida que te resulta profundamente satisfactoria. Describe un día típico en esa vida futura con vívidos detalles. ¿Cuál es la mayor diferencia entre esa vida y tu vida actual?"
+      },
+      "narrativeArc-7": {
+        "shortDescription": "Hito más importante",
+        "question": "Trabajando hacia atrás desde esa visión de cinco años, ¿cuál es el hito más importante que necesitas alcanzar en los próximos doce meses para hacerlo realidad? ¿Cuál es el primer paso?"
+      },
+      "narrativeArc-8": {
+        "shortDescription": "Historia familiar",
+        "question": "¿Cuál es una historia de tu historia familiar o crianza que ha tenido un impacto profundo en la formación de quién eres hoy? ¿Cómo ha influido esta historia en tus creencias sobre ti mismo y el mundo?"
+      },
+      "narrativeArc-9": {
+        "shortDescription": "Área de vida atascada",
+        "question": "Considera un área de tu vida en la que te sientes \"atascado\". ¿Cuál es la narrativa que te estás contando sobre esta situación (p. ej., \"No soy lo suficientemente bueno\", \"Es demasiado tarde\", \"Las circunstancias son imposibles\")? ¿Cuál es una historia alternativa y más empoderadora que podrías elegir creer?"
+      },
+      "narrativeArc-10": {
+        "shortDescription": "Ambición o sueño",
+        "question": "¿Cuál era una ambición o sueño que tenías cuando eras más joven y que desde entonces has dejado ir? ¿Qué aprendiste del proceso de perseguirlo y finalmente soltarlo?"
+      },
+      "narrativeArc-11": {
+        "shortDescription": "Legado",
+        "question": "¿Qué legado quieres dejar? Cuando tu historia termine, ¿qué impacto quieres haber tenido en las personas y el mundo que te rodean?"
+      },
+      "narrativeArc-12": {
+        "shortDescription": "Lección más importante",
+        "question": "Mira hacia atrás en el último año. ¿Cuál fue la lección más importante que aprendiste y cómo ha cambiado la forma en que abordas tu vida hoy?"
+      }
+    }
+  },
+  "engineOfGrowth": {
+    "name": "El Motor del Crecimiento",
+    "shortDescription": "Fortalezas, Habilidades y Contribuciones",
+    "description": "Este dominio se centra en la interacción dinámica entre la capacidad y la aplicación. Implica una evaluación clara de los activos personales y una consideración estratégica de cómo pueden desplegarse para crear valor en el mundo. Es útil diferenciar entre fortalezas y habilidades. Las fortalezas son talentos innatos y patrones de pensamiento, sentimiento y comportamiento que son auténticos, energizantes y conducen a un desempeño eficaz. Las habilidades, por el contrario, son competencias que se aprenden y desarrollan a través de la práctica. Si bien ambas son cruciales, el crecimiento suele ser más profundo y sostenible cuando se construye en torno al cultivo y la aplicación de las fortalezas naturales.\nEl objetivo último de desarrollar estas capacidades es la contribución. Un sentido de plenitud y propósito a menudo surge no simplemente de poseer fortalezas y habilidades, sino de aplicarlas para satisfacer una necesidad genuina, ya sea en la carrera, la familia o la comunidad. El trabajo más impactante y satisfactorio a menudo se encuentra en la intersección de aquello en lo que uno es excepcionalmente bueno y lo que el mundo realmente necesita. Esto mueve el foco de un inventario egocéntrico de \"¿en qué soy bueno?\" a una pregunta más orientada al servicio: \"¿Qué problemas estoy equipado de forma única para resolver?\" Este marco proporciona una fórmula poderosa para el desarrollo personal y profesional: Contribución = (Fortalezas + Habilidades) x (Abordar una Necesidad). Las siguientes preguntas están diseñadas para ayudarte a identificar tus capacidades únicas, comprender cómo desarrollarlas y alinearlas con oportunidades de contribución significativa.",
+    "questions": {
+      "engineOfGrowth-1": {
+        "shortDescription": "En la zona",
+        "question": "Describe un momento en que te sentiste \"en la zona\" o completamente absorto y eficaz en una actividad. Deconstruye esa experiencia: ¿qué fortalezas específicas (p. ej., pensamiento estratégico, empatía, enfoque) y habilidades (p. ej., hablar en público, análisis de datos) estabas usando?"
+      },
+      "engineOfGrowth-2": {
+        "shortDescription": "Problemas o desafíos",
+        "question": "¿Qué tipo de problemas o desafíos te traen constantemente amigos, familiares o colegas para pedirte ayuda o consejo? ¿Qué revela este patrón sobre las fortalezas que otros perciben en ti?"
+      },
+      "engineOfGrowth-3": {
+        "shortDescription": "Habilidad a desarrollar",
+        "question": "Identifica una habilidad que, si la desarrollaras durante el próximo año, tendría el mayor impacto positivo en tu vida personal o profesional. ¿Cuál es el primer paso concreto que puedes dar para comenzar a aprenderla?"
+      },
+      "engineOfGrowth-4": {
+        "shortDescription": "Mayor logro profesional",
+        "question": "Reflexiona sobre tu mayor logro profesional. ¿Qué cualidades personales fueron tan importantes para ese éxito como tus habilidades técnicas?"
+      },
+      "engineOfGrowth-5": {
+        "shortDescription": "Debilidad o área de mejora",
+        "question": "¿Cuál es una debilidad o \"área de mejora\" que has decidido conscientemente que no es una prioridad arreglar? Explica tu razonamiento para elegir centrarte en tus fortalezas en su lugar."
+      },
+      "engineOfGrowth-6": {
+        "shortDescription": "Rediseño del puesto",
+        "question": "Considera tu trabajo actual o rol principal. ¿Cómo podrías \"rediseñar tu puesto\" o remodelar tus responsabilidades para pasar un 10% más de tu tiempo usando tus mayores fortalezas?"
+      },
+      "engineOfGrowth-7": {
+        "shortDescription": "Talento a desarrollar",
+        "question": "¿Qué talento posees que actualmente infrautilizas? Piensa en tres nuevas formas en que podrías aplicar este talento en tu vida o trabajo."
+      },
+      "engineOfGrowth-8": {
+        "shortDescription": "Enseñanza",
+        "question": "Piensa en un momento en que enseñaste a alguien a hacer algo de manera efectiva. ¿Qué te reveló el acto de enseñar sobre tu propio nivel de maestría y tu forma de pensar sobre el tema?"
+      },
+      "engineOfGrowth-9": {
+        "shortDescription": "Comentario más constructivo",
+        "question": "¿Cuál es el comentario más constructivo que has recibido? ¿Cómo lo incorporaste y cómo contribuyó a tu crecimiento?"
+      },
+      "engineOfGrowth-10": {
+        "shortDescription": "Contribución única",
+        "question": "Más allá de la descripción de tu puesto, ¿cuál es tu contribución única a tu equipo u organización? ¿Cuál es el valor que tú, específicamente, aportas?"
+      },
+      "engineOfGrowth-11": {
+        "shortDescription": "Área de vida 'jugando a poco'",
+        "question": "¿En qué área de tu vida estás actualmente \"jugando a poco\" cuando sabes que tienes el potencial de hacer más? ¿Qué miedo o creencia limitante te impide desarrollar toda tu capacidad?"
+      },
+      "engineOfGrowth-12": {
+        "shortDescription": "Sabiduría para compartir",
+        "question": "¿Qué es algo que sabes ahora que te gustaría haber sabido al comienzo de tu carrera? ¿Cómo puedes compartir esa sabiduría para contribuir al crecimiento de alguien que recién está comenzando?"
+      }
+    }
+  }
+}

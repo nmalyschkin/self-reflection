@@ -1,21 +1,17 @@
 import { Box, Heading, Text, VStack } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 export default function About() {
+  const { t } = useTranslation('common');
   return (
     <Box>
       <VStack align="start" gap={3}>
-        <Heading size="lg">About this app</Heading>
-        <Text>
-          This app uses browser technologies to run completely locally and offline. We don't collect
-          or store any data and all your AI interactions are run locally in your browser.
-        </Text>
+        <Heading size="lg">{t('about.title')}</Heading>
+        <Text>{t('about.body1')}</Text>
       </VStack>
       <VStack align="start" gap={3} mt={8}>
-        <Heading size="lg">Mobile compatibility</Heading>
-        <Text>
-          Since there is no mobile support for browser AI APIs, this app is not yet compatible with
-          mobile devices.
-        </Text>
+        <Heading size="lg">{t('about.mobile.title')}</Heading>
+        <Text>{t('about.mobile.body')}</Text>
       </VStack>
     </Box>
   );
