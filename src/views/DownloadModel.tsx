@@ -11,10 +11,14 @@ type Props = {
 export default function DownloadModel({ lmStatus, onStartDownload, progress }: Props) {
   const { t } = useTranslation('common');
 
-  const percent =
+  let percent =
     typeof progress === 'number'
       ? Math.max(0, Math.min(100, Math.round(progress <= 1 ? progress * 100 : progress)))
-      : null;
+      : 0;
+
+  if (percent === 100) {
+    percent = 0;
+  }
 
   const isDownloading = lmStatus === 'downloading';
   const isDownloadable = lmStatus === 'downloadable';

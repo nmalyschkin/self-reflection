@@ -1,4 +1,5 @@
 import { Box, VStack } from '@chakra-ui/react';
+import { useEffect, useRef } from 'react';
 import MDRender from '../../components/markdown/MDRender';
 import type { Entry } from '../../types';
 
@@ -7,6 +8,12 @@ type Props = {
 };
 
 export default function ReflectionChatEntries({ entries }: Props) {
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [entries.length]);
+
   return (
     <VStack gap={3} align="stretch">
       {entries.map((e, i) => (
@@ -21,6 +28,7 @@ export default function ReflectionChatEntries({ entries }: Props) {
           <MDRender markdown={e.text} />
         </Box>
       ))}
+      <Box ref={bottomRef} />
     </VStack>
   );
 }

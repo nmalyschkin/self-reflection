@@ -55,7 +55,7 @@ class ReflectionSession {
         role: 'system',
         content:
           `[Persona: ${persona.name}] ${persona.systemPreamble} \n` +
-          `Provide a concise title for the reflection based on the user's input once. ${languageAppendix(reflection.language)}`,
+          `Provide a concise title for the reflection based on the user's input once. ${languageAppendix(reflection.language)}. Keep your acknowledgement short and concise.`,
       },
       ...history,
     ];

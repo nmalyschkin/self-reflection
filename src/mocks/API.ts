@@ -28,7 +28,7 @@ export const mockAPI = () => {
     availability: () => Promise.resolve(lmStatus),
     create: (options: any = {}) =>
       new Promise((resolve, reject) => {
-        const { monitor, failAtPct, stepMs = 1500, stepSize = 10 } = options || {};
+        const { monitor, failAtPct, stepMs = 300, stepSize = 1 } = options || {};
 
         if (lmStatus === 'unavailable') {
           reject(new Error('Model unavailable'));
@@ -76,7 +76,7 @@ export const mockAPI = () => {
     availability: () => Promise.resolve(summarizerStatus),
     async create(options?: any) {
       if (summarizerStatus === 'unavailable') throw new Error('Summarizer unavailable');
-      const { monitor, failAtPct, stepMs = 300, stepSize = 10 } = options || {};
+      const { monitor, failAtPct, stepMs = 300, stepSize = 1 } = options || {};
       if (summarizerStatus === 'downloadable') {
         summarizerStatus = 'downloading';
         const et = new EventTarget();
@@ -110,7 +110,7 @@ export const mockAPI = () => {
     availability: () => Promise.resolve(rewriterStatus),
     async create(options?: unknown) {
       if (rewriterStatus === 'unavailable') throw new Error('Rewriter unavailable');
-      const { monitor, failAtPct, stepMs = 300, stepSize = 10 } = (options as any) || {};
+      const { monitor, failAtPct, stepMs = 300, stepSize = 1 } = (options as any) || {};
       if (rewriterStatus === 'downloadable') {
         rewriterStatus = 'downloading';
         const et = new EventTarget();

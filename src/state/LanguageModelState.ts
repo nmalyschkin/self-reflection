@@ -61,7 +61,10 @@ export function useLanguageModel(modelOptionsInit?: any) {
         ...modelOptions,
         monitor(m: EventTarget) {
           m.addEventListener('downloadprogress', (e: any & ProgressEvent) => {
-            const pct = Math.round(((e.loaded as number) / (e.total as number)) * 100);
+            const total = typeof (e as any).total === 'number' ? (e as any).total : 0;
+            const loaded = typeof (e as any).loaded === 'number' ? (e as any).loaded : 0;
+            const rawPct = total > 0 ? Math.round((loaded / total) * 100) : 0;
+            const pct = Math.max(0, Math.min(100, Number.isFinite(rawPct) ? rawPct : 0));
             setProgressByApi((prev) => {
               const next = { ...prev, lm: pct };
               const values = Object.values(next).filter((v) => typeof v === 'number') as number[];
@@ -99,7 +102,10 @@ export function useLanguageModel(modelOptionsInit?: any) {
             ...modelOptions,
             monitor(m: EventTarget) {
               m.addEventListener('downloadprogress', (e: any & ProgressEvent) => {
-                const pct = Math.round(((e.loaded as number) / (e.total as number)) * 100);
+                const total = typeof (e as any).total === 'number' ? (e as any).total : 0;
+                const loaded = typeof (e as any).loaded === 'number' ? (e as any).loaded : 0;
+                const rawPct = total > 0 ? Math.round((loaded / total) * 100) : 0;
+                const pct = Math.max(0, Math.min(100, Number.isFinite(rawPct) ? rawPct : 0));
                 setProgressByApi((prev) => {
                   const next = { ...prev, sum: pct };
                   const values = Object.values(next).filter(
@@ -138,7 +144,10 @@ export function useLanguageModel(modelOptionsInit?: any) {
             ...modelOptions,
             monitor(m: EventTarget) {
               m.addEventListener('downloadprogress', (e: any & ProgressEvent) => {
-                const pct = Math.round(((e.loaded as number) / (e.total as number)) * 100);
+                const total = typeof (e as any).total === 'number' ? (e as any).total : 0;
+                const loaded = typeof (e as any).loaded === 'number' ? (e as any).loaded : 0;
+                const rawPct = total > 0 ? Math.round((loaded / total) * 100) : 0;
+                const pct = Math.max(0, Math.min(100, Number.isFinite(rawPct) ? rawPct : 0));
                 setProgressByApi((prev) => {
                   const next = { ...prev, rew: pct };
                   const values = Object.values(next).filter(

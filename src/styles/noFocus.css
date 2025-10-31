@@ -1,0 +1,12 @@
+.no-focus-styles a:focus,
+.no-focus-styles a:focus-visible,
+.no-focus-styles a:focus-within,
+.no-focus-styles button:focus,
+.no-focus-styles button:focus-visible,
+.no-focus-styles button:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+
