@@ -1,42 +1,51 @@
 import type { LMAvailabilityStatus } from '../global';
 
 export const mockAPI = () => {
-  let status: LMAvailabilityStatus = 'downloadable';
+  let lmStatus: LMAvailabilityStatus = 'downloadable';
+  let summarizerStatus: LMAvailabilityStatus = 'downloadable';
+  let rewriterStatus: LMAvailabilityStatus = 'downloadable';
 
   if (typeof window === 'undefined') return;
 
   // Helper exposed for debug to tweak states at runtime
   (window as any).MockAI = {
     setStatus(next: LMAvailabilityStatus) {
-      status = next;
+      lmStatus = next;
+    },
+    setLMStatus(next: LMAvailabilityStatus) {
+      lmStatus = next;
+    },
+    setSummarizerStatus(next: LMAvailabilityStatus) {
+      summarizerStatus = next;
+    },
+    setRewriterStatus(next: LMAvailabilityStatus) {
+      rewriterStatus = next;
     },
   };
 
   // LanguageModel mock with monitor-based download simulation
   (window as any).LanguageModel = {
-    availability: () => Promise.resolve(status),
+    availability: () => Promise.resolve(lmStatus),
     create: (options: any = {}) =>
       new Promise((resolve, reject) => {
-        const { monitor, failAtPct, stepMs = 300, stepSize = 10 } = options || {};
+        const { monitor, failAtPct, stepMs = 1500, stepSize = 10 } = options || {};
 
-        if (status === 'unavailable') {
+        if (lmStatus === 'unavailable') {
           reject(new Error('Model unavailable'));
           return;
         }
 
-        // Simulate download if currently downloadable
-        if (status === 'downloadable') {
-          status = 'downloading';
+        if (lmStatus === 'downloadable') {
+          lmStatus = 'downloading';
           const et = new EventTarget();
           if (typeof monitor === 'function') monitor(et);
 
           let progress = 0;
           const total = 100;
           const interval = setInterval(() => {
-            // Optional failure injection for testing
             if (typeof failAtPct === 'number' && progress >= failAtPct) {
               clearInterval(interval);
-              status = 'downloadable';
+              lmStatus = 'downloadable';
               reject(new Error('Download failed (mock)'));
               return;
             }
@@ -46,65 +55,87 @@ export const mockAPI = () => {
 
             if (progress >= total) {
               clearInterval(interval);
-              status = 'available';
+              lmStatus = 'available';
               resolve(createLanguageModelSession(options));
             }
           }, stepMs);
           return;
         }
 
-        // If already available, return a ready session immediately
-        if (status === 'available') {
+        if (lmStatus === 'available') {
           resolve(createLanguageModelSession(options));
           return;
         }
 
-        // Fallback
-        reject(new Error(`Cannot create session in state: ${status}`));
+        reject(new Error(`Cannot create session in state: ${lmStatus}`));
       }),
   } as any;
 
   // Summarizer mock
   (window as any).Summarizer = {
-    async create(_options?: any) {
-      return {
-        async summarize(text: string) {
-          const type = _options?.type as string | undefined;
-          const normalized = (text || '').trim();
-          if (!normalized) return '';
-          // Simple heuristics depending on type
-          if (type === 'headline') {
-            const first = normalized.split(/\n|\.|!/)[0]?.trim();
-            return first || 'Reflection';
-          }
-          // key-points: split into up to 3 bullets by sentences
-          const sentences = normalized
-            .split(/(?<=[.!?])\s+/)
-            .map((s) => s.trim())
-            .filter(Boolean)
-            .slice(0, 3);
-          return sentences.map((s) => `- ${s}`).join('\n');
-        },
-        destroy() {},
-      };
+    availability: () => Promise.resolve(summarizerStatus),
+    async create(options?: any) {
+      if (summarizerStatus === 'unavailable') throw new Error('Summarizer unavailable');
+      const { monitor, failAtPct, stepMs = 300, stepSize = 10 } = options || {};
+      if (summarizerStatus === 'downloadable') {
+        summarizerStatus = 'downloading';
+        const et = new EventTarget();
+        if (typeof monitor === 'function') monitor(et);
+        let progress = 0;
+        const total = 100;
+        await new Promise<void>((resolve, reject) => {
+          const interval = setInterval(() => {
+            if (typeof failAtPct === 'number' && progress >= failAtPct) {
+              clearInterval(interval);
+              summarizerStatus = 'downloadable';
+              reject(new Error('Download failed (mock)'));
+              return;
+            }
+            et.dispatchEvent(new ProgressEvent('downloadprogress', { loaded: progress, total }));
+            progress = Math.min(total, progress + stepSize);
+            if (progress >= total) {
+              clearInterval(interval);
+              summarizerStatus = 'available';
+              resolve();
+            }
+          }, stepMs);
+        });
+      }
+      return createSummarizerSession(options);
     },
   } as any;
 
   // Rewriter mock
   (window as any).Rewriter = {
-    async create(_options?: unknown) {
-      return {
-        async rewrite(text: string) {
-          const normalized = (text || '').trim();
-          if (!normalized) return '';
-          // Rewriter: collapse whitespace and ensure markdown paragraphs
-          return normalized
-            .split(/\n{2,}/)
-            .map((p) => p.replace(/[\t ]+/g, ' ').trim())
-            .join('\n\n');
-        },
-        destroy() {},
-      };
+    availability: () => Promise.resolve(rewriterStatus),
+    async create(options?: unknown) {
+      if (rewriterStatus === 'unavailable') throw new Error('Rewriter unavailable');
+      const { monitor, failAtPct, stepMs = 300, stepSize = 10 } = (options as any) || {};
+      if (rewriterStatus === 'downloadable') {
+        rewriterStatus = 'downloading';
+        const et = new EventTarget();
+        if (typeof monitor === 'function') monitor(et);
+        let progress = 0;
+        const total = 100;
+        await new Promise<void>((resolve, reject) => {
+          const interval = setInterval(() => {
+            if (typeof failAtPct === 'number' && progress >= failAtPct) {
+              clearInterval(interval);
+              rewriterStatus = 'downloadable';
+              reject(new Error('Download failed (mock)'));
+              return;
+            }
+            et.dispatchEvent(new ProgressEvent('downloadprogress', { loaded: progress, total }));
+            progress = Math.min(total, progress + stepSize);
+            if (progress >= total) {
+              clearInterval(interval);
+              rewriterStatus = 'available';
+              resolve();
+            }
+          }, stepMs);
+        });
+      }
+      return createRewriterSession(options);
     },
   } as any;
 };
@@ -139,5 +170,40 @@ function createLanguageModelSession(options: any) {
 
       return JSON.stringify(payload);
     },
+  } as any;
+}
+
+function createSummarizerSession(_options?: any) {
+  return {
+    async summarize(text: string) {
+      const type = _options?.type as string | undefined;
+      const normalized = (text || '').trim();
+      if (!normalized) return '';
+      if (type === 'headline') {
+        const first = normalized.split(/\n|\.|!/)[0]?.trim();
+        return first || 'Reflection';
+      }
+      const sentences = normalized
+        .split(/(?<=[.!?])\s+/)
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .slice(0, 3);
+      return sentences.map((s) => `- ${s}`).join('\n');
+    },
+    destroy() {},
+  } as any;
+}
+
+function createRewriterSession(_options?: unknown) {
+  return {
+    async rewrite(text: string) {
+      const normalized = (text || '').trim();
+      if (!normalized) return '';
+      return normalized
+        .split(/\n{2,}/)
+        .map((p) => p.replace(/[\t ]+/g, ' ').trim())
+        .join('\n\n');
+    },
+    destroy() {},
   } as any;
 }

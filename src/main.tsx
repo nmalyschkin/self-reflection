@@ -5,12 +5,12 @@ import { BrowserRouter } from 'react-router-dom';
 import './i18n';
 import App from './App.tsx';
 import './components/mdtext.scss';
-import { mockAPI } from './mocks/API';
+// import { mockAPI } from './mocks/API';
 
 // Initialize AI API mocks in development to enable full app behavior
-if (import.meta.env.DEV) {
-  mockAPI();
-}
+// if (import.meta.env.DEV) {
+//   mockAPI();
+// }
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

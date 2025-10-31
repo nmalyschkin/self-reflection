@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState, useCallback, lazy, Suspense } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Box, IconButton, useDisclosure } from '@chakra-ui/react';
-import type { LMStatus } from './types';
 import StartView from './views/StartView';
 import About from './views/About';
 import ReflectView from './views/ReflectView';
@@ -12,52 +11,17 @@ import Domains from './views/Domain/DomainOverview';
 import Domain from './views/Domain/Domain';
 import Question from './views/Domain/Question';
 import { useTranslation } from 'react-i18next';
+import { useLanguageModel } from './state/LanguageModelState';
 const isDebugBuild = import.meta.env.DEV || import.meta.env.MODE === 'development';
 const DebugOverview = isDebugBuild ? lazy(() => import('./debug/overview')) : undefined;
 const DebugSummarizer = isDebugBuild ? lazy(() => import('./debug/summarizer')) : undefined;
 const DebugRewriter = isDebugBuild ? lazy(() => import('./debug/rewriter')) : undefined;
 const DebugPersona = isDebugBuild ? lazy(() => import('./debug/persona')) : undefined;
 
-function hasLanguageModel(): boolean {
-  return typeof window !== 'undefined' && 'LanguageModel' in (window as any);
-}
-
-async function getLmStatus(modelOptions: any): Promise<LMStatus> {
-  if (!hasLanguageModel()) return 'no-api';
-  if (typeof (window as any).LanguageModel.availability !== 'function') return 'no-api';
-  const availability = await (window as any).LanguageModel.availability(modelOptions);
-  const status = availability as LMStatus;
-  return status;
-}
-
 function App() {
-  const [lmStatus, setLmStatus] = useState<LMStatus>('unknown');
-  const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
-  const modelOptions = useMemo(() => ({}), []); // Keep options consistent between availability and prompt
+  const { lmStatus, progress: downloadProgress, startModelDownload } = useLanguageModel({});
   const { open: isSidebarOpen, onOpen: openSidebar, onClose: closeSidebar } = useDisclosure();
   const { t } = useTranslation('common');
-
-  useEffect(() => {
-    getLmStatus(modelOptions).then(setLmStatus);
-    // setLmStatus('downloading');
-  }, [modelOptions]);
-
-  const startModelDownload = useCallback(async () => {
-    if (lmStatus === 'downloadable') {
-      window.LanguageModel.create({
-        ...modelOptions,
-        monitor(m: EventTarget) {
-          m.addEventListener('downloadprogress', (e: any & ProgressEvent) => {
-            console.log(`Downloaded ${(e.loaded / e.total) * 100}%`);
-            setDownloadProgress(Math.round((e.loaded / e.total) * 100));
-          });
-        },
-      }).then(() => {
-        getLmStatus(modelOptions).then(setLmStatus);
-      });
-      getLmStatus(modelOptions).then(setLmStatus);
-    }
-  }, [modelOptions, lmStatus]);
 
   if (lmStatus === 'no-api') {
     return <InstallAPI />;

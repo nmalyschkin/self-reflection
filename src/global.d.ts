@@ -17,6 +17,7 @@ interface LanguageModelStatic {
 }
 
 interface Summarizer {
+  availability?(options?: unknown): Promise<LMAvailabilityStatus>;
   create(options?: unknown): Promise<SummarizerSession>;
 }
 
@@ -25,10 +26,21 @@ interface SummarizerSession {
   destroy(): void;
 }
 
+interface RewriterSession {
+  rewrite(text: string, options?: unknown): Promise<string>;
+  destroy(): void;
+}
+
+interface Rewriter {
+  availability?(options?: unknown): Promise<LMAvailabilityStatus>;
+  create(options?: unknown): Promise<RewriterSession>;
+}
+
 declare global {
   interface Window {
     LanguageModel: LanguageModelStatic;
     Summarizer: Summarizer;
+    Rewriter: Rewriter;
   }
 }
 
