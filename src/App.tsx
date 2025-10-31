@@ -7,6 +7,7 @@ import ReflectView from './views/ReflectView';
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from './components/sidebar';
 import InstallAPI from './views/InstallAPI';
+import DownloadModel from './views/DownloadModel';
 import Domains from './views/Domain/DomainOverview';
 import Domain from './views/Domain/Domain';
 import Question from './views/Domain/Question';
@@ -62,6 +63,17 @@ function App() {
     return <InstallAPI />;
   }
 
+  // when downloadable or downloading show DownloadModel
+  if (lmStatus === 'downloadable' || lmStatus === 'downloading') {
+    return (
+      <DownloadModel
+        lmStatus={lmStatus}
+        onStartDownload={startModelDownload}
+        progress={downloadProgress}
+      />
+    );
+  }
+
   return (
     <Box minH="100dvh" minW="100dvw" display="flex" alignItems="center" justifyContent="center">
       {/* Sidebar toggle button */}
@@ -78,34 +90,6 @@ function App() {
       </IconButton>
 
       <Box position="relative" p={4} w="100%" maxW="2xl" mx="auto">
-        {(lmStatus === 'downloadable' || lmStatus === 'downloading') && (
-          <Box
-            position="absolute"
-            top={2}
-            right={2}
-            fontSize="xs"
-            bg="yellow.100"
-            color="yellow.900"
-            borderWidth="1px"
-            borderColor="yellow.200"
-            rounded="md"
-            px={2}
-            py={1}
-            boxShadow="sm"
-          >
-            {lmStatus === 'downloadable'
-              ? t('app.modelReady')
-              : (() => {
-                  const raw = downloadProgress;
-                  const pct =
-                    typeof raw === 'number' ? Math.round(raw <= 1 ? raw * 100 : raw) : null;
-                  return pct !== null
-                    ? t('app.downloading', { pct })
-                    : t('app.downloading', { pct: '' });
-                })()}
-          </Box>
-        )}
-
         <Routes>
           <Route
             path="/"
