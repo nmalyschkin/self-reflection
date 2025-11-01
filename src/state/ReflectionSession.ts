@@ -71,11 +71,6 @@ class ReflectionSession {
           // await ReflectionIDB.setReflection(reflection.id, reflection);
         }
         this.reflection = reflection;
-        const initialPrompts = ReflectionSession.createInitialPrompts(reflection);
-        this.session = await window.LanguageModel.create({
-          initialPrompts: initialPrompts,
-          ...languageOptions(reflection?.language),
-        });
         resolve();
       })();
     });
@@ -89,9 +84,6 @@ class ReflectionSession {
   }
 
   async summarize(type: 'long' | 'key-points' = 'long') {
-    if (!this.session) {
-      throw new Error('Session not initialized');
-    }
     if (this.promptState === 'processing') {
       throw new Error('Prompt is already processing');
     }
@@ -172,7 +164,20 @@ class ReflectionSession {
       throw new Error('Cannot change persona after entries have been added');
     }
     this.reflection = { ...this.reflection, personaId };
+    // Persist the persona change immediately
+    ReflectionIDB.setReflection(this.reflection.id, this.reflection);
     this.notifySubscribers();
+  }
+
+  private async initializeSession() {
+    if (!this.reflection) {
+      throw new Error('Reflection not initialized');
+    }
+    const initialPrompts = ReflectionSession.createInitialPrompts(this.reflection);
+    this.session = await window.LanguageModel.create({
+      initialPrompts: initialPrompts,
+      ...languageOptions(this.reflection?.language),
+    });
   }
 
   /**
@@ -180,12 +185,16 @@ class ReflectionSession {
    * @param input - The user's input
    * @returns A function to abort the prompt
    */
-  userSubmit(input: string): () => void {
-    if (!this.session || !this.reflection) {
-      throw new Error('Session not initialized');
+  async userSubmit(input: string): Promise<() => void> {
+    if (!this.reflection) {
+      throw new Error('Reflection not initialized');
     }
     if (this.promptState === 'processing') {
       throw new Error('Prompt is already processing');
+    }
+
+    if (!this.session) {
+      await this.initializeSession();
     }
 
     this.addEntries(
@@ -201,11 +210,10 @@ class ReflectionSession {
     this.reflection.unsubmittedText = '';
 
     const controller = new AbortController();
-    this.session
-      .prompt(input, {
-        responseConstraint: this.responseSchema,
-        signal: controller.signal,
-      })
+    this.session!.prompt(input, {
+      responseConstraint: this.responseSchema,
+      signal: controller.signal,
+    })
       .then((response) => {
         const { question, title, acknowledgement } = parseReflectionResponse(response);
         const text = `${acknowledgement}

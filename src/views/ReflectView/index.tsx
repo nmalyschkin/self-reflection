@@ -26,19 +26,29 @@ export default function ReflectionSessionLoader({ reflectionId }: Props) {
   const [reflection, setReflection] = useState<Reflection | null>(null);
 
   useEffect(() => {
-    const reflectionSession = new ReflectionSession(reflectionId);
-    reflectionSession.subscribeReflectionState((reflection, promptState) => {
+    let cancelled = false;
+    const session = new ReflectionSession(reflectionId);
+    const unsubscribe = session.subscribeReflectionState((reflection, promptState) => {
+      if (cancelled) return;
       setReflection(reflection);
       setPromptState(promptState);
     });
-    reflectionSession.sessionInitialized.then(() => {
-      setReflection(reflectionSession.reflection);
-      // window.debug = reflectionSession;
-      setReflectionSession(reflectionSession);
+    session.sessionInitialized.then(() => {
+      if (cancelled) {
+        session.destroy();
+        return;
+      }
+      setReflection(session.reflection);
+      setReflectionSession(session);
       setPromptState('idle');
     });
     return () => {
-      reflectionSession.destroy();
+      cancelled = true;
+      try {
+        unsubscribe?.();
+      } finally {
+        session.destroy();
+      }
     };
   }, [reflectionId]);
 
@@ -80,7 +90,9 @@ function ReflectView({
   );
 
   const displayTabs = reflection.summary || reflectionSession.summarizing;
-  const [activeTab, setActiveTab] = useState<'chat' | 'summary'>('summary');
+  const [activeTab, setActiveTab] = useState<'chat' | 'summary'>(
+    reflection.summary ? 'summary' : 'chat',
+  );
 
   const goBack = useNavigateTo('/');
 
@@ -92,10 +104,10 @@ function ReflectView({
     (text) => reflectionSession.saveUnsubmittedText(text),
   );
 
-  const submitReflectionStatement = useCallback(() => {
+  const submitReflectionStatement = useCallback(async () => {
     const input = inputRef.current;
     try {
-      const abort = reflectionSession.userSubmit(input);
+      const abort = await reflectionSession.userSubmit(input);
       inputRef.current = '';
       setIsInputEmpty(true);
       setAbort(() => () => {
