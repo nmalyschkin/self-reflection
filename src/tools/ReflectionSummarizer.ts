@@ -97,18 +97,3 @@ Here are some examples:
     return summary;
   }
 }
-
-interface Rewriter {
-  create(options: unknown): Promise<RewriterSession>;
-}
-
-interface RewriterSession {
-  rewrite(text: string, options?: unknown): Promise<string>;
-  destroy(): void;
-}
-
-declare global {
-  interface Window {
-    Rewriter: Rewriter;
-  }
-}
